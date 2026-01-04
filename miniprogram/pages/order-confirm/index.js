@@ -310,22 +310,59 @@ Page({
     
     this.setData({ submitting: true })
     
-    // 模拟提交
-    setTimeout(() => {
-      const orderId = 'ORDER' + Date.now()
-      
-      this.setData({ submitting: false })
-      
-      wx.showToast({
-        title: '下单成功',
-        icon: 'success'
-      })
-      
-      setTimeout(() => {
-        wx.redirectTo({
-          url: '/pages/order-detail/index?id=' + orderId
+    const orderData = {
+      teacherId: this.data.teacherId,
+      teacherName: this.data.teacher ? this.data.teacher.name : '',
+      teacherAvatar: this.data.teacher ? this.data.teacher.avatar : '',
+      serviceId: this.data.selectedService.id,
+      serviceName: this.data.selectedService.name,
+      childId: this.data.selectedChild.id,
+      childName: this.data.selectedChild.name,
+      serviceDate: this.data.serviceDate,
+      serviceTime: this.data.serviceTime,
+      serviceDuration: this.data.serviceDuration,
+      address: this.data.address,
+      remark: this.data.remark,
+      totalPrice: this.data.totalPrice,
+      discountPrice: this.data.discountPrice,
+      finalPrice: this.data.finalPrice
+    }
+
+    // 调用云函数创建订单
+    wx.cloud.callFunction({
+      name: 'createOrder',
+      data: orderData,
+      success: res => {
+        if (res.result.success) {
+          this.setData({ submitting: false })
+          
+          wx.showToast({
+            title: '下单成功',
+            icon: 'success'
+          })
+          
+          setTimeout(() => {
+            wx.redirectTo({
+              url: '/pages/order-detail/index?id=' + res.result.data.orderId
+            })
+          }, 1500)
+        } else {
+          console.error('下单失败', res.result.error)
+          this.setData({ submitting: false })
+          wx.showToast({
+            title: '下单失败，请重试',
+            icon: 'none'
+          })
+        }
+      },
+      fail: err => {
+        console.error('调用云函数失败', err)
+        this.setData({ submitting: false })
+        wx.showToast({
+          title: '网络错误，请重试',
+          icon: 'none'
         })
-      }, 1500)
-    }, 1000)
+      }
+    })
   }
 })
