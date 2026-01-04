@@ -42,6 +42,41 @@ Page({
   loadTeacherDetail: function(id) {
     this.setData({ loading: true })
     
+    // 调用云函数获取详情
+    wx.cloud.callFunction({
+      name: 'getTeacherDetail',
+      data: { id: id },
+      success: res => {
+        if (res.result.success) {
+          const { teacher, reviews, services, cases } = res.result.data
+          
+          // 格式化老师数据
+          const formattedTeacher = {
+            ...teacher,
+            id: teacher._id // 确保 id 字段存在
+          }
+
+          this.setData({
+            teacher: formattedTeacher,
+            reviews: reviews,
+            services: services,
+            cases: cases,
+            loading: false
+          })
+        } else {
+          console.error('获取详情失败', res.result.message)
+          this.useMockData(id)
+        }
+      },
+      fail: err => {
+        console.error('调用云函数失败', err)
+        this.useMockData(id)
+      }
+    })
+  },
+
+  // 降级使用模拟数据
+  useMockData: function(id) {
     // 模拟数据
     const mockTeacher = {
       id: id,
@@ -117,15 +152,13 @@ Page({
       }
     ]
     
-    setTimeout(() => {
-      this.setData({
-        teacher: mockTeacher,
-        services: mockServices,
-        reviews: mockReviews,
-        cases: mockCases,
-        loading: false
-      })
-    }, 500)
+    this.setData({
+      teacher: mockTeacher,
+      services: mockServices,
+      reviews: mockReviews,
+      cases: mockCases,
+      loading: false
+    })
   },
 
   // 切换Tab
