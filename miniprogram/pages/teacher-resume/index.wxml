@@ -1,0 +1,223 @@
+<!--pages/teacher-resume/index.wxml-->
+<view class="container">
+  <!-- 审核状态 -->
+  <view class="status-bar {{status}}" wx:if="{{status !== 'draft'}}">
+    <text class="status-text">{{statusText}}</text>
+    <text class="reject-reason" wx:if="{{status === 'rejected'}}">原因：{{rejectReason}}</text>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="section">
+    <view class="section-title">基本信息</view>
+    
+    <view class="avatar-section">
+      <view class="avatar-wrapper" bindtap="chooseAvatar">
+        <image class="avatar" wx:if="{{basicInfo.avatar}}" src="{{basicInfo.avatar}}" mode="aspectFill"></image>
+        <view class="avatar-placeholder" wx:else>
+          <text class="placeholder-icon">+</text>
+          <text class="placeholder-text">上传头像</text>
+        </view>
+      </view>
+    </view>
+    
+    <view class="form-list">
+      <view class="form-item">
+        <text class="form-label required">姓名</text>
+        <input class="form-input" type="text" placeholder="请输入真实姓名" value="{{basicInfo.name}}" bindinput="onNameInput" />
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label required">性别</text>
+        <picker mode="selector" value="{{genderOptions.indexOf(basicInfo.gender)}}" range="{{genderOptions}}" bindchange="onGenderChange">
+          <view class="picker-value">
+            <text>{{basicInfo.gender || '请选择'}}</text>
+            <text class="arrow-icon">›</text>
+          </view>
+        </picker>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">出生日期</text>
+        <picker mode="date" value="{{basicInfo.birthDate}}" bindchange="onBirthDateChange">
+          <view class="picker-value">
+            <text>{{basicInfo.birthDate || '请选择'}}</text>
+            <text class="arrow-icon">›</text>
+          </view>
+        </picker>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">学历</text>
+        <picker mode="selector" value="{{educationOptions.indexOf(basicInfo.education)}}" range="{{educationOptions}}" bindchange="onEducationChange">
+          <view class="picker-value">
+            <text>{{basicInfo.education || '请选择'}}</text>
+            <text class="arrow-icon">›</text>
+          </view>
+        </picker>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">专业</text>
+        <input class="form-input" type="text" placeholder="请输入专业" value="{{basicInfo.major}}" bindinput="onMajorInput" />
+      </view>
+      
+      <view class="form-item column">
+        <text class="form-label required">个人介绍</text>
+        <textarea class="form-textarea" placeholder="请介绍您的教育背景、从业经验、教学特点等" value="{{basicInfo.introduction}}" bindinput="onIntroductionInput" maxlength="500"></textarea>
+      </view>
+    </view>
+  </view>
+
+  <!-- 服务信息 -->
+  <view class="section">
+    <view class="section-title">服务信息</view>
+    
+    <view class="form-list">
+      <view class="form-item column">
+        <text class="form-label required">服务类型（可多选）</text>
+        <checkbox-group bindchange="onServiceTypeChange">
+          <view class="checkbox-list">
+            <label class="checkbox-item" wx:for="{{serviceTypeOptions}}" wx:key="*this">
+              <checkbox value="{{index}}" checked="{{serviceInfo.serviceTypes.indexOf(item) > -1}}" />
+              <text>{{item}}</text>
+            </label>
+          </view>
+        </checkbox-group>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">服务区域</text>
+        <input class="form-input" type="text" placeholder="如：海淀区、朝阳区（用顿号分隔）" value="{{serviceInfo.serviceAreas.join('、')}}" bindinput="onServiceAreasInput" />
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">服务时间</text>
+        <input class="form-input" type="text" placeholder="如：周一至周五 14:00-20:00" value="{{serviceInfo.serviceTime}}" bindinput="onServiceTimeInput" />
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label required">服务价格</text>
+        <view class="price-input">
+          <input class="form-input" type="digit" placeholder="请输入" value="{{serviceInfo.pricePerHour}}" bindinput="onPriceInput" />
+          <text class="price-unit">元/小时</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 资质证书 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">资质证书</text>
+      <text class="add-btn" bindtap="addCertificate">+ 添加证书</text>
+    </view>
+    
+    <view class="certificate-list" wx:if="{{certificates.length > 0}}">
+      <view class="certificate-item" wx:for="{{certificates}}" wx:key="id">
+        <image class="certificate-image" src="{{item.image}}" mode="aspectFill"></image>
+        <text class="certificate-name">{{item.name}}</text>
+        <image class="delete-icon" src="/images/icons/close.png" mode="aspectFit" data-id="{{item.id}}" bindtap="deleteCertificate"></image>
+      </view>
+    </view>
+    <view class="empty-tip" wx:else>
+      <text>上传资质证书有助于提高审核通过率</text>
+    </view>
+  </view>
+
+  <!-- 工作经历 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">工作经历</text>
+      <text class="add-btn" bindtap="showAddWorkModal">+ 添加经历</text>
+    </view>
+    
+    <view class="work-list" wx:if="{{workExperience.length > 0}}">
+      <view class="work-item" wx:for="{{workExperience}}" wx:key="id">
+        <view class="work-header">
+          <text class="work-company">{{item.company}}</text>
+          <view class="work-actions">
+            <image class="action-icon" src="/images/icons/copy.png" mode="aspectFit" data-id="{{item.id}}" bindtap="showEditWorkModal"></image>
+            <image class="action-icon" src="/images/icons/close.png" mode="aspectFit" data-id="{{item.id}}" bindtap="deleteWork"></image>
+          </view>
+        </view>
+        <text class="work-position">{{item.position}}</text>
+        <text class="work-date">{{item.startDate}} - {{item.endDate}}</text>
+        <text class="work-description" wx:if="{{item.description}}">{{item.description}}</text>
+      </view>
+    </view>
+    <view class="empty-tip" wx:else>
+      <text>添加工作经历让家长更了解您</text>
+    </view>
+  </view>
+
+  <!-- 个人相册 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">个人相册</text>
+      <text class="photo-count">{{photos.length}}/6</text>
+    </view>
+    
+    <view class="photo-grid">
+      <view class="photo-item" wx:for="{{photos}}" wx:key="*this">
+        <image class="photo-image" src="{{item}}" mode="aspectFill" data-src="{{item}}" bindtap="previewPhoto"></image>
+        <image class="delete-icon" src="/images/icons/close.png" mode="aspectFit" data-index="{{index}}" catchtap="deletePhoto"></image>
+      </view>
+      <view class="photo-add" wx:if="{{photos.length < 6}}" bindtap="addPhoto">
+        <text class="add-icon">+</text>
+        <text class="add-text">添加照片</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部按钮 -->
+  <view class="bottom-bar">
+    <button class="save-btn" loading="{{saving}}" disabled="{{saving}}" bindtap="saveResume">
+      {{status === 'draft' || status === 'rejected' ? '提交审核' : '保存修改'}}
+    </button>
+  </view>
+
+  <!-- 工作经历弹窗 -->
+  <view class="modal-mask" wx:if="{{showWorkModal}}" bindtap="hideWorkModal"></view>
+  <view class="modal {{showWorkModal ? 'show' : ''}}">
+    <view class="modal-header">
+      <text class="modal-title">{{currentWork.id ? '编辑' : '添加'}}工作经历</text>
+      <image class="close-icon" src="/images/icons/close.png" mode="aspectFit" bindtap="hideWorkModal"></image>
+    </view>
+    
+    <view class="modal-content">
+      <view class="form-item">
+        <text class="form-label required">公司/机构</text>
+        <input class="form-input" type="text" placeholder="请输入公司或机构名称" value="{{currentWork.company}}" bindinput="onWorkCompanyInput" />
+      </view>
+      <view class="form-item">
+        <text class="form-label required">职位</text>
+        <input class="form-input" type="text" placeholder="请输入职位" value="{{currentWork.position}}" bindinput="onWorkPositionInput" />
+      </view>
+      <view class="form-item">
+        <text class="form-label">开始时间</text>
+        <picker mode="date" fields="month" value="{{currentWork.startDate}}" bindchange="onWorkStartDateChange">
+          <view class="picker-value">
+            <text>{{currentWork.startDate || '请选择'}}</text>
+          </view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <text class="form-label">结束时间</text>
+        <picker mode="date" fields="month" value="{{currentWork.endDate}}" bindchange="onWorkEndDateChange">
+          <view class="picker-value">
+            <text>{{currentWork.endDate || '请选择（至今可留空）'}}</text>
+          </view>
+        </picker>
+      </view>
+      <view class="form-item column">
+        <text class="form-label">工作描述</text>
+        <textarea class="form-textarea" placeholder="请描述主要工作内容" value="{{currentWork.description}}" bindinput="onWorkDescriptionInput" maxlength="200"></textarea>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="cancel-btn" bindtap="hideWorkModal">取消</button>
+      <button class="confirm-btn" bindtap="saveWork">保存</button>
+    </view>
+  </view>
+</view>

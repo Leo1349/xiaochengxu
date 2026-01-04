@@ -1,0 +1,76 @@
+<!--pages/feedback/index.wxml-->
+<view class="container">
+  <!-- 反馈类型 -->
+  <view class="section">
+    <view class="section-title">反馈类型</view>
+    <view class="type-list">
+      <view class="type-item {{selectedType === item.id ? 'active' : ''}}" 
+            wx:for="{{feedbackTypes}}" 
+            wx:key="id" 
+            data-type="{{item.id}}" 
+            bindtap="selectType">
+        {{item.name}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 反馈内容 -->
+  <view class="section">
+    <view class="section-title">
+      <text class="required">反馈内容</text>
+      <text class="char-count">{{content.length}}/500</text>
+    </view>
+    <view class="content-input">
+      <textarea class="textarea" 
+                placeholder="请详细描述您的问题或建议，以便我们更好地为您服务（至少10个字）" 
+                value="{{content}}" 
+                bindinput="onContentInput" 
+                maxlength="500"></textarea>
+    </view>
+  </view>
+
+  <!-- 图片上传 -->
+  <view class="section">
+    <view class="section-title">
+      <text>上传图片</text>
+      <text class="image-count">{{images.length}}/{{maxImages}}</text>
+    </view>
+    <view class="image-upload">
+      <view class="image-list">
+        <view class="image-item" wx:for="{{images}}" wx:key="*this">
+          <image class="uploaded-image" src="{{item}}" mode="aspectFill" data-src="{{item}}" bindtap="previewImage"></image>
+          <image class="delete-icon" src="/images/icons/delete-white.png" mode="aspectFit" data-index="{{index}}" catchtap="deleteImage"></image>
+        </view>
+        <view class="add-image" wx:if="{{images.length < maxImages}}" bindtap="chooseImage">
+          <text class="add-icon">+</text>
+          <text class="add-text">添加图片</text>
+        </view>
+      </view>
+      <text class="upload-tip">支持上传最多{{maxImages}}张图片，便于我们更好地了解问题</text>
+    </view>
+  </view>
+
+  <!-- 联系方式 -->
+  <view class="section">
+    <view class="section-title">联系方式（选填）</view>
+    <view class="contact-input">
+      <input class="input" type="text" placeholder="请留下您的手机号或微信号，方便我们联系您" value="{{contact}}" bindinput="onContactInput" maxlength="50" />
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-section">
+    <button class="submit-btn" loading="{{submitting}}" disabled="{{submitting}}" bindtap="submitFeedback">提交反馈</button>
+  </view>
+
+  <!-- 温馨提示 -->
+  <view class="tips-section">
+    <view class="tips-title">温馨提示</view>
+    <view class="tips-content">
+      <text class="tip-item">? 请详细描述您遇到的问题或建议</text>
+      <text class="tip-item">? 如有截图，请上传相关图片</text>
+      <text class="tip-item">? 留下联系方式方便我们及时与您沟通</text>
+      <text class="tip-item">? 我们会在1-3个工作日内处理您的反馈</text>
+    </view>
+  </view>
+</view>

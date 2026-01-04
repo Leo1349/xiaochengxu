@@ -1,0 +1,102 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 顶部搜索栏 -->
+  <view class="header">
+    <view class="search-bar" bindtap="goToSearch">
+      <image class="search-icon" src="/images/icons/service.png" mode="aspectFit"></image>
+      <text class="search-placeholder">搜索陪伴师</text>
+    </view>
+    <view class="role-switch" bindtap="switchRole">
+      <text>{{currentRole === 'parent' ? '家长模式' : '陪伴师模式'}}</text>
+      <image class="switch-icon" src="/images/icons/mine.png" mode="aspectFit"></image>
+    </view>
+  </view>
+
+  <!-- 公告栏 -->
+  <view class="notice-bar" wx:if="{{notice}}">
+    <image class="notice-icon" src="/images/icons/message.png" mode="aspectFit"></image>
+    <text class="notice-text">{{notice}}</text>
+  </view>
+
+  <!-- 轮播图 -->
+  <swiper class="banner" indicator-dots="{{true}}" autoplay="{{true}}" interval="{{3000}}" circular="{{true}}">
+    <swiper-item wx:for="{{bannerList}}" wx:key="id">
+      <image class="banner-image" src="{{item.image}}" mode="aspectFill" data-url="{{item.url}}" bindtap="onBannerTap"></image>
+    </swiper-item>
+  </swiper>
+
+  <!-- 功能入口 -->
+  <view class="menu-section">
+    <view class="menu-grid">
+      <block wx:if="{{currentRole === 'parent'}}">
+        <view class="menu-item" wx:for="{{menuList}}" wx:key="id" data-url="{{item.url}}" bindtap="goToMenu">
+          <image class="menu-icon" src="{{item.icon}}" mode="aspectFit"></image>
+          <text class="menu-name">{{item.name}}</text>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="menu-item" wx:for="{{teacherMenuList}}" wx:key="id" data-url="{{item.url}}" bindtap="goToMenu">
+          <image class="menu-icon" src="{{item.icon}}" mode="aspectFit"></image>
+          <text class="menu-name">{{item.name}}</text>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 服务类型（仅家长模式显示） -->
+  <view class="service-section" wx:if="{{currentRole === 'parent'}}">
+    <view class="section-header">
+      <text class="section-title">服务类型</text>
+    </view>
+    <view class="service-grid">
+      <view class="service-item" wx:for="{{serviceTypes}}" wx:key="id" data-id="{{item.id}}" bindtap="goToServiceType">
+        <image class="service-icon" src="{{item.icon}}" mode="aspectFit"></image>
+        <text class="service-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 推荐陪伴师（仅家长模式显示） -->
+  <view class="teacher-section" wx:if="{{currentRole === 'parent'}}">
+    <view class="section-header">
+      <text class="section-title">推荐陪伴师</text>
+      <text class="view-more" bindtap="viewMoreTeachers">查看更多 ></text>
+    </view>
+    
+    <view class="teacher-list" wx:if="{{!loading}}">
+      <view class="teacher-card" wx:for="{{teacherList}}" wx:key="id" data-id="{{item.id}}" bindtap="goToTeacherDetail">
+        <image class="teacher-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+        <view class="teacher-info">
+          <view class="teacher-name-row">
+            <text class="teacher-name">{{item.name}}</text>
+            <text class="teacher-title">{{item.title}}</text>
+          </view>
+          <view class="teacher-rating">
+            <text class="rating-score">{{item.rating}}分</text>
+            <text class="order-count">已服务{{item.orderCount}}次</text>
+          </view>
+          <view class="teacher-tags">
+            <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+          </view>
+          <text class="teacher-intro">{{item.introduction}}</text>
+        </view>
+        <view class="teacher-price">
+          <text class="price-value">¥{{item.price}}</text>
+          <text class="price-unit">/小时</text>
+        </view>
+      </view>
+    </view>
+    
+    <view class="loading" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </view>
+
+  <!-- 陪伴师模式欢迎信息 -->
+  <view class="teacher-welcome" wx:if="{{currentRole === 'teacher'}}">
+    <image class="welcome-image" src="/images/teacher-welcome.png" mode="aspectFit"></image>
+    <text class="welcome-title">欢迎加入智伴家</text>
+    <text class="welcome-desc">完善您的简历，开始接单赚取收入</text>
+    <button class="welcome-btn" bindtap="goToMenu" data-url="/pages/teacher-resume/index">完善简历</button>
+  </view>
+</view>

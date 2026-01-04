@@ -1,0 +1,152 @@
+<!--pages/child-info/index.wxml-->
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">孩子信息</text>
+    <text class="page-subtitle">管理您的孩子信息，方便陪伴师提供更好的服务</text>
+  </view>
+
+  <!-- 孩子列表 -->
+  <view class="child-list">
+    <view class="child-card" wx:for="{{childList}}" wx:key="id">
+      <view class="child-header">
+        <view class="child-avatar">
+          <text class="avatar-text">{{item.name[0]}}</text>
+        </view>
+        <view class="child-basic">
+          <view class="name-row">
+            <text class="child-name">{{item.name}}</text>
+            <text class="child-gender {{item.gender === '男' ? 'male' : 'female'}}">{{item.gender}}</text>
+          </view>
+          <text class="child-age">{{item.age}}岁 | {{item.grade}}</text>
+        </view>
+        <view class="child-actions">
+          <image class="action-icon" src="/images/icons/copy.png" mode="aspectFit" data-id="{{item.id}}" bindtap="showEditModal"></image>
+          <image class="action-icon delete" src="/images/icons/close.png" mode="aspectFit" data-id="{{item.id}}" bindtap="deleteChild"></image>
+        </view>
+      </view>
+      
+      <view class="child-info">
+        <view class="info-row" wx:if="{{item.school}}">
+          <text class="info-label">就读学校</text>
+          <text class="info-value">{{item.school}}</text>
+        </view>
+        <view class="info-row" wx:if="{{item.interests}}">
+          <text class="info-label">兴趣爱好</text>
+          <text class="info-value">{{item.interests}}</text>
+        </view>
+        <view class="info-row" wx:if="{{item.weakSubjects}}">
+          <text class="info-label">薄弱科目</text>
+          <text class="info-value">{{item.weakSubjects}}</text>
+        </view>
+        <view class="info-row" wx:if="{{item.personality}}">
+          <text class="info-label">性格特点</text>
+          <text class="info-value">{{item.personality}}</text>
+        </view>
+        <view class="info-row" wx:if="{{item.remark}}">
+          <text class="info-label">备注</text>
+          <text class="info-value">{{item.remark}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{childList.length === 0 && !loading}}">
+    <image class="empty-icon" src="/images/icons/usercenter.png" mode="aspectFit"></image>
+    <text class="empty-text">暂无孩子信息</text>
+    <text class="empty-desc">添加孩子信息，让陪伴师更了解您的孩子</text>
+  </view>
+
+  <!-- 添加按钮 -->
+  <view class="add-btn-container">
+    <button class="add-btn" bindtap="showAddModal">
+      <text class="add-icon">+</text>
+      <text>添加孩子</text>
+    </button>
+  </view>
+
+  <!-- 添加/编辑弹窗 -->
+  <view class="modal-mask" wx:if="{{showModal}}" bindtap="hideModal"></view>
+  <view class="modal {{showModal ? 'show' : ''}}">
+    <view class="modal-header">
+      <text class="modal-title">{{modalType === 'add' ? '添加孩子' : '编辑孩子信息'}}</text>
+      <image class="close-icon" src="/images/icons/close.png" mode="aspectFit" bindtap="hideModal"></image>
+    </view>
+    
+    <scroll-view class="modal-content" scroll-y="{{true}}">
+      <view class="form-section">
+        <view class="form-title">基本信息</view>
+        
+        <view class="form-item">
+          <text class="form-label required">孩子姓名</text>
+          <input class="form-input" type="text" placeholder="请输入孩子姓名" value="{{currentChild.name}}" bindinput="onNameInput" maxlength="20" />
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label required">性别</text>
+          <picker mode="selector" value="{{genderOptions.indexOf(currentChild.gender)}}" range="{{genderOptions}}" bindchange="onGenderChange">
+            <view class="picker-value">
+              <text>{{currentChild.gender || '请选择'}}</text>
+              <text class="arrow-icon">›</text>
+            </view>
+          </picker>
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label required">出生日期</text>
+          <picker mode="date" value="{{currentChild.birthDate}}" start="{{minDate}}" end="{{maxDate}}" bindchange="onBirthDateChange">
+            <view class="picker-value">
+              <text>{{currentChild.birthDate || '请选择'}}</text>
+              <text class="arrow-icon">›</text>
+            </view>
+          </picker>
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label required">年级</text>
+          <picker mode="selector" value="{{gradeOptions.indexOf(currentChild.grade)}}" range="{{gradeOptions}}" bindchange="onGradeChange">
+            <view class="picker-value">
+              <text>{{currentChild.grade || '请选择'}}</text>
+              <text class="arrow-icon">›</text>
+            </view>
+          </picker>
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label">就读学校</text>
+          <input class="form-input" type="text" placeholder="请输入就读学校" value="{{currentChild.school}}" bindinput="onSchoolInput" maxlength="50" />
+        </view>
+      </view>
+      
+      <view class="form-section">
+        <view class="form-title">更多信息</view>
+        
+        <view class="form-item">
+          <text class="form-label">兴趣爱好</text>
+          <input class="form-input" type="text" placeholder="如：阅读、绘画、运动等" value="{{currentChild.interests}}" bindinput="onInterestsInput" maxlength="100" />
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label">薄弱科目</text>
+          <input class="form-input" type="text" placeholder="如：数学、英语等" value="{{currentChild.weakSubjects}}" bindinput="onWeakSubjectsInput" maxlength="50" />
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label">性格特点</text>
+          <input class="form-input" type="text" placeholder="如：活泼开朗、内向文静等" value="{{currentChild.personality}}" bindinput="onPersonalityInput" maxlength="100" />
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label">备注</text>
+          <textarea class="form-textarea" placeholder="其他需要告知陪伴师的信息" value="{{currentChild.remark}}" bindinput="onRemarkInput" maxlength="200"></textarea>
+        </view>
+      </view>
+    </scroll-view>
+    
+    <view class="modal-footer">
+      <button class="cancel-btn" bindtap="hideModal">取消</button>
+      <button class="save-btn" bindtap="saveChild">保存</button>
+    </view>
+  </view>
+</view>

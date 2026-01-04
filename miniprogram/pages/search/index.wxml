@@ -1,0 +1,141 @@
+<!--pages/search/index.wxml-->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input-wrap">
+      <image class="search-icon" src="/images/icons/service.png" mode="aspectFit"></image>
+      <input class="search-input" 
+             type="text" 
+             placeholder="搜索陪伴师、服务类型" 
+             value="{{keyword}}" 
+             bindinput="onInput"
+             bindconfirm="onSearch"
+             confirm-type="search"
+             focus="{{true}}" />
+      <image class="clear-icon" 
+             wx:if="{{keyword}}" 
+             src="/images/icons/close.png" 
+             mode="aspectFit" 
+             bindtap="clearInput"></image>
+    </view>
+    <text class="search-btn" bindtap="onSearch">搜索</text>
+  </view>
+
+  <!-- 搜索首页 -->
+  <view class="search-home" wx:if="{{!showResult}}">
+    <!-- 搜索历史 -->
+    <view class="history-section" wx:if="{{searchHistory.length > 0}}">
+      <view class="section-header">
+        <text class="section-title">搜索历史</text>
+          <image class="delete-icon" src="/images/icons/close.png" mode="aspectFit" bindtap="clearHistory"></image>
+      </view>
+      <view class="tag-list">
+        <text class="tag" 
+              wx:for="{{searchHistory}}" 
+              wx:key="*this" 
+              data-keyword="{{item}}" 
+              bindtap="onTagTap">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 热门搜索 -->
+    <view class="hot-section">
+      <view class="section-header">
+        <text class="section-title">热门搜索</text>
+      </view>
+      <view class="tag-list">
+        <text class="tag hot" 
+              wx:for="{{hotSearchList}}" 
+              wx:key="*this" 
+              data-keyword="{{item}}" 
+              bindtap="onTagTap">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索结果 -->
+  <view class="search-result" wx:if="{{showResult}}">
+    <!-- 筛选栏 -->
+    <view class="filter-bar">
+      <view class="filter-item {{activeFilter === 'serviceType' ? 'active' : ''}}" data-type="serviceType" bindtap="showFilter">
+        <text>{{serviceTypeLabel}}</text>
+        <text class="arrow-icon">⌄</text>
+      </view>
+      <view class="filter-item {{activeFilter === 'sortBy' ? 'active' : ''}}" data-type="sortBy" bindtap="showFilter">
+        <text>{{sortByLabel}}</text>
+        <text class="arrow-icon">⌄</text>
+      </view>
+    </view>
+
+    <!-- 结果列表 -->
+    <scroll-view class="result-list" scroll-y="true" bindscrolltolower="loadMore">
+      <view class="teacher-card" 
+            wx:for="{{resultList}}" 
+            wx:key="id" 
+            data-id="{{item.id}}" 
+            bindtap="viewTeacher">
+        <image class="teacher-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+        <view class="teacher-info">
+          <view class="teacher-name">{{item.name}}</view>
+          <view class="teacher-title">{{item.title}}</view>
+          <view class="teacher-tags">
+            <text class="tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+          </view>
+          <view class="teacher-meta">
+            <view class="rating">
+              <image class="star-icon" src="/images/icons/star-fill.png" mode="aspectFit"></image>
+              <text>{{item.rating}}</text>
+            </view>
+            <text class="orders">{{item.orders}}单</text>
+            <text class="distance">{{item.distance}}</text>
+          </view>
+        </view>
+        <view class="teacher-price">
+          <text class="price-value">¥{{item.price}}</text>
+          <text class="price-unit">/{{item.priceUnit}}</text>
+        </view>
+      </view>
+
+      <!-- 加载状态 -->
+      <view class="loading-tip" wx:if="{{loading}}">
+        <text>加载中...</text>
+      </view>
+      <view class="no-more" wx:if="{{!hasMore && resultList.length > 0}}">
+        <text>没有更多了</text>
+      </view>
+
+      <!-- 空结果 -->
+      <view class="empty-result" wx:if="{{!loading && resultList.length === 0}}">
+        <image class="empty-icon" src="/images/icons/empty-search.png" mode="aspectFit"></image>
+        <text class="empty-text">未找到相关结果</text>
+        <text class="empty-tip">换个关键词试试吧</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 筛选面板 -->
+  <view class="filter-mask" wx:if="{{showFilterPanel}}" bindtap="hideFilter"></view>
+  <view class="filter-panel {{showFilterPanel ? 'show' : ''}}">
+    <!-- 服务类型 -->
+    <view class="filter-options" wx:if="{{activeFilter === 'serviceType'}}">
+      <view class="option-item {{filters.serviceType === item.id ? 'active' : ''}}" 
+            wx:for="{{serviceTypes}}" 
+            wx:key="id" 
+            data-value="{{item.id}}" 
+            bindtap="selectFilterOption">
+        {{item.name}}
+      </view>
+    </view>
+    
+    <!-- 排序方式 -->
+    <view class="filter-options" wx:if="{{activeFilter === 'sortBy'}}">
+      <view class="option-item {{filters.sortBy === item.id ? 'active' : ''}}" 
+            wx:for="{{sortOptions}}" 
+            wx:key="id" 
+            data-value="{{item.id}}" 
+            bindtap="selectFilterOption">
+        {{item.name}}
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,69 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/service/index",
+    "pages/message/index",
+    "pages/mine/index",
+    "pages/login/index",
+    "pages/register/index",
+    "pages/teacher-detail/index",
+    "pages/order-confirm/index",
+    "pages/order-list/index",
+    "pages/order-detail/index",
+    "pages/child-info/index",
+    "pages/teacher-resume/index",
+    "pages/case-list/index",
+    "pages/case-detail/index",
+    "pages/customer-service/index",
+    "pages/feedback/index",
+    "pages/settings/index",
+    "pages/chat/index",
+    "pages/search/index",
+    "pages/rebate/index"
+  ],
+  "usingComponents": {
+    "rate": "/components/rate/index"
+  },
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#4A90D9",
+    "navigationBarTitleText": "智伴家",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#4A90D9",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/icons/home.png",
+        "selectedIconPath": "images/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/service/index",
+        "text": "服务",
+        "iconPath": "images/icons/service.png",
+        "selectedIconPath": "images/icons/service-active.png"
+      },
+      {
+        "pagePath": "pages/message/index",
+        "text": "消息",
+        "iconPath": "images/icons/message.png",
+        "selectedIconPath": "images/icons/message-active.png"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "text": "我的",
+        "iconPath": "images/icons/mine.png",
+        "selectedIconPath": "images/icons/mine-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

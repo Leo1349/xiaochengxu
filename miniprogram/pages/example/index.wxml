@@ -1,0 +1,189 @@
+<!--pages/exampleDetail/index.wxml-->
+<block wx:if="{{ type === 'getOpenId' }}">
+  <view class="page-container">
+    <view class="title">鍔熻兘浠嬬粛</view>
+    <view class="info">浜戝嚱鏁版棤闇€缁存姢閴存潈鏈哄埗鍙婄櫥褰曠エ鎹紝浠呬竴琛屼唬鐮佸嵆鍙幏寰椼€?/view>
+    <view class="title">浜戝嚱鏁拌幏鍙朞penId绀轰緥</view>
+    <!-- <view class="info">浜戝嚱鏁版棤闇€缁存姢閴存潈鏈哄埗鍙婄櫥褰曠エ鎹紝浠呬竴琛屼唬鐮佸嵆鍙幏寰椼€?/view> -->
+    <view class="block">
+      <view class="step-title"><text class="step-left">step</text> <text class="step-right">1 </text>quickStartFunctions 浜戝嚱鏁颁唬鐮?/view>
+      <view class="code_zone">
+        <rich-text nodes="<pre style='overflow: scroll;'>{{callOpenIdCode}}</pre>" />
+      </view>
+      <view class="step-title"><text class="step-left">step</text> <text class="step-right">2 </text>灏忕▼搴忎唬鐮佹</view>
+      <view class="code_zone">
+        <rich-text nodes="<pre style='overflow: scroll;'>{{callFunctionCode}}</pre>" />
+      </view>
+    </view>
+    <view class="block">
+      <view class="btn-full" bind:tap="getOpenId" wx:if="{{!haveGetOpenId}}">杩愯绀轰緥</view>
+    <view class="box_text">{{ openId ? openId : 'OpenID灏嗗睍绀哄湪杩欓噷' }}</view>
+    <cloud-tip-modal showTipProps="{{showTip}}" title="{{title}}" content="{{content}}"></cloud-tip-modal>
+    <view class="button_clear" bindtap="clearOpenId" wx:if="{{haveGetOpenId}}">娓呯┖</view>
+    </view>
+  </view>
+</block>
+<block wx:if="{{ type === 'getMiniProgramCode' }}">
+  <view class="page-container">
+    <view class="title">鍔熻兘浠嬬粛</view>
+    <view class="info">鍙€氳繃浜戝嚱鏁板厤鎺ュ彛璋冪敤鍑瘉锛岀洿鎺ョ敓鎴愬皬绋嬪簭鐮併€?/view>
+    <view class="title">浜戝嚱鏁拌幏鍙栧皬绋嬪簭鐮佺ず渚?/view>
+    <view class="block">
+      <view class="step-title"><text class="step-left">step</text> <text class="step-right">1 </text>quickStartFunctions 浜戝嚱鏁颁唬鐮?/view>
+      <view class="code_zone">
+        <rich-text nodes="<pre style='overflow: scroll;'>{{callMiniProgramCode}}</pre>" />
+      </view>
+      <view class="step-title"><text class="step-left">step</text> <text class="step-right">2 </text>灏忕▼搴忎唬鐮佹</view>
+      <view class="code_zone">
+        <rich-text nodes="<pre style='overflow: scroll;'>{{callFunctionCode}}</pre>" />
+      </view>
+    </view>
+    <view class="block">
+      <view class="btn-full" bind:tap="getCodeSrc" wx:if="{{!haveGetCodeSrc}}">杩愯绀轰緥</view>
+      <view class="box_text" wx:if="{{!codeSrc}}">灏忕▼搴忕爜灏嗗睍绀哄湪杩欓噷</view>
+      <view wx:if="{{codeSrc}}" class="code_box">
+        <image class="code_img" src="{{codeSrc}}"></image>
+      </view>
+      <view class="button_clear" bindtap="clearCodeSrc" wx:if="{{haveGetCodeSrc}}">娓呯┖</view>
+      <cloud-tip-modal showTipProps="{{showTip}}" title="{{title}}" content="{{content}}"></cloud-tip-modal>
+    </view>
+  </view>
+</block>
+
+<block wx:if="{{ type === 'createCollection' }}">
+  <view class="page-container">
+    <view class="title">鍔熻兘浠嬬粛</view>
+    <view class="info">闆嗗悎涓哄父鐢ㄦ暟鎹簱涓〃鐨勬蹇点€備簯寮€鍙戞暟鎹簱鏀寔鑷姩澶囦唤銆佹棤鎹熷洖妗ｏ紝骞朵笖QPS楂樿揪3鍗?銆?/view>
+    <view class="title">濡備綍浣撻獙</view>
+    <view class="info">宸茶嚜鍔ㄥ垱寤哄悕涓衡€渟ales鈥濈殑浣撻獙鍚堥泦锛屽彲鎵撳紑鈥滀簯寮€鍙戞帶鍒跺彴>鏁版嵁搴?璁板綍鍒楄〃鈥濅腑鎵惧埌璇ラ泦鍚堛€?/view>
+    <image class="img" src="../../images/database.png"></image>
+    <view class="title">浜戝嚱鏁颁唬鐮佺ず渚?/view>
+    <view class="code_zone">
+      <rich-text nodes="<pre style='overflow: scroll;'>{{callCreateCollectionCode}}</pre>" />
+    </view>
+  </view>
+</block>
+
+<block wx:if="{{ type === 'selectRecord' }}">
+  <view class="page-container">
+    <view class="title">鍔熻兘浠嬬粛</view>
+    <view class="top_tip">浣撻獙鏌ヨ璁板綍鑳藉姏锛屾煡璇㈡暟鎹〃涓殑閿€閲忔暟鎹€?/view>
+    <view class="box_text" wx:if="{{!record}}">閿€閲忔暟鎹皢灞曠ず鍦ㄨ繖閲?/view>
+    <view class="title">鏁版嵁搴撴搷浣滅ず渚?/view>
+    <view class="top_tip">鍙傝€冧簯鍑芥暟 quickstartFunctions 绀轰緥浠ｇ爜</view>
+    <view wx:if="{{record}}" class="code_box">
+      <view class="code_box_title">鍦板尯閿€閲忕粺璁?/view>
+      <view class="code_box_record">
+        <view class="code_box_record_title">鍦板煙</view>
+        <view class="code_box_record_title">鍩庡競</view>
+        <view class="code_box_record_title">閿€閲?/view>
+        <view class="code_box_record_title">鎿嶄綔</view>
+      </view>
+      <view class="line"></view>
+      <view class="code_box_record" wx:for="{{record}}" wx:key="_id">
+        <view class="code_box_record_detail">{{item.region}}</view>
+        <view class="code_box_record_detail">{{item.city}}</view>
+        <!-- <view class="code_box_record_detail">{{item.sales}}</view> -->
+        <input style="background-color: rgba(0, 0, 0, 0.03)" class="code_box_record_detail" bindinput="bindInput" data-index="{{index}}" value="{{item.sales}}" type="number"></input>
+        <view class="code_box_record_detail">
+          <button style="font-size: 12px" bind:tap="deleteRecord" data-id="{{item._id}}">鍒犻櫎</button>
+        </view>
+      </view>
+    </view>
+    <view class="btn-full" bind:tap="getRecord" >鏌ヨ璁板綍</view>
+    <view class="btn-full" bind:tap="updateRecord" >鏇存柊璁板綍</view>
+    <view class="btn-full" bind:tap="insertRecord" >鏂板璁板綍</view>
+    <!-- <view class="button_clear" bindtap="clearRecord" wx:if="{{haveGetRecord}}">娓呯┖</view> -->
+    <cloud-tip-modal showTipProps="{{showTip}}"></cloud-tip-modal>
+  </view>
+  <view wx:if="{{showInsertModal}}" class="modal-mask">
+  <view class="modal-content">
+    <view class="modal-title">鏂板閿€閲忚褰?/view>
+    <input class="modal-input" placeholder="鍦板煙" value="{{insertRegion}}" bindinput="onInsertRegionInput"/>
+    <input class="modal-input" placeholder="鍩庡競" value="{{insertCity}}" bindinput="onInsertCityInput"/>
+    <input class="modal-input" placeholder="閿€閲? value="{{insertSales}}" bindinput="onInsertSalesInput" type="number"/>
+    <view class="modal-actions">
+      <button bindtap="onInsertCancel">鍙栨秷</button>
+      <button bindtap="onInsertConfirm" type="primary">纭</button>
+    </view>
+  </view>
+</view>
+</block>
+
+<block wx:if="{{ type === 'uploadFile' }}">
+  <view class="page-container">
+    <view class="title">鍔熻兘浠嬬粛</view>
+    <view class="top_tip">澶氬瓨鍌ㄧ被鍨嬶紝浠呴渶涓€涓簯鍑芥暟鍗冲彲瀹屾垚涓婁紶銆?/view>
+    <view class="title">鏂囦欢涓婁紶绀轰緥</view>
+    <view class="block">
+      <view class="step-title">灏忕▼搴忎唬鐮佹</view>
+      <view class="code_zone">
+        <rich-text nodes="<pre style='overflow: scroll;'>{{callUploadFileCode}}</pre>" />
+      </view>
+    </view>
+    <view class="btn-full" bind:tap="uploadImg" wx:if="{{!haveGetImgSrc}}">杩愯绀轰緥</view>
+    <view class="box_text" wx:if="{{!imgSrc}}">涓婁紶鐨勫浘鐗囧皢灞曠ず鍦ㄨ繖閲?/view>
+    <view wx:if="{{imgSrc}}" class="code_box">
+      <image class="code_img" src="{{imgSrc}}"></image>
+      <!-- <view class="img_info">
+        <view class="img_info_title">鏂囦欢璺緞</view>
+        <view class="img_info_detail">{{imgSrc}}</view>
+      </view> -->
+    </view>
+    <view class="button_clear" bindtap="clearImgSrc" wx:if="{{haveGetImgSrc}}">娓呯┖</view>
+    <cloud-tip-modal showTipProps="{{showTip}}"></cloud-tip-modal>
+  </view>
+</block>
+
+<block wx:if="{{ type === 'model-guide'}}">
+  <view class="page-container">
+    <view class="title">鍔熻兘浠嬬粛</view>
+    <view class="top_tip">鑵捐浜戝紑鍙戞彁渚?AI 瀵硅瘽鑳藉姏锛屾敮鎸?Agent锛屽ぇ妯″瀷娴佸紡瀵硅瘽锛屽彲閫氳繃 Agent-UI 缁勪欢蹇€熼泦鎴?AI 鑳藉姏</view>
+    <view class="title">闆嗘垚 Agent-UI 缁勪欢鎸囧紩</view>
+    <view class="block">
+      <view class="step-title"><text class="step-left">step</text> <text class="step-right">1 </text>鎷疯礉缁勪欢婧愮爜鍖?/view>
+      <view style="display: flex;align-items: center;">鐐瑰嚮澶嶅埗鏌ョ湅缁勪欢浠撳簱鍦板潃 <image mode="widthFix" style="width: 20px;height: 20px" bind:tap="copyUrl" src='../../images/copy.svg'/></view>
+      <view class="step-title"><text class="step-left">step</text> <text class="step-right">2 </text>灏嗙粍浠舵嫹璐濊嚦灏忕▼搴忕洰褰曚腑</view>
+      <image class="img" mode="widthFix" src="../../images/ai_example2.png"></image>
+      <view class="step-title"><text class="step-left">step</text> <text class="step-right">3 </text>鍦ㄩ〉闈?.json 閰嶇疆鏂囦欢涓敞鍐岀粍浠?/view>
+      <view class="code_zone">
+        <rich-text nodes="<pre style='overflow: scroll;'>{{ai_page_config}}</pre>" />
+      </view>      
+      <view class="step-title"><text class="step-left">step</text> <text class="step-right">4 </text>鍦ㄩ〉闈?.wxml 鏂囦欢涓紩鐢ㄧ粍浠?/view>
+      <view class="code_zone">
+        <rich-text nodes="<pre style='overflow: scroll;'>{{ai_wxml_config}}</pre>" />
+      </view>  
+      <view class="step-title"><text class="step-left">step</text> <text class="step-right">4 </text>鍦ㄩ〉闈?.js 鏂囦欢涓紪鍐欓厤缃?/view>
+      <view class="code_zone">
+        <rich-text nodes="<pre style='overflow: scroll;'>{{ai_data_config}}</pre>" />
+      </view>  
+    </view>
+  </view>
+</block>
+
+<block wx:if="{{ type === 'cloudbaserun' }}">
+  <view class="page-container">
+    <view class="title">鍔熻兘浠嬬粛</view>
+    <view class="info">浜戞墭绠?鏀寔鎵樼鐢ㄤ换鎰忚瑷€鍜屾鏋剁紪鍐欑殑瀹瑰櫒鍖栧簲鐢紝涓哄紑鍙戣€呮彁渚涢珮鍙敤銆佽嚜鍔ㄥ脊鎬ф墿缂╃殑浜戞湇鍔°€?/view>
+    <view class="title">灏忕▼搴忚皟鐢ㄤ簯鎵樼绀轰緥</view>
+    <view class="block">
+      <view class="step-title"><text class="step-left">step</text> <text class="step-right">1 </text>鍓嶅線浜戝紑鍙戝钩鍙板紑閫氫簯鎵樼</view>
+      <view class="step-title"><text class="step-left">step</text> <text class="step-right">2 </text>鏂板缓瀹瑰櫒鍨嬫墭绠℃湇鍔★紝绛夊緟閮ㄧ讲瀹屾垚</view>
+      <view class="step-text">
+        姝ゅ鍙娇鐢?Express 绀轰緥妯℃澘杩涜瀹夎锛屾澶勭ず渚嬪懡鍚嶄负 express-test
+      </view>
+      <view>
+        <image class="img" src="../../images/create_cbr.png" mode="aspectFill"></image>
+      </view>
+      <view class="step-title"><text class="step-left">step</text> <text class="step-right">3</text>灏忕▼搴忕璋冪敤</view>
+      <view class="code_zone">
+        <rich-text nodes="<pre style='overflow: scroll;'>{{callcbrCode}}</pre>" />
+      </view>
+      <view class="btn-full" bind:tap="runCallContainer" wx:if="{{!haveGetCallContainerRes}}">杩愯绀轰緥</view>
+      <view class="box_text">{{ callContainerResStr ? callContainerResStr : '浜戞墭绠¤皟鐢ㄧ粨鏋滃皢灞曠ず鍦ㄨ繖閲? }}</view>
+      <view class="button_clear" bindtap="clearCallContainerRes" wx:if="{{haveGetCallContainerRes}}">娓呯┖</view>
+    </view>
+  </view>
+</block>
+
+

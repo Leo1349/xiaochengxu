@@ -1,0 +1,154 @@
+<!--pages/teacher-detail/index.wxml-->
+<view class="container" wx:if="{{!loading && teacher}}">
+  <!-- 陪伴师基本信息 -->
+  <view class="teacher-header">
+    <image class="teacher-avatar" src="{{teacher.avatar}}" mode="aspectFill"></image>
+    <view class="teacher-info">
+      <view class="name-row">
+        <text class="teacher-name">{{teacher.name}}</text>
+        <text class="teacher-title">{{teacher.title}}</text>
+      </view>
+      <view class="rating-row">
+        <text class="rating">{{teacher.rating}}分</text>
+        <text class="order-count">已服务{{teacher.orderCount}}次</text>
+      </view>
+      <view class="tags">
+        <text class="tag" wx:for="{{teacher.tags}}" wx:key="*this">{{item}}</text>
+      </view>
+    </view>
+    <view class="favorite-btn" bindtap="toggleFavorite">
+      <image class="favorite-icon" src="{{isFavorite ? '/images/icons/favorited.png' : '/images/icons/favorite.png'}}" mode="aspectFit"></image>
+    </view>
+  </view>
+
+  <!-- Tab切换 -->
+  <view class="tabs">
+    <view class="tab-item {{currentTab === 'info' ? 'active' : ''}}" data-tab="info" bindtap="switchTab">简介</view>
+    <view class="tab-item {{currentTab === 'service' ? 'active' : ''}}" data-tab="service" bindtap="switchTab">服务</view>
+    <view class="tab-item {{currentTab === 'review' ? 'active' : ''}}" data-tab="review" bindtap="switchTab">评价</view>
+    <view class="tab-item {{currentTab === 'case' ? 'active' : ''}}" data-tab="case" bindtap="switchTab">案例</view>
+  </view>
+
+  <!-- Tab内容 -->
+  <view class="tab-content">
+    <!-- 简介 -->
+    <view class="info-section" wx:if="{{currentTab === 'info'}}">
+      <view class="info-block">
+        <text class="block-title">个人介绍</text>
+        <text class="block-content">{{teacher.introduction}}</text>
+      </view>
+      
+      <view class="info-block">
+        <text class="block-title">教育背景</text>
+        <text class="block-content">{{teacher.education}}</text>
+      </view>
+      
+      <view class="info-block">
+        <text class="block-title">从业经验</text>
+        <text class="block-content">{{teacher.experience}}</text>
+      </view>
+      
+      <view class="info-block">
+        <text class="block-title">资质证书</text>
+        <view class="certificates">
+          <text class="certificate" wx:for="{{teacher.certificates}}" wx:key="*this">{{item}}</text>
+        </view>
+      </view>
+      
+      <view class="info-block">
+        <text class="block-title">服务时间</text>
+        <text class="block-content">{{teacher.serviceTime}}</text>
+      </view>
+      
+      <view class="info-block">
+        <text class="block-title">服务区域</text>
+        <text class="block-content">{{teacher.serviceArea}}</text>
+      </view>
+      
+      <view class="info-block" wx:if="{{teacher.photos.length > 0}}">
+        <text class="block-title">相册</text>
+        <view class="photo-list">
+          <image class="photo-item" wx:for="{{teacher.photos}}" wx:key="*this" src="{{item}}" mode="aspectFill" data-src="{{item}}" bindtap="previewImage"></image>
+        </view>
+      </view>
+    </view>
+
+    <!-- 服务 -->
+    <view class="service-section" wx:if="{{currentTab === 'service'}}">
+      <view class="service-card" wx:for="{{services}}" wx:key="id">
+        <view class="service-info">
+          <text class="service-name">{{item.name}}</text>
+          <text class="service-desc">{{item.description}}</text>
+        </view>
+        <view class="service-price">
+          <text class="price-value">¥{{item.price}}</text>
+          <text class="price-unit">/{{item.unit}}</text>
+        </view>
+        <button class="book-btn" data-serviceid="{{item.id}}" bindtap="bookNow">预约</button>
+      </view>
+    </view>
+
+    <!-- 评价 -->
+    <view class="review-section" wx:if="{{currentTab === 'review'}}">
+      <view class="review-summary">
+        <text class="summary-rating">{{teacher.rating}}</text>
+        <text class="summary-text">综合评分</text>
+        <text class="summary-count">共{{reviews.length}}条评价</text>
+      </view>
+      
+      <view class="review-list">
+        <view class="review-item" wx:for="{{reviews}}" wx:key="id">
+          <view class="review-header">
+            <image class="reviewer-avatar" src="{{item.userAvatar}}" mode="aspectFill"></image>
+            <view class="reviewer-info">
+              <text class="reviewer-name">{{item.userName}}</text>
+              <view class="review-meta">
+                <text class="review-service">{{item.serviceName}}</text>
+                <text class="review-time">{{item.time}}</text>
+              </view>
+            </view>
+            <view class="review-rating">
+              <text class="star" wx:for="{{item.rating}}" wx:for-item="star" wx:key="*this">★</text>
+            </view>
+          </view>
+          <text class="review-content">{{item.content}}</text>
+        </view>
+      </view>
+      
+      <view class="empty-review" wx:if="{{reviews.length === 0}}">
+        <text>暂无评价</text>
+      </view>
+    </view>
+
+    <!-- 案例 -->
+    <view class="case-section" wx:if="{{currentTab === 'case'}}">
+      <view class="case-list">
+        <view class="case-card" wx:for="{{cases}}" wx:key="id" data-id="{{item.id}}" bindtap="viewCaseDetail">
+          <image class="case-cover" src="{{item.cover}}" mode="aspectFill"></image>
+          <view class="case-info">
+            <text class="case-title">{{item.title}}</text>
+            <text class="case-desc">{{item.description}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="empty-case" wx:if="{{cases.length === 0}}">
+        <text>暂无案例</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="contact-btn" bindtap="contactTeacher">
+      <image class="contact-icon" src="/images/icons/chat.png" mode="aspectFit"></image>
+      <text>联系TA</text>
+    </view>
+    <button class="book-now-btn" bindtap="bookNow">立即预约</button>
+  </view>
+</view>
+
+<!-- 加载中 -->
+<view class="loading-container" wx:if="{{loading}}">
+  <text>加载中...</text>
+</view>

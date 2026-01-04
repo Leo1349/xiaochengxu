@@ -1,0 +1,170 @@
+<!--pages/order-confirm/index.wxml-->
+<view class="container">
+  <!-- 陪伴师信息 -->
+  <view class="teacher-card" wx:if="{{teacher}}">
+    <image class="teacher-avatar" src="{{teacher.avatar}}" mode="aspectFill"></image>
+    <view class="teacher-info">
+      <text class="teacher-name">{{teacher.name}}</text>
+      <text class="teacher-title">{{teacher.title}}</text>
+    </view>
+    <view class="teacher-rating">
+      <text>{{teacher.rating}}分</text>
+    </view>
+  </view>
+
+  <!-- 选择服务 -->
+  <view class="section">
+    <view class="section-title">选择服务</view>
+    <view class="service-list">
+      <view class="service-item {{selectedService.id === item.id ? 'active' : ''}}" 
+            wx:for="{{services}}" 
+            wx:key="id" 
+            data-id="{{item.id}}" 
+            bindtap="selectService">
+        <text class="service-name">{{item.name}}</text>
+        <text class="service-price">¥{{item.price}}/{{item.unit}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 选择孩子 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">选择孩子</text>
+      <text class="add-btn" bindtap="addChild">+ 添加孩子</text>
+    </view>
+    <view class="child-list" wx:if="{{childList.length > 0}}">
+      <view class="child-item {{selectedChild.id === item.id ? 'active' : ''}}" 
+            wx:for="{{childList}}" 
+            wx:key="id" 
+            data-id="{{item.id}}" 
+            bindtap="selectChild">
+        <view class="child-info">
+          <text class="child-name">{{item.name}}</text>
+          <text class="child-detail">{{item.age}}岁 | {{item.grade}}</text>
+        </view>
+        <text class="check-icon" wx:if="{{selectedChild.id === item.id}}">✓</text>
+      </view>
+    </view>
+    <view class="empty-child" wx:else>
+      <text>暂无孩子信息，请先添加</text>
+    </view>
+  </view>
+
+  <!-- 服务时间 -->
+  <view class="section">
+    <view class="section-title">服务时间</view>
+    <view class="form-list">
+      <view class="form-item">
+        <text class="form-label">服务日期</text>
+        <picker mode="date" value="{{serviceDate}}" start="{{minDate}}" end="{{maxDate}}" bindchange="onDateChange">
+          <view class="picker-value">
+            <text>{{serviceDate || '请选择日期'}}</text>
+            <text class="arrow-icon">›</text>
+          </view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <text class="form-label">开始时间</text>
+        <picker mode="selector" value="{{timeOptions.indexOf(serviceTime)}}" range="{{timeOptions}}" bindchange="onTimeChange">
+          <view class="picker-value">
+            <text>{{serviceTime || '请选择时间'}}</text>
+            <text class="arrow-icon">›</text>
+          </view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <text class="form-label">服务时长</text>
+        <picker mode="selector" value="{{durationOptions.indexOf(serviceDuration)}}" range="{{durationOptions}}" bindchange="onDurationChange">
+          <view class="picker-value">
+            <text>{{serviceDuration}}小时</text>
+            <text class="arrow-icon">›</text>
+          </view>
+        </picker>
+      </view>
+    </view>
+  </view>
+
+  <!-- 服务地址 -->
+  <view class="section">
+    <view class="section-title">服务地址</view>
+    <view class="address-input">
+      <textarea class="textarea" placeholder="请输入详细服务地址" value="{{address}}" bindinput="onAddressInput" maxlength="200"></textarea>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class="section">
+    <view class="section-title">备注信息</view>
+    <view class="remark-input">
+      <textarea class="textarea" placeholder="请输入备注信息（选填）" value="{{remark}}" bindinput="onRemarkInput" maxlength="500"></textarea>
+    </view>
+  </view>
+
+  <!-- 优惠券 -->
+  <view class="section">
+    <view class="coupon-row" bindtap="showCouponPicker">
+      <text class="coupon-label">优惠券</text>
+      <view class="coupon-value">
+        <text wx:if="{{coupon}}">-¥{{coupon.amount}}</text>
+        <text wx:elif="{{couponList.length > 0}}">{{couponList.length}}张可用</text>
+        <text wx:else class="no-coupon">暂无可用</text>
+        <text class="arrow-icon">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 价格明细 -->
+  <view class="price-section">
+    <view class="price-row">
+      <text class="price-label">服务费用</text>
+      <text class="price-value">¥{{totalPrice}}</text>
+    </view>
+    <view class="price-row" wx:if="{{discountPrice > 0}}">
+      <text class="price-label">优惠金额</text>
+      <text class="price-value discount">-¥{{discountPrice}}</text>
+    </view>
+    <view class="price-row total">
+      <text class="price-label">实付金额</text>
+      <text class="price-value final">¥{{finalPrice}}</text>
+    </view>
+  </view>
+
+  <!-- 底部提交栏 -->
+  <view class="bottom-bar">
+    <view class="total-price">
+      <text class="label">合计：</text>
+      <text class="value">¥{{finalPrice}}</text>
+    </view>
+    <button class="submit-btn" loading="{{submitting}}" disabled="{{submitting}}" bindtap="submitOrder">提交订单</button>
+  </view>
+
+  <!-- 优惠券选择弹窗 -->
+  <view class="coupon-picker-mask" wx:if="{{showCouponPicker}}" bindtap="hideCouponPicker"></view>
+  <view class="coupon-picker {{showCouponPicker ? 'show' : ''}}">
+    <view class="picker-header">
+      <text class="picker-title">选择优惠券</text>
+      <image class="close-icon" src="/images/icons/close.png" mode="aspectFit" bindtap="hideCouponPicker"></image>
+    </view>
+    <view class="coupon-list">
+      <view class="coupon-item" data-id="0" bindtap="selectCoupon">
+        <text class="coupon-name">不使用优惠券</text>
+      </view>
+      <view class="coupon-item {{totalPrice < item.minAmount ? 'disabled' : ''}}" 
+            wx:for="{{couponList}}" 
+            wx:key="id" 
+            data-id="{{item.id}}" 
+            bindtap="{{totalPrice >= item.minAmount ? 'selectCoupon' : ''}}">
+        <view class="coupon-amount">
+          <text class="amount-value">¥{{item.amount}}</text>
+        </view>
+        <view class="coupon-info">
+          <text class="coupon-name">{{item.name}}</text>
+          <text class="coupon-condition">满{{item.minAmount}}元可用</text>
+          <text class="coupon-expire">有效期至{{item.expireDate}}</text>
+        </view>
+        <text class="check-icon" wx:if="{{coupon.id === item.id}}">✓</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,119 @@
+<!--pages/mine/index.wxml-->
+<view class="container">
+  <!-- 用户信息区域 -->
+  <view class="user-section">
+    <view class="user-bg"></view>
+    <view class="user-info" wx:if="{{isLoggedIn}}">
+      <image class="user-avatar" src="{{userInfo.avatarUrl || '/images/avatar.png'}}" mode="aspectFill" bindtap="editProfile"></image>
+      <view class="user-detail">
+        <text class="user-name">{{userInfo.nickName || '用户'}}</text>
+        <text class="user-phone">{{userInfo.phone || '未绑定手机号'}}</text>
+        <view class="user-role">
+          <text class="role-text">{{currentRole === 'parent' ? '家长' : '陪伴师'}}</text>
+        </view>
+      </view>
+      <view class="switch-role-btn" bindtap="switchRole">
+        <text>切换身份</text>
+        <image class="switch-icon" src="/images/icons/business.png" mode="aspectFit"></image>
+      </view>
+    </view>
+    
+    <view class="user-info not-login" wx:else bindtap="goToLogin">
+      <image class="user-avatar" src="/images/avatar.png" mode="aspectFill"></image>
+      <view class="user-detail">
+        <text class="login-text">点击登录</text>
+        <text class="login-desc">登录后享受更多服务</text>
+      </view>
+      <text class="arrow-icon">›</text>
+    </view>
+  </view>
+
+  <!-- 统计数据（家长模式） -->
+  <view class="statistics-section" wx:if="{{isLoggedIn && currentRole === 'parent'}}">
+    <view class="stat-item" bindtap="viewAllOrders">
+      <text class="stat-value">{{statistics.orderCount}}</text>
+      <text class="stat-label">订单数</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item" data-url="/pages/child-info/index" bindtap="goToPage">
+      <text class="stat-value">{{statistics.childCount}}</text>
+      <text class="stat-label">孩子数</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item" data-url="/pages/case-list/index" bindtap="goToPage">
+      <text class="stat-value">{{statistics.favoriteCount}}</text>
+      <text class="stat-label">案例</text>
+    </view>
+  </view>
+
+  <!-- 统计数据（陪伴师模式） -->
+  <view class="statistics-section teacher" wx:if="{{isLoggedIn && currentRole === 'teacher'}}">
+    <view class="stat-item" bindtap="viewAllOrders">
+      <text class="stat-value">{{teacherStatistics.orderCount}}</text>
+      <text class="stat-label">接单数</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item" data-url="/pages/rebate/index" bindtap="goToPage">
+      <text class="stat-value">¥{{teacherStatistics.income}}</text>
+      <text class="stat-label">收入</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-value">{{teacherStatistics.rating}}</text>
+      <text class="stat-label">评分</text>
+    </view>
+  </view>
+
+  <!-- 快捷入口 -->
+  <view class="quick-entry" wx:if="{{isLoggedIn}}">
+    <view class="quick-item" data-url="/pages/order-list/index?status=pending" bindtap="goToPage">
+      <image class="quick-icon" src="/images/icons/goods.png" mode="aspectFit"></image>
+      <text class="quick-text">待服务</text>
+    </view>
+    <view class="quick-item" data-url="/pages/order-list/index?status=ongoing" bindtap="goToPage">
+      <image class="quick-icon" src="/images/icons/service.png" mode="aspectFit"></image>
+      <text class="quick-text">进行中</text>
+    </view>
+    <view class="quick-item" data-url="/pages/order-list/index?status=completed" bindtap="goToPage">
+      <image class="quick-icon" src="/images/icons/examples.png" mode="aspectFit"></image>
+      <text class="quick-text">已完成</text>
+    </view>
+    <view class="quick-item" data-url="/pages/order-list/index?status=all" bindtap="goToPage">
+      <image class="quick-icon" src="/images/icons/goods-active.png" mode="aspectFit"></image>
+      <text class="quick-text">全部订单</text>
+    </view>
+  </view>
+
+  <!-- 菜单列表 -->
+  <view class="menu-section">
+    <block wx:if="{{currentRole === 'parent'}}">
+      <view class="menu-group" wx:for="{{parentMenuList}}" wx:key="title">
+        <view class="group-title">{{item.title}}</view>
+        <view class="menu-list">
+          <view class="menu-item" wx:for="{{item.items}}" wx:for-item="menu" wx:key="id" data-url="{{menu.url}}" bindtap="goToPage">
+            <image class="menu-icon" src="{{menu.icon}}" mode="aspectFit"></image>
+            <text class="menu-name">{{menu.name}}</text>
+            <text class="arrow-icon">›</text>
+          </view>
+        </view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="menu-group" wx:for="{{teacherMenuList}}" wx:key="title">
+        <view class="group-title">{{item.title}}</view>
+        <view class="menu-list">
+          <view class="menu-item" wx:for="{{item.items}}" wx:for-item="menu" wx:key="id" data-url="{{menu.url}}" bindtap="goToPage">
+            <image class="menu-icon" src="{{menu.icon}}" mode="aspectFit"></image>
+            <text class="menu-name">{{menu.name}}</text>
+            <text class="arrow-icon">›</text>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 版本信息 -->
+  <view class="version-info">
+    <text>智伴家 v1.0.0</text>
+  </view>
+</view>

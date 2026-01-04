@@ -1,0 +1,232 @@
+﻿// pages/index/index.js
+const app = getApp()
+const api = require('../../utils/api.js')
+
+Page({
+  data: {
+    // 用户信息
+    userInfo: null,
+    isLoggedIn: false,
+    currentRole: 'parent', // parent: 家长, teacher: 陪伴师
+    
+    // 轮播图
+    bannerList: [
+      { id: 1, image: '/images/ai_example1.png', url: '' },
+      { id: 2, image: '/images/ai_example2.png', url: '' },
+      { id: 3, image: '/images/cloud_dev.png', url: '' }
+    ],
+    
+    // 功能入口
+    menuList: [
+      { id: 1, icon: '/images/icons/service.png', name: '找陪伴师', url: '/pages/search/index' },
+      { id: 2, icon: '/images/icons/goods.png', name: '我的订单', url: '/pages/order-list/index' },
+      { id: 3, icon: '/images/icons/usercenter.png', name: '孩子信息', url: '/pages/child-info/index' },
+      { id: 4, icon: '/images/icons/examples.png', name: '成功案例', url: '/pages/case-list/index' }
+    ],
+    
+    // 陪伴师功能入口
+    teacherMenuList: [
+      { id: 1, icon: '/images/icons/usercenter.png', name: '我的简历', url: '/pages/teacher-resume/index' },
+      { id: 2, icon: '/images/icons/goods.png', name: '我的订单', url: '/pages/order-list/index' },
+      { id: 3, icon: '/images/icons/business.png', name: '返利中心', url: '/pages/rebate/index' },
+      { id: 4, icon: '/images/icons/examples.png', name: '成功案例', url: '/pages/case-list/index' }
+    ],
+    
+    // 推荐陪伴师列表
+    teacherList: [],
+    
+    // 服务类型
+    serviceTypes: [
+      { id: 1, name: '学科辅导', icon: '/images/icons/goods.png' },
+      { id: 2, name: '兴趣培养', icon: '/images/icons/examples.png' },
+      { id: 3, name: '习惯养成', icon: '/images/icons/business.png' },
+      { id: 4, name: '心理疏导', icon: '/images/icons/message.png' }
+    ],
+    
+    // 页面状态
+    loading: false,
+    
+    // 公告
+    notice: '欢迎使用智伴家，专业陪伴师为您的孩子提供一对一陪伴服务！'
+  },
+
+  onLoad: function(options) {
+    this.checkLoginStatus()
+    this.loadTeacherList()
+  },
+
+  onShow: function() {
+    this.checkLoginStatus()
+    // 更新tabbar选中状态
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({
+        selected: 0
+      })
+    }
+  },
+
+  onPullDownRefresh: function() {
+    this.loadTeacherList()
+    wx.stopPullDownRefresh()
+  },
+
+  // 检查登录状态
+  checkLoginStatus: function() {
+    const userInfo = wx.getStorageSync('userInfo')
+    const token = wx.getStorageSync('token')
+    if (userInfo && token) {
+      this.setData({
+        userInfo: userInfo,
+        isLoggedIn: true,
+        currentRole: userInfo.currentRole || 'parent'
+      })
+    } else {
+      this.setData({
+        userInfo: null,
+        isLoggedIn: false,
+        currentRole: 'parent'
+      })
+    }
+  },
+
+  // 加载推荐陪伴师列表
+  loadTeacherList: function() {
+    this.setData({ loading: true })
+    
+    // 模拟数据，实际项目中应调用API
+    const mockTeachers = [
+      {
+        id: 1,
+        name: '张老师',
+        avatar: '/images/avatar.png',
+        title: '专业陪伴师',
+        rating: 4.9,
+        orderCount: 128,
+        tags: ['学科辅导', '耐心细致'],
+        price: 150,
+        introduction: '5年教育经验，擅长小学全科辅导'
+      },
+      {
+        id: 2,
+        name: '李老师',
+        avatar: '/images/avatar.png',
+        title: '金牌陪伴师',
+        rating: 5.0,
+        orderCount: 256,
+        tags: ['兴趣培养', '习惯养成'],
+        price: 200,
+        introduction: '专注儿童习惯养成，帮助孩子建立良好学习习惯'
+      },
+      {
+        id: 3,
+        name: '王老师',
+        avatar: '/images/avatar.png',
+        title: '高级陪伴师',
+        rating: 4.8,
+        orderCount: 89,
+        tags: ['心理疏导', '亲子沟通'],
+        price: 180,
+        introduction: '心理学专业背景，善于与孩子沟通交流'
+      }
+    ]
+    
+    setTimeout(() => {
+      this.setData({
+        teacherList: mockTeachers,
+        loading: false
+      })
+    }, 500)
+  },
+
+  // 切换角色
+  switchRole: function() {
+    if (!this.data.isLoggedIn) {
+      this.goToLogin()
+      return
+    }
+    
+    const newRole = this.data.currentRole === 'parent' ? 'teacher' : 'parent'
+    const userInfo = this.data.userInfo
+    userInfo.currentRole = newRole
+    
+    this.setData({
+      currentRole: newRole,
+      userInfo: userInfo
+    })
+    
+    wx.setStorageSync('userInfo', userInfo)
+    
+    wx.showToast({
+      title: newRole === 'parent' ? '已切换到家长模式' : '已切换到陪伴师模式',
+      icon: 'none'
+    })
+  },
+
+  // 跳转到搜索页
+  goToSearch: function() {
+    wx.navigateTo({
+      url: '/pages/search/index'
+    })
+  },
+
+  // 跳转到陪伴师详情
+  goToTeacherDetail: function(e) {
+    const id = e.currentTarget.dataset.id
+    wx.navigateTo({
+      url: '/pages/teacher-detail/index?id=' + id
+    })
+  },
+
+  // 跳转到登录页
+  goToLogin: function() {
+    wx.navigateTo({
+      url: '/pages/login/index'
+    })
+  },
+
+  // 跳转到菜单页面
+  goToMenu: function(e) {
+    const url = e.currentTarget.dataset.url
+    if (!this.data.isLoggedIn && url !== '/pages/case-list/index') {
+      this.goToLogin()
+      return
+    }
+    wx.navigateTo({
+      url: url
+    })
+  },
+
+  // 跳转到服务类型
+  goToServiceType: function(e) {
+    const id = e.currentTarget.dataset.id
+    wx.navigateTo({
+      url: '/pages/search/index?typeId=' + id
+    })
+  },
+
+  // 轮播图点击
+  onBannerTap: function(e) {
+    const url = e.currentTarget.dataset.url
+    if (url) {
+      wx.navigateTo({
+        url: url
+      })
+    }
+  },
+
+  // 查看更多陪伴师
+  viewMoreTeachers: function() {
+    wx.navigateTo({
+      url: '/pages/search/index'
+    })
+  },
+
+  // 分享
+  onShareAppMessage: function() {
+    return {
+      title: '智伴家 - 专业陪伴师平台',
+      path: '/pages/index/index',
+      imageUrl: '/images/share.png'
+    }
+  }
+})

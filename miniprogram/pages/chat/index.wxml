@@ -1,0 +1,119 @@
+<!--pages/chat/index.wxml-->
+<view class="container">
+  <!-- 消息列表 -->
+  <scroll-view class="message-list" 
+               scroll-y="true" 
+               scroll-into-view="{{toView}}" 
+               scroll-with-animation="true"
+               bindscrolltoupper="loadMoreMessages"
+               style="height: calc(100vh - 120rpx - {{keyboardHeight}}px)">
+    
+    <!-- 加载更多提示 -->
+    <view class="loading-more" wx:if="{{loadingMore}}">
+      <text>加载中...</text>
+    </view>
+    <view class="no-more" wx:if="{{!hasMore && messageList.length > 0}}">
+      <text>没有更多消息了</text>
+    </view>
+    
+    <!-- 消息列表 -->
+    <view class="message-item {{item.isMine ? 'mine' : 'other'}}" 
+          wx:for="{{messageList}}" 
+          wx:key="id" 
+          id="{{item.id}}">
+      
+      <!-- 时间提示 -->
+      <view class="time-tip" wx:if="{{index === 0 || item.showTime}}">
+        <text>{{item.time}}</text>
+      </view>
+      
+      <!-- 消息内容 -->
+      <view class="message-content">
+        <!-- 对方头像 -->
+        <image class="avatar" 
+               wx:if="{{!item.isMine}}" 
+           src="{{targetUser.avatar || '/images/avatar.png'}}" 
+               mode="aspectFill"
+               data-user-id="{{item.senderId}}"
+               bindtap="onAvatarTap"></image>
+        
+        <!-- 消息气泡 -->
+        <view class="bubble {{item.type === 'image' ? 'image-bubble' : ''}}">
+          <!-- 文本消息 -->
+          <text wx:if="{{item.type === 'text'}}">{{item.content}}</text>
+          
+          <!-- 图片消息 -->
+          <image wx:if="{{item.type === 'image'}}" 
+                 class="msg-image" 
+                 src="{{item.content}}" 
+                 mode="widthFix"
+                 data-src="{{item.content}}"
+                 bindtap="previewImage"></image>
+        </view>
+        
+        <!-- 我的头像 -->
+        <image class="avatar" 
+               wx:if="{{item.isMine}}" 
+           src="{{userInfo.avatarUrl || '/images/avatar.png'}}" 
+               mode="aspectFill"></image>
+        
+        <!-- 发送状态 -->
+        <view class="send-status" wx:if="{{item.isMine && item.status === 'sending'}}">
+          <text class="status-text">…</text>
+        </view>
+        <view class="send-status" wx:if="{{item.isMine && item.status === 'failed'}}">
+          <text class="status-text">!</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 空状态 -->
+    <view class="empty-chat" wx:if="{{messageList.length === 0}}">
+      <image class="empty-icon" src="/images/icons/message.png" mode="aspectFit"></image>
+      <text class="empty-text">暂无消息，快来发送第一条吧</text>
+    </view>
+  </scroll-view>
+
+  <!-- 输入区域 -->
+  <view class="input-area" style="bottom: {{keyboardHeight}}px">
+    <view class="input-box">
+      <input class="input" 
+             type="text" 
+             placeholder="请输入消息" 
+             value="{{inputValue}}" 
+             bindinput="onInput"
+             bindconfirm="sendMessage"
+             confirm-type="send"
+             adjust-position="{{false}}"
+             bindfocus="onInputFocus"
+             bindblur="onInputBlur" />
+      
+      <view class="more-btn" bindtap="toggleMore">
+        <text class="icon">+</text>
+      </view>
+      
+      <button class="send-btn" 
+              wx:if="{{inputValue}}" 
+              disabled="{{sending}}"
+              bindtap="sendMessage">发送</button>
+    </view>
+    
+    <!-- 更多功能 -->
+    <view class="more-panel" wx:if="{{showMore}}">
+      <view class="more-grid">
+        <view class="more-item" bindtap="chooseImage">
+          <view class="more-icon">
+            <image src="/images/icons/examples.png" mode="aspectFit"></image>
+          </view>
+          <text class="more-text">图片</text>
+        </view>
+        <view class="more-item" bindtap="makeCall">
+          <view class="more-icon">
+            <image src="/images/icons/service.png" mode="aspectFit"></image>
+          </view>
+          <text class="more-text">电话</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

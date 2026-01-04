@@ -1,0 +1,33 @@
+<!--components/rate/index.wxml-->
+<view class="rate-container" 
+      bindtouchmove="{{touchable && !readonly && !disabled ? 'onTouchMove' : ''}}">
+  <view class="rate-star {{readonly || disabled ? 'readonly' : ''}}" 
+        wx:for="{{stars}}" 
+        wx:key="index"
+        style="width: {{size}}rpx; height: {{size}}rpx; margin-right: {{gutter}}rpx;">
+    
+    <!-- 空星 -->
+    <view class="star-icon empty" 
+          style="color: {{inactiveColor}}; font-size: {{size}}rpx;"
+          data-index="{{item.index}}"
+          bindtap="onStarTap">★</view>
+    
+    <!-- 满星 -->
+    <view class="star-icon full {{item.status === 'full' ? 'show' : ''}}" 
+          style="color: {{activeColor}}; font-size: {{size}}rpx;"
+          data-index="{{item.index}}"
+          bindtap="onStarTap">★</view>
+    
+    <!-- 半星 -->
+    <view class="star-icon half {{item.status === 'half' ? 'show' : ''}}"
+          wx:if="{{allowHalf}}"
+          style="color: {{activeColor}}; font-size: {{size}}rpx; width: 50%;"
+          data-index="{{item.index}}"
+          bindtap="onHalfTap">★</view>
+  </view>
+  
+  <!-- 评分文字 -->
+  <view class="rate-text" wx:if="{{innerValue > 0}}">
+    <text>{{innerValue}}分</text>
+  </view>
+</view>

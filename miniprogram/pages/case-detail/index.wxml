@@ -1,0 +1,118 @@
+<!--pages/case-detail/index.wxml-->
+<view class="container" wx:if="{{!loading && caseInfo}}">
+  <!-- 封面图 -->
+  <image class="cover-image" src="{{caseInfo.cover}}" mode="aspectFill"></image>
+
+  <!-- 案例标题 -->
+  <view class="title-section">
+    <view class="category-tag">{{caseInfo.categoryName}}</view>
+    <text class="case-title">{{caseInfo.title}}</text>
+    <view class="case-meta">
+      <text class="create-time">{{caseInfo.createTime}}</text>
+      <view class="stats">
+        <text class="stat-item">阅读 {{caseInfo.viewCount}}</text>
+        <text class="stat-item">点赞 {{caseInfo.likeCount}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 陪伴师信息 -->
+  <view class="teacher-section" bindtap="viewTeacherDetail">
+    <image class="teacher-avatar" src="{{caseInfo.teacher.avatar}}" mode="aspectFill"></image>
+    <view class="teacher-info">
+      <text class="teacher-name">{{caseInfo.teacher.name}}</text>
+      <text class="teacher-title">{{caseInfo.teacher.title}}</text>
+    </view>
+    <text class="arrow-icon">›</text>
+  </view>
+
+  <!-- 服务概况 -->
+  <view class="info-section">
+    <view class="section-title">服务概况</view>
+    <view class="info-grid">
+      <view class="info-item">
+        <text class="info-label">服务类型</text>
+        <text class="info-value">{{caseInfo.serviceInfo.type}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">服务时长</text>
+        <text class="info-value">{{caseInfo.serviceInfo.duration}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">服务频次</text>
+        <text class="info-value">{{caseInfo.serviceInfo.frequency}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">学生年级</text>
+        <text class="info-value">{{caseInfo.student.grade}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 案例详情 -->
+  <view class="content-section">
+    <view class="content-block">
+      <view class="block-title">
+        <view class="title-icon"></view>
+        <text>背景介绍</text>
+      </view>
+      <text class="block-content">{{caseInfo.content.background}}</text>
+    </view>
+    
+    <view class="content-block">
+      <view class="block-title">
+        <view class="title-icon"></view>
+        <text>问题分析</text>
+      </view>
+      <text class="block-content">{{caseInfo.content.problem}}</text>
+    </view>
+    
+    <view class="content-block">
+      <view class="block-title">
+        <view class="title-icon"></view>
+        <text>解决方案</text>
+      </view>
+      <text class="block-content">{{caseInfo.content.solution}}</text>
+    </view>
+    
+    <view class="content-block">
+      <view class="block-title">
+        <view class="title-icon"></view>
+        <text>成果展示</text>
+      </view>
+      <text class="block-content">{{caseInfo.content.result}}</text>
+    </view>
+  </view>
+
+  <!-- 图片展示 -->
+  <view class="images-section" wx:if="{{caseInfo.images.length > 0}}">
+    <view class="section-title">图片展示</view>
+    <view class="image-grid">
+      <image class="case-image" wx:for="{{caseInfo.images}}" wx:key="*this" src="{{item}}" mode="aspectFill" data-src="{{item}}" bindtap="previewImage"></image>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="action-icons">
+      <view class="action-item {{isLiked ? 'active' : ''}}" bindtap="toggleLike">
+        <text class="action-icon">{{isLiked ? '♥' : '♡'}}</text>
+        <text>{{caseInfo.likeCount}}</text>
+      </view>
+      <view class="action-item {{isFavorite ? 'active' : ''}}" bindtap="toggleFavorite">
+        <text class="action-icon">{{isFavorite ? '★' : '☆'}}</text>
+        <text>收藏</text>
+      </view>
+      <button class="action-item share" open-type="share">
+        <text class="action-icon">↗</text>
+        <text>分享</text>
+      </button>
+    </view>
+    <button class="book-btn" bindtap="bookTeacher">预约该陪伴师</button>
+  </view>
+</view>
+
+<!-- 加载中 -->
+<view class="loading-container" wx:if="{{loading}}">
+  <text>加载中...</text>
+</view>

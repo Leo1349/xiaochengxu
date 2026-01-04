@@ -1,0 +1,310 @@
+/* pages/index/index.wxss */
+
+.container {
+  padding: 0;
+  min-height: 100vh;
+  background: #f6f6f6;
+  padding-bottom: 140rpx;
+}
+
+/* 顶部区域 */
+.header {
+  padding: 24rpx 24rpx 16rpx;
+  background: #ffffff;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  height: 80rpx;
+  border-radius: 40rpx;
+  padding: 0 24rpx;
+  background: #f2f3f5;
+}
+
+.search-icon {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 12rpx;
+}
+
+.search-placeholder {
+  font-size: 28rpx;
+  color: #999999;
+}
+
+.role-switch {
+  margin-top: 16rpx;
+  display: inline-flex;
+  align-items: center;
+  padding: 14rpx 18rpx;
+  border-radius: 28rpx;
+  background: rgba(74, 144, 217, 0.08);
+  color: #4a90d9;
+  font-size: 24rpx;
+}
+
+.switch-icon {
+  width: 28rpx;
+  height: 28rpx;
+  margin-left: 10rpx;
+}
+
+/* 公告 */
+.notice-bar {
+  margin: 16rpx 24rpx 0;
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 18rpx 20rpx;
+  display: flex;
+  align-items: center;
+}
+
+.notice-icon {
+  width: 28rpx;
+  height: 28rpx;
+  margin-right: 12rpx;
+}
+
+.notice-text {
+  flex: 1;
+  min-width: 0;
+  font-size: 26rpx;
+  color: #666666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 轮播 */
+.banner {
+  margin: 16rpx 24rpx 0;
+  height: 320rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+}
+
+/* 功能入口 */
+.menu-section {
+  margin: 16rpx 24rpx 0;
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 20rpx 12rpx;
+}
+
+.menu-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.menu-item {
+  width: 25%;
+  padding: 18rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu-icon {
+  width: 56rpx;
+  height: 56rpx;
+  margin-bottom: 10rpx;
+}
+
+.menu-name {
+  font-size: 24rpx;
+  color: #333333;
+}
+
+/* 通用 section */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22rpx 24rpx 14rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.view-more {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+/* 服务类型 */
+.service-section {
+  margin: 16rpx 24rpx 0;
+  background: #ffffff;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.service-grid {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 12rpx 12rpx;
+}
+
+.service-item {
+  width: 25%;
+  padding: 18rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.service-icon {
+  width: 52rpx;
+  height: 52rpx;
+  margin-bottom: 10rpx;
+}
+
+.service-name {
+  font-size: 24rpx;
+  color: #333333;
+}
+
+/* 推荐陪伴师 */
+.teacher-section {
+  margin: 16rpx 24rpx 0;
+  background: #ffffff;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.teacher-list {
+  padding: 0 24rpx 18rpx;
+}
+
+.teacher-card {
+  display: flex;
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid #f1f1f1;
+}
+
+.teacher-card:last-child {
+  border-bottom: none;
+}
+
+.teacher-avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  margin-right: 18rpx;
+  background: #f2f3f5;
+}
+
+.teacher-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.teacher-name-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12rpx;
+}
+
+.teacher-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.teacher-title {
+  font-size: 24rpx;
+  color: #4a90d9;
+}
+
+.teacher-rating {
+  margin-top: 6rpx;
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+}
+
+.rating-score {
+  font-size: 24rpx;
+  color: #ff9500;
+}
+
+.order-count {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.teacher-tags {
+  margin-top: 10rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+}
+
+.teacher-intro {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: #666666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.teacher-price {
+  margin-left: 10rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.price-value {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #ff9500;
+}
+
+.price-unit {
+  font-size: 22rpx;
+  color: #999999;
+}
+
+.loading {
+  padding: 30rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: #999999;
+}
+
+.case-content {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 16rpx;
+}
+
+.case-result {
+  display: flex;
+  align-items: center;
+}
+
+.result-label {
+  font-size: 26rpx;
+  color: #999;
+}
+
+.result-value {
+  font-size: 26rpx;
+  color: #4a90d9;
+  font-weight: bold;
+}

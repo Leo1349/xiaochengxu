@@ -1,0 +1,68 @@
+<!--pages/message/index.wxml-->
+<view class="container">
+  <!-- 顶部标签栏 -->
+  <view class="tabs">
+    <view class="tab-item {{currentTab === item.id ? 'active' : ''}}" 
+          wx:for="{{tabs}}" 
+          wx:key="id" 
+          data-tab="{{item.id}}" 
+          bindtap="switchTab">
+      <text class="tab-name">{{item.name}}</text>
+      <view class="unread-badge" wx:if="{{unreadCount[item.id] > 0}}">
+        {{unreadCount[item.id] > 99 ? '99+' : unreadCount[item.id]}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作栏 -->
+  <view class="action-bar" wx:if="{{unreadCount.all > 0}}">
+    <text class="action-text" bindtap="markAllAsRead">全部标记为已读</text>
+  </view>
+
+  <!-- 消息列表 -->
+  <view class="message-list">
+    <block wx:for="{{messageList}}" wx:key="id">
+      <view class="message-item {{item.isRead ? '' : 'unread'}}" 
+            wx:if="{{currentTab === 'all' || currentTab === item.type}}"
+            bindtap="onMessageTap"
+            bindlongpress="deleteMessage"
+            data-id="{{item.id}}">
+        
+        <!-- 消息图标/头像 -->
+        <view class="message-avatar">
+          <image wx:if="{{item.type === 'chat'}}" src="{{item.avatar}}" mode="aspectFill" class="avatar-img"></image>
+          <image wx:else src="{{item.icon}}" mode="aspectFit" class="icon-img"></image>
+          <view class="unread-dot" wx:if="{{!item.isRead}}"></view>
+        </view>
+        
+        <!-- 消息内容 -->
+        <view class="message-content">
+          <view class="message-header">
+            <text class="message-title">{{item.title}}</text>
+            <text class="message-time">{{item.time}}</text>
+          </view>
+          <text class="message-text">{{item.content}}</text>
+        </view>
+        
+        <!-- 右箭头 -->
+        <text class="arrow-icon">›</text>
+      </view>
+    </block>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{messageList.length === 0 && !loading}}">
+    <image class="empty-icon" src="/images/icons/message.png" mode="aspectFit"></image>
+    <text class="empty-text">暂无消息</text>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-more" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 没有更多 -->
+  <view class="no-more" wx:if="{{!hasMore && messageList.length > 0}}">
+    <text>没有更多消息了</text>
+  </view>
+</view>

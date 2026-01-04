@@ -1,0 +1,20 @@
+param(
+  [Parameter(Position=0)]
+  [string]$Message
+)
+
+$ErrorActionPreference = 'Stop'
+
+$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
+Set-Location $repoRoot
+
+& git rev-parse --is-inside-work-tree | Out-Null
+
+& git add -A
+
+if ([string]::IsNullOrWhiteSpace($Message)) {
+  $Message = "chore: snapshot $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+}
+
+& git commit -m $Message
+Write-Host 'Done.'

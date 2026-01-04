@@ -1,0 +1,213 @@
+/* pages/service/index.wxss */
+
+.container {
+  padding: 0;
+  min-height: 100vh;
+  background: #f6f6f6;
+  padding-bottom: 140rpx;
+}
+
+/* 顶部 4 个 tab */
+.quick-tabs {
+  background: #fff;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  padding: 18rpx 18rpx 0;
+}
+
+.tab-item {
+  position: relative;
+  padding: 18rpx 6rpx 16rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.tab-item.active {
+  color: #4a90d9;
+  font-weight: 600;
+}
+
+.tab-line {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 54rpx;
+  height: 6rpx;
+  border-radius: 3rpx;
+  background: #4a90d9;
+  transform: translateX(-50%);
+}
+
+/* 通用区块 */
+.section {
+  margin: 16rpx 24rpx 0;
+  background: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.section-title {
+  padding: 22rpx 24rpx 14rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22rpx 24rpx 14rpx;
+}
+
+.view-more {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 服务类型 chips */
+.type-scroll {
+  padding: 0 24rpx 18rpx;
+  white-space: nowrap;
+}
+
+.type-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.type-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12rpx 18rpx;
+  border-radius: 20rpx;
+  background: #f2f3f5;
+  color: #666;
+  font-size: 24rpx;
+}
+
+.type-chip.active {
+  background: rgba(74, 144, 217, 0.1);
+  color: #4a90d9;
+  font-weight: 600;
+}
+
+/* 推荐陪伴师列表 */
+.teacher-list {
+  padding: 0 24rpx 18rpx;
+}
+
+.teacher-card {
+  display: flex;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid #f1f1f1;
+}
+
+.teacher-card:last-child {
+  border-bottom: none;
+}
+
+.teacher-avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  margin-right: 18rpx;
+  background: #f2f3f5;
+}
+
+.teacher-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.teacher-top {
+  display: flex;
+  align-items: baseline;
+  gap: 12rpx;
+}
+
+.teacher-name {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #333;
+}
+
+.teacher-title {
+  font-size: 24rpx;
+  color: #4a90d9;
+}
+
+.teacher-meta {
+  margin-top: 6rpx;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.rating {
+  color: #ff9500;
+  font-weight: 700;
+}
+
+.meta-split {
+  color: #c9c9c9;
+}
+
+.teacher-tags {
+  margin-top: 10rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+}
+
+.tag {
+  padding: 6rpx 10rpx;
+  border-radius: 10rpx;
+  background: #f2f3f5;
+  color: #666;
+  font-size: 22rpx;
+}
+
+.teacher-intro {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: #666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.teacher-price {
+  margin-left: 10rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.price {
+  font-size: 34rpx;
+  font-weight: 800;
+  color: #ff9500;
+}
+
+.unit {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.loading {
+  padding: 30rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: #999;
+}

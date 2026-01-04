@@ -1,0 +1,76 @@
+<!--pages/login/index.wxml-->
+<view class="container">
+  <!-- Logo -->
+  <view class="logo-section">
+    <image class="logo" src="/images/logo.png" mode="aspectFit"></image>
+    <text class="app-name">智伴家</text>
+    <text class="app-slogan">专业陪伴师平台</text>
+  </view>
+
+  <!-- 登录方式切换 -->
+  <view class="login-tabs">
+    <view class="tab-item {{loginType === 'phone' ? 'active' : ''}}" data-type="phone" bindtap="switchLoginType">
+      <text>手机号登录</text>
+    </view>
+    <view class="tab-item {{loginType === 'wechat' ? 'active' : ''}}" data-type="wechat" bindtap="switchLoginType">
+      <text>微信登录</text>
+    </view>
+  </view>
+
+  <!-- 手机号登录表单 -->
+  <view class="login-form" wx:if="{{loginType === 'phone'}}">
+    <view class="form-item">
+      <view class="input-wrapper">
+        <image class="input-icon" src="/images/icons/phone.png" mode="aspectFit"></image>
+        <input class="input" type="number" maxlength="11" placeholder="请输入手机号" value="{{phone}}" bindinput="onPhoneInput" />
+      </view>
+    </view>
+    
+    <view class="form-item">
+      <view class="input-wrapper">
+        <image class="input-icon" src="/images/icons/code.png" mode="aspectFit"></image>
+        <input class="input code-input" type="number" maxlength="6" placeholder="请输入验证码" value="{{code}}" bindinput="onCodeInput" />
+        <view class="code-btn {{codeSending ? 'disabled' : ''}}" bindtap="getCode">
+          <text>{{codeText}}</text>
+        </view>
+      </view>
+    </view>
+    
+    <button class="login-btn" loading="{{loading}}" disabled="{{loading}}" bindtap="loginByPhone">登录</button>
+  </view>
+
+  <!-- 微信登录 -->
+  <view class="wechat-login" wx:if="{{loginType === 'wechat'}}">
+    <view class="wechat-tips">
+      <text>点击下方按钮，使用微信一键登录</text>
+    </view>
+    
+    <button class="wechat-btn" loading="{{loading}}" disabled="{{loading}}" bindtap="loginByWechat">
+      <image class="wechat-icon" src="/images/icons/wechat.png" mode="aspectFit"></image>
+      <text>微信一键登录</text>
+    </button>
+    
+    <button class="phone-auth-btn" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" loading="{{loading}}" disabled="{{loading}}">
+      <image class="phone-icon" src="/images/icons/phone-auth.png" mode="aspectFit"></image>
+      <text>手机号快捷登录</text>
+    </button>
+  </view>
+
+  <!-- 用户协议 -->
+  <view class="agreement-section">
+    <view class="agreement-check" bindtap="toggleAgreement">
+      <image class="check-icon" src="{{agreed ? '/images/icons/checked.png' : '/images/icons/unchecked.png'}}" mode="aspectFit"></image>
+    </view>
+    <view class="agreement-text">
+      <text>我已阅读并同意</text>
+      <text class="link" bindtap="viewUserAgreement">《用户协议》</text>
+      <text>和</text>
+      <text class="link" bindtap="viewPrivacyPolicy">《隐私政策》</text>
+    </view>
+  </view>
+
+  <!-- 其他入口 -->
+  <view class="other-entry">
+    <text class="register-link" bindtap="goToRegister">还没有账号？立即注册</text>
+  </view>
+</view>

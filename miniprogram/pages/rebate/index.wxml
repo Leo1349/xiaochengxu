@@ -1,0 +1,150 @@
+<!--pages/rebate/index.wxml-->
+<view class="container">
+  <!-- 返利概览 -->
+  <view class="rebate-header">
+    <view class="balance-card">
+      <view class="balance-main">
+        <text class="balance-label">可提现金额（元）</text>
+        <text class="balance-value">{{statistics.availableRebate}}</text>
+      </view>
+      <button class="withdraw-btn" bindtap="showWithdraw">立即提现</button>
+    </view>
+    
+    <view class="statistics-row">
+      <view class="stat-item">
+        <text class="stat-value">{{statistics.totalRebate}}</text>
+        <text class="stat-label">累计返利</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{statistics.withdrawnRebate}}</text>
+        <text class="stat-label">已提现</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{statistics.pendingRebate}}</text>
+        <text class="stat-label">待结算</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Tab切换 -->
+  <view class="tab-bar">
+    <view class="tab-item {{activeTab === 'rebate' ? 'active' : ''}}" data-tab="rebate" bindtap="switchTab">
+      <text>返利明细</text>
+    </view>
+    <view class="tab-item {{activeTab === 'withdraw' ? 'active' : ''}}" data-tab="withdraw" bindtap="switchTab">
+      <text>提现记录</text>
+    </view>
+  </view>
+
+  <!-- 返利明细 -->
+  <scroll-view class="list-container" scroll-y="true" bindscrolltolower="loadMore" wx:if="{{activeTab === 'rebate'}}">
+    <view class="rebate-list">
+      <view class="rebate-item" wx:for="{{rebateList}}" wx:key="id" data-order-id="{{item.orderId}}" bindtap="viewOrder">
+        <view class="rebate-info">
+          <view class="order-id">订单号：{{item.orderId}}</view>
+          <view class="rebate-detail">
+            <text>订单金额：¥{{item.orderAmount}}</text>
+            <text class="rebate-rate">返利比例：{{item.rebateRate}}%</text>
+          </view>
+          <view class="rebate-time">{{item.createTime}}</view>
+        </view>
+        <view class="rebate-amount">
+          <text class="amount-value">+{{item.rebateAmount}}</text>
+          <text class="amount-status {{item.status}}">{{item.statusText}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && rebateList.length === 0}}">
+      <image class="empty-icon" src="/images/icons/empty-data.png" mode="aspectFit"></image>
+      <text class="empty-text">暂无返利记录</text>
+      <text class="empty-tip">完成订单后可获得返利</text>
+    </view>
+
+    <!-- 加载状态 -->
+    <view class="loading-tip" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+    <view class="no-more" wx:if="{{!hasMore && rebateList.length > 0}}">
+      <text>没有更多了</text>
+    </view>
+  </scroll-view>
+
+  <!-- 提现记录 -->
+  <scroll-view class="list-container" scroll-y="true" wx:if="{{activeTab === 'withdraw'}}">
+    <view class="withdraw-list">
+      <view class="withdraw-item" wx:for="{{withdrawList}}" wx:key="id">
+        <view class="withdraw-info">
+          <view class="withdraw-amount">
+            <text class="amount-label">提现金额</text>
+            <text class="amount-value">¥{{item.amount}}</text>
+          </view>
+          <view class="withdraw-bank">
+            <text>{{item.bankName}}</text>
+            <text>{{item.bankCardNo}}</text>
+          </view>
+        </view>
+        <view class="withdraw-status">
+          <text class="status-text {{item.status}}">{{item.statusText}}</text>
+          <text class="status-time">{{item.completeTime || item.createTime}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && withdrawList.length === 0}}">
+      <image class="empty-icon" src="/images/icons/empty-data.png" mode="aspectFit"></image>
+      <text class="empty-text">暂无提现记录</text>
+    </view>
+
+    <!-- 加载状态 -->
+    <view class="loading-tip" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </scroll-view>
+
+  <!-- 提现弹窗 -->
+  <view class="modal-mask" wx:if="{{showWithdrawModal}}" bindtap="hideWithdraw"></view>
+  <view class="withdraw-modal {{showWithdrawModal ? 'show' : ''}}">
+    <view class="modal-header">
+      <text class="modal-title">提现</text>
+      <image class="close-icon" src="/images/icons/close.png" mode="aspectFit" bindtap="hideWithdraw"></image>
+    </view>
+    
+    <view class="modal-body">
+      <!-- 银行卡信息 -->
+      <view class="bank-info" wx:if="{{bankCard}}">
+        <text class="bank-name">{{bankCard.bankName}}</text>
+        <text class="bank-card">{{bankCard.cardNoDisplay}}</text>
+        <text class="change-btn" bindtap="bindBankCard">更换</text>
+      </view>
+      
+      <!-- 提现金额输入 -->
+      <view class="amount-input-section">
+        <text class="currency-symbol">¥</text>
+        <input class="amount-input" 
+               type="digit" 
+               placeholder="请输入提现金额" 
+               value="{{withdrawAmount}}" 
+               bindinput="onAmountInput" />
+      </view>
+      
+      <view class="amount-tip">
+        <text>可提现金额：¥{{statistics.availableRebate}}</text>
+        <text class="all-btn" bindtap="withdrawAll">全部提现</text>
+      </view>
+      
+      <view class="withdraw-rules">
+        <text class="rule-title">提现规则</text>
+        <text class="rule-item">• 最低提现金额10元</text>
+        <text class="rule-item">• 提现申请提交后，预计1-3个工作日到账</text>
+        <text class="rule-item">• 待结算的返利需订单完成7天后才可提现</text>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="confirm-btn" bindtap="confirmWithdraw">确认提现</button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,20 @@
+/* components/rate/index.wxss */
+.rate-container {
+  display: flex;
+  align-items: center;
+}
+
+.star-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8rpx;
+}
+
+.star-item:last-child {
+  margin-right: 0;
+}
+
+.star {
+  line-height: 1;
+}

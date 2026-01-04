@@ -1,0 +1,60 @@
+<!--pages/case-list/index.wxml-->
+<view class="container">
+  <!-- 分类Tab -->
+  <scroll-view class="category-scroll" scroll-x="{{true}}">
+    <view class="category-list">
+      <view class="category-item {{currentCategory === item.id ? 'active' : ''}}" 
+            wx:for="{{categories}}" 
+            wx:key="id" 
+            data-category="{{item.id}}" 
+            bindtap="switchCategory">
+        {{item.name}}
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 案例列表 -->
+  <view class="case-list">
+    <view class="case-card" wx:for="{{caseList}}" wx:key="id" data-id="{{item.id}}" bindtap="viewCaseDetail">
+      <image class="case-cover" src="{{item.cover}}" mode="aspectFill"></image>
+      <view class="case-content">
+        <text class="case-title">{{item.title}}</text>
+        <text class="case-summary">{{item.summary}}</text>
+        
+        <view class="case-footer">
+          <view class="teacher-info" data-teacherid="{{item.teacher.id}}" catchtap="viewTeacherDetail">
+            <image class="teacher-avatar" src="{{item.teacher.avatar}}" mode="aspectFill"></image>
+            <text class="teacher-name">{{item.teacher.name}}</text>
+          </view>
+          
+          <view class="case-stats">
+            <view class="stat-item">
+              <text class="stat-icon">浏览</text>
+              <text class="stat-value">{{item.viewCount}}</text>
+            </view>
+            <view class="stat-item">
+              <text class="stat-icon">点赞</text>
+              <text class="stat-value">{{item.likeCount}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{caseList.length === 0 && !loading}}">
+    <image class="empty-icon" src="/images/icons/examples.png" mode="aspectFit"></image>
+    <text class="empty-text">暂无案例</text>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-more" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 没有更多 -->
+  <view class="no-more" wx:if="{{!hasMore && caseList.length > 0}}">
+    <text>没有更多案例了</text>
+  </view>
+</view>

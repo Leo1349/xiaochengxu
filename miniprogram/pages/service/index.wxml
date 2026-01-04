@@ -1,0 +1,72 @@
+<!--pages/service/index.wxml-->
+<view class="container">
+  <!-- 顶部快捷入口（对应截图的 4 个 tab） -->
+  <view class="quick-tabs">
+    <view class="tab-item {{activeQuickTab === item.id ? 'active' : ''}}"
+          wx:for="{{quickTabs}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          data-url="{{item.url}}"
+          bindtap="onQuickTabTap">
+      <text>{{item.name}}</text>
+      <view class="tab-line" wx:if="{{activeQuickTab === item.id}}"></view>
+    </view>
+  </view>
+
+  <!-- 服务类型（胶囊按钮） -->
+  <view class="section">
+    <view class="section-title">服务类型</view>
+    <scroll-view class="type-scroll" scroll-x="true">
+      <view class="type-row">
+        <view class="type-chip {{currentTypeId === item.id ? 'active' : ''}}"
+              wx:for="{{serviceTypes}}"
+              wx:key="id"
+              data-id="{{item.id}}"
+              bindtap="selectServiceType">
+          {{item.name}}
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 推荐陪伴师 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">推荐陪伴师</text>
+      <text class="view-more" bindtap="viewMoreTeachers">查看更多 ›</text>
+    </view>
+
+    <view class="teacher-list" wx:if="{{!loading}}">
+      <view class="teacher-card"
+            wx:for="{{filteredTeacherList}}"
+            wx:key="id"
+            data-id="{{item.id}}"
+            bindtap="goToTeacherDetail">
+        <image class="teacher-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+        <view class="teacher-info">
+          <view class="teacher-top">
+            <text class="teacher-name">{{item.name}}</text>
+            <text class="teacher-title">{{item.title}}</text>
+          </view>
+          <view class="teacher-meta">
+            <text class="rating">{{item.rating}}</text>
+            <text class="meta-split">·</text>
+            <text class="orders">已服务{{item.orderCount}}次</text>
+          </view>
+          <view class="teacher-tags">
+            <text class="tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+          </view>
+          <text class="teacher-intro">{{item.introduction}}</text>
+        </view>
+        <view class="teacher-price">
+          <text class="price">¥{{item.price}}</text>
+          <text class="unit">/小时</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="loading" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </view>
+</view>

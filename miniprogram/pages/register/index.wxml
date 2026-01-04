@@ -1,0 +1,96 @@
+<!--pages/register/index.wxml-->
+<view class="container">
+  <!-- Logo -->
+  <view class="logo-section">
+    <image class="logo" src="/images/logo.png" mode="aspectFit"></image>
+    <text class="page-title">注册账号</text>
+  </view>
+
+  <!-- 角色选择 -->
+  <view class="role-tabs">
+    <view class="role-item {{role === 'parent' ? 'active' : ''}}" data-role="parent" bindtap="switchRole">
+      <image class="role-icon" src="/images/icons/parent.png" mode="aspectFit"></image>
+      <text>我是家长</text>
+      <text class="role-desc">为孩子找陪伴师</text>
+    </view>
+    <view class="role-item {{role === 'teacher' ? 'active' : ''}}" data-role="teacher" bindtap="switchRole">
+      <image class="role-icon" src="/images/icons/teacher.png" mode="aspectFit"></image>
+      <text>我是陪伴师</text>
+      <text class="role-desc">提供陪伴服务</text>
+    </view>
+  </view>
+
+  <!-- 注册表单 -->
+  <view class="register-form">
+    <view class="form-item">
+      <view class="input-wrapper">
+        <image class="input-icon" src="/images/icons/phone.png" mode="aspectFit"></image>
+        <input class="input" type="number" maxlength="11" placeholder="请输入手机号" value="{{phone}}" bindinput="onPhoneInput" />
+      </view>
+    </view>
+    
+    <view class="form-item">
+      <view class="input-wrapper">
+        <image class="input-icon" src="/images/icons/code.png" mode="aspectFit"></image>
+        <input class="input code-input" type="number" maxlength="6" placeholder="请输入验证码" value="{{code}}" bindinput="onCodeInput" />
+        <view class="code-btn {{codeSending ? 'disabled' : ''}}" bindtap="getCode">
+          <text>{{codeText}}</text>
+        </view>
+      </view>
+    </view>
+    
+    <view class="form-item">
+      <view class="input-wrapper">
+        <image class="input-icon" src="/images/icons/user.png" mode="aspectFit"></image>
+        <input class="input" type="text" maxlength="20" placeholder="请输入昵称" value="{{nickName}}" bindinput="onNickNameInput" />
+      </view>
+    </view>
+    
+    <view class="form-item">
+      <view class="input-wrapper">
+        <image class="input-icon" src="/images/icons/lock.png" mode="aspectFit"></image>
+        <input class="input" type="password" maxlength="20" placeholder="请设置密码（至少6位）" value="{{password}}" bindinput="onPasswordInput" />
+      </view>
+    </view>
+    
+    <view class="form-item">
+      <view class="input-wrapper">
+        <image class="input-icon" src="/images/icons/lock.png" mode="aspectFit"></image>
+        <input class="input" type="password" maxlength="20" placeholder="请确认密码" value="{{confirmPassword}}" bindinput="onConfirmPasswordInput" />
+      </view>
+    </view>
+    
+    <button class="register-btn" loading="{{loading}}" disabled="{{loading}}" bindtap="register">
+      {{role === 'teacher' ? '注册并填写简历' : '注册'}}
+    </button>
+  </view>
+
+  <!-- 用户协议 -->
+  <view class="agreement-section">
+    <view class="agreement-check" bindtap="toggleAgreement">
+      <image class="check-icon" src="{{agreed ? '/images/icons/checked.png' : '/images/icons/unchecked.png'}}" mode="aspectFit"></image>
+    </view>
+    <view class="agreement-text">
+      <text>我已阅读并同意</text>
+      <text class="link" bindtap="viewUserAgreement">《用户协议》</text>
+      <text>和</text>
+      <text class="link" bindtap="viewPrivacyPolicy">《隐私政策》</text>
+    </view>
+  </view>
+
+  <!-- 其他入口 -->
+  <view class="other-entry">
+    <text class="login-link" bindtap="goToLogin">已有账号？立即登录</text>
+  </view>
+
+  <!-- 陪伴师注册说明 -->
+  <view class="teacher-tips" wx:if="{{role === 'teacher'}}">
+    <view class="tips-title">成为陪伴师的要求：</view>
+    <view class="tips-list">
+      <text class="tip-item">? 年满18周岁，具有完全民事行为能力</text>
+      <text class="tip-item">? 具有相关教育或陪伴服务经验</text>
+      <text class="tip-item">? 通过平台资质审核认证</text>
+      <text class="tip-item">? 无不良记录，品行端正</text>
+    </view>
+  </view>
+</view>

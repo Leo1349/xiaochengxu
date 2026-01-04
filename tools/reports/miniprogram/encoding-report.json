@@ -1,0 +1,626 @@
+﻿[
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\components\\cloudTipModal\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  421
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\components\\cloudTipModal\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  48
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\components\\cloudTipModal\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  446
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\components\\cloudTipModal\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  1062
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\components\\rate\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  4179
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\components\\rate\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  27
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\components\\rate\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  1273
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\components\\rate\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  293
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\components\\tabbar\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  4634
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\components\\tabbar\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  27
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\components\\tabbar\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  471
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\components\\tabbar\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  570
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\case-detail\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  5484
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\case-detail\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  85
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\case-detail\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  4527
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\case-detail\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  4314
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\case-list\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  4857
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\case-list\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  84
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\case-list\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  2263
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\case-list\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  2771
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\chat\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  7337
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\chat\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  50
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\chat\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  4363
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\chat\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  3780
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\child-info\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  7039
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\child-info\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  50
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\child-info\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  7101
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\child-info\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  4986
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\customer-service\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  4048
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\customer-service\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  50
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\customer-service\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  3708
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\customer-service\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  3492
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\example\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  15216
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\example\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  87
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\example\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  11708
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\example\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  3192
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\feedback\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  3264
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\feedback\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  50
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\feedback\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  3090
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\feedback\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  3824
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\index\\index.js",
+        "Bom":  "utf8bom",
+        "Utf8Valid":  true,
+        "Length":  6280
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\index\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  81
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\index\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  4527
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\index\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  4689
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\login\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  6913
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\login\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  44
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\login\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  3225
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\login\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  2694
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\message\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  7060
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\message\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  44
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\message\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  2550
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\message\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  3028
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\mine\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  5177
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\mine\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  44
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\mine\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  5581
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\mine\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  3405
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\order-confirm\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  7736
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\order-confirm\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  50
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\order-confirm\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  7084
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\order-confirm\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  4486
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\order-detail\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  7854
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\order-detail\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  50
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\order-detail\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  9015
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\order-detail\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  4439
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\order-list\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  8054
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\order-list\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  84
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\order-list\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  5500
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\order-list\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  3107
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\rebate\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  7471
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\rebate\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  50
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\rebate\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  6038
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\rebate\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  5002
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\register\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  5320
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\register\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  44
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\register\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  4244
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\register\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  3231
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\search\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  7772
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\search\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  44
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\search\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  5509
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\search\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  5427
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\service\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  3487
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\service\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  78
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\service\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  3196
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\service\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  3021
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\settings\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  6359
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\settings\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  44
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\settings\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  4118
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\settings\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  4091
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\teacher-detail\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  6510
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\teacher-detail\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  50
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\teacher-detail\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  6339
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\teacher-detail\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  4832
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\teacher-resume\\index.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  10655
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\teacher-resume\\index.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  50
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\teacher-resume\\index.wxml",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  10185
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\pages\\teacher-resume\\index.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  5786
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\utils\\api.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  7292
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\utils\\util.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  8709
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\app.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  1333
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\app.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  1898
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\app.wxss",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  9305
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\envList.js",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  82
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\README.md",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  3956
+    },
+    {
+        "Path":  "G:\\xiaochengxu\\miniprogram\\sitemap.json",
+        "Bom":  null,
+        "Utf8Valid":  true,
+        "Length":  195
+    }
+]

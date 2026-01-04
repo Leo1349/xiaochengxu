@@ -1,0 +1,89 @@
+<!--pages/customer-service/index.wxml-->
+<view class="container">
+  <!-- 客服入口 -->
+  <view class="service-section">
+    <view class="service-card">
+      <view class="service-header">
+        <image class="service-logo" src="/images/icons/service.png" mode="aspectFit"></image>
+        <view class="service-info">
+          <text class="service-title">智伴家客服</text>
+          <text class="service-time">服务时间：{{serviceInfo.workTime}}</text>
+        </view>
+      </view>
+      
+      <view class="service-actions">
+        <button class="service-btn primary" open-type="contact">
+          <image class="btn-icon" src="/images/icons/message.png" mode="aspectFit"></image>
+          <text>在线客服</text>
+        </button>
+        <button class="service-btn" bindtap="callService">
+          <image class="btn-icon" src="/images/icons/service.png" mode="aspectFit"></image>
+          <text>电话咨询</text>
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 联系方式 -->
+  <view class="contact-section">
+    <view class="section-title">联系方式</view>
+    <view class="contact-list">
+      <view class="contact-item" bindtap="callService">
+        <image class="contact-icon" src="/images/icons/service.png" mode="aspectFit"></image>
+        <view class="contact-info">
+          <text class="contact-label">客服电话</text>
+          <text class="contact-value">{{serviceInfo.phone}}</text>
+        </view>
+        <text class="contact-action">拨打</text>
+      </view>
+      
+      <view class="contact-item" bindtap="copyWechat">
+        <image class="contact-icon" src="/images/icons/message.png" mode="aspectFit"></image>
+        <view class="contact-info">
+          <text class="contact-label">客服微信</text>
+          <text class="contact-value">{{serviceInfo.wechat}}</text>
+        </view>
+        <text class="contact-action">复制</text>
+      </view>
+      
+      <view class="contact-item" bindtap="copyEmail">
+        <image class="contact-icon" src="/images/icons/copy.png" mode="aspectFit"></image>
+        <view class="contact-info">
+          <text class="contact-label">客服邮箱</text>
+          <text class="contact-value">{{serviceInfo.email}}</text>
+        </view>
+        <text class="contact-action">复制</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 常见问题 -->
+  <view class="faq-section">
+    <view class="section-title">常见问题</view>
+    <view class="faq-list">
+      <view class="faq-item {{item.expanded ? 'expanded' : ''}}" wx:for="{{faqList}}" wx:key="id" data-id="{{item.id}}" bindtap="toggleFaq">
+        <view class="faq-question">
+          <text class="question-text">{{item.question}}</text>
+          <text class="arrow-icon {{item.expanded ? 'rotate' : ''}}">⌄</text>
+        </view>
+        <view class="faq-answer" wx:if="{{item.expanded}}">
+          <text>{{item.answer}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 意见反馈入口 -->
+  <view class="feedback-section">
+    <view class="feedback-card" bindtap="goToFeedback">
+      <view class="feedback-info">
+        <image class="feedback-icon" src="/images/icons/examples.png" mode="aspectFit"></image>
+        <view class="feedback-text">
+          <text class="feedback-title">意见反馈</text>
+          <text class="feedback-desc">您的建议是我们进步的动力</text>
+        </view>
+      </view>
+      <text class="arrow-icon">›</text>
+    </view>
+  </view>
+</view>
