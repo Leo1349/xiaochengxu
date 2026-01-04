@@ -12,6 +12,12 @@ Set-Location $repoRoot
 
 & git add -A
 
+& git diff --cached --quiet
+if ($LASTEXITCODE -eq 0) {
+  Write-Host 'Nothing to commit.'
+  exit 0
+}
+
 if ([string]::IsNullOrWhiteSpace($Message)) {
   $Message = "chore: snapshot $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
 }

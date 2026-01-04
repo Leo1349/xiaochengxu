@@ -20,6 +20,12 @@ if errorlevel 1 (
   exit /b 1
 )
 
+git diff --cached --quiet
+if %errorlevel%==0 (
+  echo Nothing to commit.
+  exit /b 0
+)
+
 set "MSG=%*"
 if "%MSG%"=="" (
   set "MSG=chore: snapshot %date% %time%"
