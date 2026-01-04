@@ -205,48 +205,64 @@ Page({
     }
     
     this.setData({ loading: true })
-    
-    wx.login({
+
+    // 推荐使用 wx.getUserProfile 获取用户信息
+    wx.getUserProfile({
+      desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中
       success: (res) => {
-        if (res.code) {
-          // 发送code到后端换取openid和session_key
-          // api.wxLogin({ code: res.code }).then(...)
-          
-          // 模拟登录
-          setTimeout(() => {
-            const userInfo = {
-              id: 1,
-              nickName: '微信用户',
-              avatarUrl: '/images/avatar.png',
-              currentRole: 'parent'
+        const userInfo = res.userInfo
+        
+        // 调用云函数登录/注册
+        wx.cloud.callFunction({
+          name: 'createUser',
+          data: {
+            userInfo: userInfo
+          },
+          success: (cloudRes) => {
+            if (cloudRes.result.success) {
+              const user = cloudRes.result.data
+              
+              // 保存登录状态
+              wx.setStorageSync('token', 'cloud_token_' + user._openid) // 简单模拟token
+              wx.setStorageSync('userInfo', user)
+              
+              // 更新全局状态
+              app.setUserInfo(user, user.currentRole || 'parent')
+              
+              this.setData({ loading: false })
+              
+              wx.showToast({
+                title: '登录成功',
+                icon: 'success'
+              })
+              
+              setTimeout(() => {
+                wx.navigateBack()
+              }, 1500)
+            } else {
+              console.error('登录失败', cloudRes.result.error)
+              this.setData({ loading: false })
+              wx.showToast({
+                title: '登录失败，请重试',
+                icon: 'none'
+              })
             }
-            
-            wx.setStorageSync('token', 'mock_token_' + Date.now())
-            wx.setStorageSync('userInfo', userInfo)
-            
+          },
+          fail: (err) => {
+            console.error('调用云函数失败', err)
             this.setData({ loading: false })
-            
             wx.showToast({
-              title: '登录成功',
-              icon: 'success'
+              title: '网络错误，请重试',
+              icon: 'none'
             })
-            
-            setTimeout(() => {
-              wx.navigateBack()
-            }, 1500)
-          }, 1000)
-        } else {
-          this.setData({ loading: false })
-          wx.showToast({
-            title: '登录失败，请重试',
-            icon: 'none'
-          })
-        }
+          }
+        })
       },
-      fail: () => {
+      fail: (err) => {
+        console.log('用户拒绝授权', err)
         this.setData({ loading: false })
         wx.showToast({
-          title: '登录失败，请重试',
+          title: '您取消了授权',
           icon: 'none'
         })
       }
