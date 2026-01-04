@@ -93,7 +93,53 @@ Page({
   loadTeacherList: function() {
     this.setData({ loading: true })
     
-    // 模拟数据，实际项目中应调用API
+    // 调用云函数获取首页数据
+    wx.cloud.callFunction({
+      name: 'getHomeData',
+      data: {},
+      success: res => {
+        if (res.result.success) {
+          const { banners, recommendTeachers } = res.result.data
+          
+          // 格式化 Banner 数据以适配前端
+          const formattedBanners = banners.map(item => ({
+            id: item.id || item._id,
+            image: item.url,
+            url: item.link
+          }))
+
+          // 格式化老师数据以适配前端
+          const formattedTeachers = recommendTeachers.map(item => ({
+            id: item._id, // 使用数据库的 _id
+            name: item.name,
+            avatar: item.avatar,
+            title: item.title,
+            rating: item.rating,
+            orderCount: item.orderCount,
+            tags: item.tags,
+            price: item.price,
+            priceUnit: item.priceUnit
+          }))
+
+          this.setData({
+            bannerList: formattedBanners.length > 0 ? formattedBanners : this.data.bannerList,
+            teacherList: formattedTeachers,
+            loading: false
+          })
+        } else {
+          console.error('获取首页数据失败', res.result.error)
+          this.useMockData() // 降级使用模拟数据
+        }
+      },
+      fail: err => {
+        console.error('调用云函数失败', err)
+        this.useMockData() // 降级使用模拟数据
+      }
+    })
+  },
+
+  // 降级使用模拟数据
+  useMockData: function() {
     const mockTeachers = [
       {
         id: 1,
@@ -126,16 +172,15 @@ Page({
         orderCount: 89,
         tags: ['心理疏导', '亲子沟通'],
         price: 180,
+        priceUnit: '小时',
         introduction: '心理学专业背景，善于与孩子沟通交流'
       }
     ]
     
-    setTimeout(() => {
-      this.setData({
-        teacherList: mockTeachers,
-        loading: false
-      })
-    }, 500)
+    this.setData({
+      teacherList: mockTeachers,
+      loading: false
+    })
   },
 
   // 切换角色
