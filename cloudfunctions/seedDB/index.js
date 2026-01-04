@@ -86,6 +86,10 @@ const banners = [
 
 exports.main = async (event, context) => {
   try {
+    // 0. 尝试创建集合（如果不存在）
+    try { await db.createCollection('teachers') } catch (e) { console.log('teachers collection might already exist') }
+    try { await db.createCollection('banners') } catch (e) { console.log('banners collection might already exist') }
+
     // 1. 初始化老师数据
     const teachersCollection = db.collection('teachers')
     // 先清空（可选，这里为了演示简单直接添加，实际生产慎用）
