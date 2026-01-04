@@ -88,6 +88,85 @@ Page({
   loadOrderList: function() {
     this.setData({ loading: true })
     
+    wx.cloud.callFunction({
+      name: 'getOrderList',
+      data: {
+        status: this.data.currentTab,
+        page: this.data.page,
+        pageSize: this.data.pageSize,
+        role: this.data.currentRole
+      },
+      success: res => {
+        if (res.result.success) {
+          const { list, hasMore } = res.result.data
+          
+          // 格式化订单数据
+          const formattedList = list.map(item => ({
+            id: item.orderNo, // 显示用订单号
+            _id: item._id, // 数据库ID
+            status: item.status,
+            statusText: this.getStatusText(item.status),
+            teacher: {
+              id: item.teacherId,
+              name: item.teacherName,
+              avatar: item.teacherAvatar || '/images/avatar.png'
+            },
+            child: {
+              name: item.childName,
+              // age: 8 // 暂时没有年龄数据
+            },
+            service: {
+              name: item.serviceName,
+              price: item.finalPrice // 显示最终价格
+            },
+            serviceDate: item.serviceDate,
+            serviceTime: item.serviceTime,
+            duration: item.serviceDuration,
+            totalPrice: item.finalPrice,
+            createTime: this.formatTime(new Date(item.createTime))
+          }))
+
+          this.setData({
+            orderList: this.data.page === 1 ? formattedList : this.data.orderList.concat(formattedList),
+            hasMore: hasMore,
+            loading: false
+          })
+        } else {
+          console.error('获取订单列表失败', res.result.error)
+          this.useMockData()
+        }
+      },
+      fail: err => {
+        console.error('调用云函数失败', err)
+        this.useMockData()
+      }
+    })
+  },
+
+  // 格式化时间
+  formatTime: function(date) {
+    const year = date.getFullYear()
+    const month = (date.getMonth() + 1).toString().padStart(2, '0')
+    const day = date.getDate().toString().padStart(2, '0')
+    const hour = date.getHours().toString().padStart(2, '0')
+    const minute = date.getMinutes().toString().padStart(2, '0')
+    return `${year}-${month}-${day} ${hour}:${minute}`
+  },
+
+  // 获取状态文本
+  getStatusText: function(status) {
+    const map = {
+      'pending': '待确认',
+      'confirmed': '待服务',
+      'ongoing': '进行中',
+      'completed': '已完成',
+      'cancelled': '已取消'
+    }
+    return map[status] || '未知状态'
+  },
+
+  // 降级使用模拟数据
+  useMockData: function() {
     // 模拟数据
     const mockOrders = [
       {
@@ -186,19 +265,17 @@ Page({
       }
     ]
     
-    setTimeout(() => {
-      // 根据tab筛选
-      let filteredOrders = mockOrders
-      if (this.data.currentTab !== 'all') {
-        filteredOrders = mockOrders.filter(o => o.status === this.data.currentTab)
-      }
-      
-      this.setData({
-        orderList: filteredOrders,
-        loading: false,
-        hasMore: false
-      })
-    }, 500)
+    // 根据tab筛选
+    let filteredOrders = mockOrders
+    if (this.data.currentTab !== 'all') {
+      filteredOrders = mockOrders.filter(o => o.status === this.data.currentTab)
+    }
+    
+    this.setData({
+      orderList: filteredOrders,
+      loading: false,
+      hasMore: false
+    })
   },
 
   // 加载更多订单
