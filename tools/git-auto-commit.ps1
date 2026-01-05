@@ -13,7 +13,7 @@ Set-Location $repoRoot
 $gitUserName = (& git config --get user.name 2>$null | Out-String).Trim()
 $gitUserEmail = (& git config --get user.email 2>$null | Out-String).Trim()
 if ([string]::IsNullOrWhiteSpace($gitUserName) -or [string]::IsNullOrWhiteSpace($gitUserEmail)) {
-  throw "Git user.name/user.email 未配置。请先运行：tools\\setup-git-config.ps1 -Name \"你的名字\" -Email \"you@example.com\""
+  throw 'Git user.name/user.email is not configured. Run: tools\setup-git-config.ps1 -Name YourName -Email you@example.com'
 }
 
 & git add -A

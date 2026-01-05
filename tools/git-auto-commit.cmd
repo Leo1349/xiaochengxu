@@ -31,6 +31,15 @@ if "%MSG%"=="" (
   set "MSG=chore: snapshot %date% %time%"
 )
 
+REM If the message is passed as a single quoted argument, %* includes the quotes.
+REM Strip one pair of surrounding quotes to avoid breaking IF parsing.
+if not "%MSG%"=="" (
+  if "%MSG:~0,1%"=="\"" (
+    set "MSG=%MSG:~1%"
+    if "%MSG:~-1%"=="\"" set "MSG=%MSG:~0,-1%"
+  )
+)
+
 git commit -m "%MSG%"
 if errorlevel 1 (
   echo git commit failed. Possibly nothing to commit.
