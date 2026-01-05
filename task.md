@@ -5,3 +5,4 @@
 - [x] Replace icons and commit changes <!-- id: 2 -->
 - [x] Verify changes <!-- id: 3 -->
 - [x] Revamp icons on Mine page <!-- id: 4 -->
+- [x] Revamp icons on Message page <!-- id: 5 -->

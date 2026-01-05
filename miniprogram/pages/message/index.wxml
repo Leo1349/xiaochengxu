@@ -52,7 +52,7 @@
 
   <!-- 空状态 -->
   <view class="empty-state" wx:if="{{messageList.length === 0 && !loading}}">
-    <image class="empty-icon" src="/images/icons/message.png" mode="aspectFit"></image>
+    <image class="empty-icon" src="/images/message/msg-empty.png" mode="aspectFit"></image>
     <text class="empty-text">暂无消息</text>
   </view>
 

@@ -1,45 +1,32 @@
-# Implementation Plan - Revamp Mine Page Icons
+# Implementation Plan - Revamp Message Page Icons
 
 ## Goal
 
-Replace the generic and repetitive icons on the "Mine" (User Profile) page with a new set of distinct, high-quality, and visually appealing icons.
+Replace the generic and repetitive icons on the "Message" page with a new set of distinct, high-quality, and context-aware icons.
 
 ## User Review Required
 
-- [ ] Confirm preference for "Colored" vs "Monochrome" icons. (I will proceed with **Colored/Modern Flat** style to improve aesthetics as requested).
+- [ ] None. Proceeding with the established "Modern/Colorful Flat" style.
 
 ## Proposed Changes
 
 ### 1. Generate New Icons
 
-Location: `miniprogram/images/mine/` (New directory to keep organized)
+Location: `miniprogram/images/message/` (New directory)
 
-**Quick Entry Row (Order Status):**
-
-- **Pending**: `order-pending.png` (Clipboard/Clock - Soft Orange)
-- **Processing**: `order-processing.png` (Clipboard/Gear - Soft Blue)
-- **Completed**: `order-completed.png` (Clipboard/Check - Soft Green)
-- **All Orders**: `order-all.png` (List Stack - Soft Purple)
-
-**Menu List (Services & Tools):**
-
-- **Child Info**: `menu-child.png` (Cute Child/Face - Warm Color)
-- **Success Cases**: `menu-case.png` (Trophy/Star - Yellow/Gold)
-- **My Resume**: `menu-resume.png` (Document/Profile - Blue)
-- **Rebate Center**: `menu-rebate.png` (Coin/Wallet - Red/Gold)
-- **Feedback**: `menu-feedback.png` (Speech Bubble/Pen - Cyan)
-- **Contact Service**: `menu-service.png` (Headset - Blue)
-- **Settings**: `menu-settings.png` (Gear - Gray/Blue)
-- **Switch Role**: `action-switch.png` (Swap Arrows - Blue)
+- **System Notification**: `msg-system.png` (Bell/Megaphone - Blue/Red accent)
+- **Order Reminder**: `msg-order.png` (Clipboard/List - Orange accent)
+- **Activity Notification**: `msg-activity.png` (Gift/Star - Red/Gold accent)
+- **Service Update**: `msg-service.png` (Check/Flag - Green accent)
+- **Empty State**: `msg-empty.png` (Illustration style empty box/envelope - Neutral Gray)
 
 ### 2. Code Updates
 
-- **File**: `miniprogram/pages/mine/index.js`
-  - Update `parentMenuList` and `teacherMenuList` to use the new icon paths.
-- **File**: `miniprogram/pages/mine/index.wxml`
-  - Update hardcoded `src` attributes in the "Quick Entry" section.
-  - Update "Switch Role" icon.
+- **File**: `miniprogram/pages/message/index.js`
+  - Update `mockMessages` to use the new icon paths.
+- **File**: `miniprogram/pages/message/index.wxml`
+  - Update the empty state image source.
 
 ## Verification
 
-- Manual verification via walkthrough to ensure all icons are loaded and unique.
+- Manual verification via walkthrough.

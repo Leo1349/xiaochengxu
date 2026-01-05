@@ -1,13 +1,14 @@
 # Icon Replacement Walkthrough
 
-I have replaced the default Tab Bar icons with a new custom-generated set in a modern, flat style.
+I have replaced the default Tab Bar icons with a new custom-generated set in a modern, flat style, and revamped the icons for the "Mine" and "Message" pages.
 
 ## Changes Overview
 
 - **Backup**: Created a git commit "Backup before icon replacement" to save the original state.
 - **Replacement**: Generated 8 high-quality PNG icons (4 active, 4 inactive) and replaced the existing files in `miniprogram/images/icons/`.
 - **Mine Page Revamp**: Generated 12 new context-aware, colorful icons for the 'Mine' page to replace generic gray icons.
-- **Commit**: Committed the changes.
+- **Message Page Revamp**: Updated Message page with 5 new/reused icons for system, order, activity, service notifications, and empty state.
+- **Commit**: Committed all changes.
 
 ## New Icons Preview
 
@@ -37,7 +38,13 @@ I have replaced the default Tab Bar icons with a new custom-generated set in a m
 | **Feedback** | ![Feedback](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/menu_feedback_1767606818281.png) | **Service** | ![Service](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/menu_service_1767606835861.png) |
 | **Settings** | ![Settings](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/menu_settings_1767606852623.png) | **Switch Role** | ![Switch](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/action_switch_1767606869369.png) |
 
+### Message Page Icons
+
+| System | Order | Activity | Service | Empty |
+| :---: | :---: | :---: | :---: | :---: |
+| ![System](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/msg_system_1767607787733.png) | ![Order](e:/Users/Administrator/Desktop/xiaochengxu/miniprogram/images/mine/order-pending.png) | ![Activity](e:/Users/Administrator/Desktop/xiaochengxu/miniprogram/images/mine/menu-case.png) | ![Service](e:/Users/Administrator/Desktop/xiaochengxu/miniprogram/images/mine/order-completed.png) | ![Empty](e:/Users/Administrator/Desktop/xiaochengxu/miniprogram/images/icons/message.png) |
+
 ## Verification
 
-- Validated that files are present in `miniprogram/images/icons/` and `miniprogram/images/mine/` with correct sizes.
+- Validated that files are present in `miniprogram/images/icons/`, `miniprogram/images/mine/`, and `miniprogram/images/message/` with correct sizes.
 - Git status confirms all files were updated.

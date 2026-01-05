@@ -6,7 +6,7 @@ Page({
   data: {
     // 消息列表
     messageList: [],
-    
+
     // 消息分类
     tabs: [
       { id: 'all', name: '全部消息' },
@@ -14,10 +14,10 @@ Page({
       { id: 'order', name: '订单消息' },
       { id: 'chat', name: '聊天消息' }
     ],
-    
+
     // 当前选中的tab
     currentTab: 'all',
-    
+
     // 未读消息数
     unreadCount: {
       all: 0,
@@ -25,18 +25,18 @@ Page({
       order: 0,
       chat: 0
     },
-    
+
     loading: false,
     hasMore: true,
     page: 1,
     pageSize: 20
   },
 
-  onLoad: function(options) {
+  onLoad: function (options) {
     this.loadMessages()
   },
 
-  onShow: function() {
+  onShow: function () {
     this.checkLoginStatus()
     // 更新tabbar选中状态
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
@@ -46,7 +46,7 @@ Page({
     }
   },
 
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
     this.setData({
       page: 1,
       hasMore: true,
@@ -56,14 +56,14 @@ Page({
     wx.stopPullDownRefresh()
   },
 
-  onReachBottom: function() {
+  onReachBottom: function () {
     if (this.data.hasMore && !this.data.loading) {
       this.loadMoreMessages()
     }
   },
 
   // 检查登录状态
-  checkLoginStatus: function() {
+  checkLoginStatus: function () {
     const token = wx.getStorageSync('token')
     if (!token) {
       wx.showModal({
@@ -83,9 +83,9 @@ Page({
   },
 
   // 加载消息列表
-  loadMessages: function() {
+  loadMessages: function () {
     this.setData({ loading: true })
-    
+
     // 模拟数据
     const mockMessages = [
       {
@@ -95,7 +95,7 @@ Page({
         content: '欢迎使用智伴家平台，祝您使用愉快！',
         time: '2026-01-01 10:00',
         isRead: false,
-        icon: '/images/icons/examples.png'
+        icon: '/images/message/msg-system.png'
       },
       {
         id: 2,
@@ -105,7 +105,7 @@ Page({
         time: '2026-01-01 09:30',
         isRead: false,
         orderId: '20260101001',
-        icon: '/images/icons/goods.png'
+        icon: '/images/message/msg-order.png'
       },
       {
         id: 3,
@@ -124,7 +124,7 @@ Page({
         content: '新用户专享：首单立减50元，快来体验吧！',
         time: '2025-12-31 18:00',
         isRead: true,
-        icon: '/images/icons/examples.png'
+        icon: '/images/message/msg-activity.png'
       },
       {
         id: 5,
@@ -134,10 +134,10 @@ Page({
         time: '2025-12-30 17:00',
         isRead: true,
         orderId: '20251230001',
-        icon: '/images/icons/goods-active.png'
+        icon: '/images/message/msg-service.png'
       }
     ]
-    
+
     setTimeout(() => {
       // 计算未读数
       const unreadCount = {
@@ -146,7 +146,7 @@ Page({
         order: mockMessages.filter(m => m.type === 'order' && !m.isRead).length,
         chat: mockMessages.filter(m => m.type === 'chat' && !m.isRead).length
       }
-      
+
       this.setData({
         messageList: mockMessages,
         unreadCount: unreadCount,
@@ -156,7 +156,7 @@ Page({
   },
 
   // 加载更多消息
-  loadMoreMessages: function() {
+  loadMoreMessages: function () {
     this.setData({
       page: this.data.page + 1
     })
@@ -168,7 +168,7 @@ Page({
   },
 
   // 切换tab
-  switchTab: function(e) {
+  switchTab: function (e) {
     const tab = e.currentTarget.dataset.tab
     this.setData({
       currentTab: tab
@@ -176,7 +176,7 @@ Page({
   },
 
   // 获取过滤后的消息列表
-  getFilteredMessages: function() {
+  getFilteredMessages: function () {
     if (this.data.currentTab === 'all') {
       return this.data.messageList
     }
@@ -184,14 +184,14 @@ Page({
   },
 
   // 点击消息
-  onMessageTap: function(e) {
+  onMessageTap: function (e) {
     const messageId = e.currentTarget.dataset.id
     const message = this.data.messageList.find(m => m.id == messageId)
     if (!message) return
-    
+
     // 标记为已读
     this.markAsRead(message.id)
-    
+
     // 根据消息类型跳转
     switch (message.type) {
       case 'order':
@@ -220,14 +220,14 @@ Page({
   },
 
   // 标记消息为已读
-  markAsRead: function(messageId) {
+  markAsRead: function (messageId) {
     const messageList = this.data.messageList.map(m => {
       if (m.id === messageId) {
         m.isRead = true
       }
       return m
     })
-    
+
     // 重新计算未读数
     const unreadCount = {
       all: messageList.filter(m => !m.isRead).length,
@@ -235,7 +235,7 @@ Page({
       order: messageList.filter(m => m.type === 'order' && !m.isRead).length,
       chat: messageList.filter(m => m.type === 'chat' && !m.isRead).length
     }
-    
+
     this.setData({
       messageList: messageList,
       unreadCount: unreadCount
@@ -243,12 +243,12 @@ Page({
   },
 
   // 全部标记为已读
-  markAllAsRead: function() {
+  markAllAsRead: function () {
     const messageList = this.data.messageList.map(m => {
       m.isRead = true
       return m
     })
-    
+
     this.setData({
       messageList: messageList,
       unreadCount: {
@@ -258,7 +258,7 @@ Page({
         chat: 0
       }
     })
-    
+
     wx.showToast({
       title: '已全部标记为已读',
       icon: 'success'
@@ -266,7 +266,7 @@ Page({
   },
 
   // 删除消息
-  deleteMessage: function(e) {
+  deleteMessage: function (e) {
     const id = e.currentTarget.dataset.id
     wx.showModal({
       title: '提示',
