@@ -1,49 +1,45 @@
-# Implementation Plan - Icon Replacement
+# Implementation Plan - Revamp Mine Page Icons
 
 ## Goal
 
-Replace the existing TabBar icons in the WeChat Mini Program with new, high-quality icons downloaded from the internet. Ensure a git commit is made before applying changes.
+Replace the generic and repetitive icons on the "Mine" (User Profile) page with a new set of distinct, high-quality, and visually appealing icons.
 
 ## User Review Required
 
-- [ ] Confirm if specific style is desired (I will aim for "modern/clean blue" based on existing theme).
+- [ ] Confirm preference for "Colored" vs "Monochrome" icons. (I will proceed with **Colored/Modern Flat** style to improve aesthetics as requested).
 
 ## Proposed Changes
 
-### Icons to Replace
+### 1. Generate New Icons
 
-Location: `miniprogram/images/icons/`
+Location: `miniprogram/images/mine/` (New directory to keep organized)
 
-**Home Tab**
+**Quick Entry Row (Order Status):**
 
-- `home.png` -> [New Home Icon]
-- `home-active.png` -> [New Home Active Icon]
+- **Pending**: `order-pending.png` (Clipboard/Clock - Soft Orange)
+- **Processing**: `order-processing.png` (Clipboard/Gear - Soft Blue)
+- **Completed**: `order-completed.png` (Clipboard/Check - Soft Green)
+- **All Orders**: `order-all.png` (List Stack - Soft Purple)
 
-**Service Tab**
+**Menu List (Services & Tools):**
 
-- `service.png` -> [New Service Icon]
-- `service-active.png` -> [New Service Active Icon]
+- **Child Info**: `menu-child.png` (Cute Child/Face - Warm Color)
+- **Success Cases**: `menu-case.png` (Trophy/Star - Yellow/Gold)
+- **My Resume**: `menu-resume.png` (Document/Profile - Blue)
+- **Rebate Center**: `menu-rebate.png` (Coin/Wallet - Red/Gold)
+- **Feedback**: `menu-feedback.png` (Speech Bubble/Pen - Cyan)
+- **Contact Service**: `menu-service.png` (Headset - Blue)
+- **Settings**: `menu-settings.png` (Gear - Gray/Blue)
+- **Switch Role**: `action-switch.png` (Swap Arrows - Blue)
 
-**Message Tab**
+### 2. Code Updates
 
-- `message.png` -> [New Message Icon]
-- `message-active.png` -> [New Message Active Icon]
+- **File**: `miniprogram/pages/mine/index.js`
+  - Update `parentMenuList` and `teacherMenuList` to use the new icon paths.
+- **File**: `miniprogram/pages/mine/index.wxml`
+  - Update hardcoded `src` attributes in the "Quick Entry" section.
+  - Update "Switch Role" icon.
 
-**Mine Tab**
+## Verification
 
-- `mine.png` -> [New User Icon]
-- `mine-active.png` -> [New User Active Icon]
-
-### Process
-
-1. **Commit Current State**: `git add .` && `git commit -m "Backup before icon replacement"`
-2. **Find Icons**: Search for a consistent set of 4 icons (Home, Service, Message, User) in both inactive (gray/outline) and active (blue/filled) states.
-3. **Download**: Save new icons to `miniprogram/images/icons/`, overwriting the old ones.
-4. **Verify**: Check if file names match exactly to avoid modifying `app.json` (unless necessary).
-
-## Verification Plan
-
-### Manual Verification
-
-- View the files in the directory to check they are valid images.
-- (Optionally) Ask user to preview in IDE.
+- Manual verification via walkthrough to ensure all icons are loaded and unique.

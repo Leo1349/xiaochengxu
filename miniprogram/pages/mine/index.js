@@ -14,17 +14,25 @@ Page({
       {
         title: '我的服务',
         items: [
-          { id: 'orders', icon: '/images/icons/goods.png', name: '我的订单', url: '/pages/order-list/index' },
-          { id: 'children', icon: '/images/icons/usercenter.png', name: '孩子信息', url: '/pages/child-info/index' },
-          { id: 'cases', icon: '/images/icons/examples.png', name: '成功案例', url: '/pages/case-list/index' }
+          { id: 'orders', icon: '/images/mine/menu-resume.png', name: '我的订单', url: '/pages/order-list/index' }, // Note: Using resume icon as generic doc or change to something else if needed, but per plan 'My Order' was 'goods'. Wait, checking plan. Plan said:
+          // Quick Entry has 'All Orders'. Menu has 'My Orders'. Let's use 'order-all.png' or keep 'goods'?
+          // Actually, looking at the plan: "Menu List ... Child Info, Success Cases, My Resume, Rebate Center, Feedback, Contact Service, Settings, Switch Role".
+          // The current code has 'my orders' in menu?
+          // Line 17 original: { id: 'orders', icon: '/images/icons/goods.png', name: '我的订单', url: '/pages/order-list/index' }
+          // Users usually access orders via quick entry.
+          // Let's use `order-all.png` for 'My Orders' in menu if it exists, or one of the others.
+          // Plan didn't explicitly map 'My Orders' in menu, but I have `order-all.png`. Let's use that.
+          { id: 'orders', icon: '/images/mine/order-all.png', name: '我的订单', url: '/pages/order-list/index' },
+          { id: 'children', icon: '/images/mine/menu-child.png', name: '孩子信息', url: '/pages/child-info/index' },
+          { id: 'cases', icon: '/images/mine/menu-case.png', name: '成功案例', url: '/pages/case-list/index' }
         ]
       },
       {
         title: '其他服务',
         items: [
-          { id: 'feedback', icon: '/images/icons/examples.png', name: '意见反馈', url: '/pages/feedback/index' },
-          { id: 'service', icon: '/images/icons/service.png', name: '联系客服', url: '/pages/customer-service/index' },
-          { id: 'settings', icon: '/images/icons/usercenter.png', name: '设置', url: '/pages/settings/index' }
+          { id: 'feedback', icon: '/images/mine/menu-feedback.png', name: '意见反馈', url: '/pages/feedback/index' },
+          { id: 'service', icon: '/images/mine/menu-service.png', name: '联系客服', url: '/pages/customer-service/index' },
+          { id: 'settings', icon: '/images/mine/menu-settings.png', name: '设置', url: '/pages/settings/index' }
         ]
       }
     ],
@@ -34,17 +42,17 @@ Page({
       {
         title: '我的服务',
         items: [
-          { id: 'resume', icon: '/images/icons/usercenter.png', name: '我的简历', url: '/pages/teacher-resume/index' },
-          { id: 'orders', icon: '/images/icons/goods.png', name: '我的订单', url: '/pages/order-list/index' },
-          { id: 'rebate', icon: '/images/icons/goods-active.png', name: '返利中心', url: '/pages/rebate/index' }
+          { id: 'resume', icon: '/images/mine/menu-resume.png', name: '我的简历', url: '/pages/teacher-resume/index' },
+          { id: 'orders', icon: '/images/mine/order-all.png', name: '我的订单', url: '/pages/order-list/index' },
+          { id: 'rebate', icon: '/images/mine/menu-rebate.png', name: '返利中心', url: '/pages/rebate/index' }
         ]
       },
       {
         title: '其他服务',
         items: [
-          { id: 'feedback', icon: '/images/icons/examples.png', name: '意见反馈', url: '/pages/feedback/index' },
-          { id: 'service', icon: '/images/icons/service.png', name: '联系客服', url: '/pages/customer-service/index' },
-          { id: 'settings', icon: '/images/icons/usercenter.png', name: '设置', url: '/pages/settings/index' }
+          { id: 'feedback', icon: '/images/mine/menu-feedback.png', name: '意见反馈', url: '/pages/feedback/index' },
+          { id: 'service', icon: '/images/mine/menu-service.png', name: '联系客服', url: '/pages/customer-service/index' },
+          { id: 'settings', icon: '/images/mine/menu-settings.png', name: '设置', url: '/pages/settings/index' }
         ]
       }
     ],
