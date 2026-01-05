@@ -69,17 +69,17 @@ const teachers = [
 const banners = [
   {
     id: 1,
-    url: '/images/banner1.png',
+    url: '/images/ai_example1.png',
     link: ''
   },
   {
     id: 2,
-    url: '/images/banner2.png',
+    url: '/images/ai_example2.png',
     link: ''
   },
   {
     id: 3,
-    url: '/images/banner3.png',
+    url: '/images/cloud_dev.png',
     link: ''
   }
 ]
