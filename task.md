@@ -6,3 +6,4 @@
 - [x] Verify changes <!-- id: 3 -->
 - [x] Revamp icons on Mine page <!-- id: 4 -->
 - [x] Revamp icons on Message page <!-- id: 5 -->
+- [/] Fix icon on Review/Order page <!-- id: 6 -->
