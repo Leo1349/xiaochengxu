@@ -23,8 +23,8 @@
 }
 
 .search-icon {
-  width: 32rpx;
-  height: 32rpx;
+  width: 36rpx;
+  height: 36rpx;
   margin-right: 12rpx;
 }
 
@@ -45,8 +45,8 @@
 }
 
 .switch-icon {
-  width: 28rpx;
-  height: 28rpx;
+  width: 32rpx;
+  height: 32rpx;
   margin-left: 10rpx;
 }
 
@@ -61,8 +61,8 @@
 }
 
 .notice-icon {
-  width: 28rpx;
-  height: 28rpx;
+  width: 32rpx;
+  height: 32rpx;
   margin-right: 12rpx;
 }
 
@@ -111,8 +111,8 @@
 }
 
 .menu-icon {
-  width: 56rpx;
-  height: 56rpx;
+  width: 64rpx;
+  height: 64rpx;
   margin-bottom: 10rpx;
 }
 
@@ -163,8 +163,8 @@
 }
 
 .service-icon {
-  width: 52rpx;
-  height: 52rpx;
+  width: 60rpx;
+  height: 60rpx;
   margin-bottom: 10rpx;
 }
 

@@ -25,17 +25,17 @@
     "rate": "/components/rate/index"
   },
   "window": {
-    "backgroundColor": "#F6F6F6",
+    "backgroundColor": "#F7F8FA",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#4A90D9",
+    "navigationBarBackgroundColor": "#4080FF",
     "navigationBarTitleText": "智伴家",
     "navigationBarTextStyle": "white"
   },
   "tabBar": {
-    "color": "#999999",
-    "selectedColor": "#4A90D9",
+    "color": "#9CA3AF",
+    "selectedColor": "#4080FF",
     "backgroundColor": "#ffffff",
-    "borderStyle": "black",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/index/index",

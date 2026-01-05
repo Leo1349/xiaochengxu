@@ -102,11 +102,19 @@ Page({
           const { banners, recommendTeachers } = res.result.data
           
           // 格式化 Banner 数据以适配前端
-          const formattedBanners = banners.map(item => ({
-            id: item.id || item._id,
-            image: item.url,
-            url: item.link
-          }))
+          const formattedBanners = banners.map(item => {
+            let imageUrl = item.url;
+            // Fix for old data in DB pointing to missing images
+            if (imageUrl === '/images/banner1.png') imageUrl = '/images/ai_example1.png';
+            if (imageUrl === '/images/banner2.png') imageUrl = '/images/ai_example2.png';
+            if (imageUrl === '/images/banner3.png') imageUrl = '/images/cloud_dev.png';
+            
+            return {
+              id: item.id || item._id,
+              image: imageUrl,
+              url: item.link
+            };
+          })
 
           // 格式化老师数据以适配前端
           const formattedTeachers = recommendTeachers.map(item => ({
