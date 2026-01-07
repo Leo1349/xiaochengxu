@@ -6,30 +6,30 @@ Page({
   data: {
     // 陪伴师ID
     teacherId: null,
-    
+
     // 陪伴师信息
     teacher: null,
-    
+
     // 服务列表
     services: [],
-    
+
     // 评价列表
     reviews: [],
-    
+
     // 成功案例
     cases: [],
-    
+
     // 当前Tab
     currentTab: 'info', // info: 简介, service: 服务, review: 评价, case: 案例
-    
+
     // 是否已收藏
     isFavorite: false,
-    
+
     // 加载状态
     loading: true
   },
 
-  onLoad: function(options) {
+  onLoad: function (options) {
     if (options.id) {
       this.setData({
         teacherId: options.id
@@ -39,9 +39,9 @@ Page({
   },
 
   // 加载陪伴师详情
-  loadTeacherDetail: function(id) {
+  loadTeacherDetail: function (id) {
     this.setData({ loading: true })
-    
+
     // 调用云函数获取详情
     wx.cloud.callFunction({
       name: 'getTeacherDetail',
@@ -49,11 +49,17 @@ Page({
       success: res => {
         if (res.result.success) {
           const { teacher, reviews, services, cases } = res.result.data
-          
+
           // 格式化老师数据
+          let avatarUrl = teacher.avatar;
+          if (!avatarUrl || avatarUrl === '/images/avatar.png' || avatarUrl === '/images/icons/default-avatar.png') {
+            avatarUrl = '/images/default_teacher_avatar.png';
+          }
+
           const formattedTeacher = {
             ...teacher,
-            id: teacher._id // 确保 id 字段存在
+            id: teacher._id, // 确保 id 字段存在
+            avatar: avatarUrl
           }
 
           this.setData({
@@ -76,12 +82,12 @@ Page({
   },
 
   // 降级使用模拟数据
-  useMockData: function(id) {
+  useMockData: function (id) {
     // 模拟数据
     const mockTeacher = {
       id: id,
       name: '张老师',
-      avatar: '/images/avatar.png',
+      avatar: '/images/default_teacher_avatar.png',
       title: '专业陪伴师',
       rating: 4.9,
       orderCount: 128,
@@ -100,18 +106,18 @@ Page({
         '/images/cloud_dev.png'
       ]
     }
-    
+
     const mockServices = [
       { id: 1, name: '学科辅导', price: 150, unit: '小时', description: '小学全科、初中数学英语辅导' },
       { id: 2, name: '作业陪伴', price: 100, unit: '小时', description: '陪伴孩子完成作业，培养良好学习习惯' },
       { id: 3, name: '兴趣培养', price: 120, unit: '小时', description: '绘画、书法等兴趣爱好培养' }
     ]
-    
+
     const mockReviews = [
       {
         id: 1,
         userName: '小明妈妈',
-        userAvatar: '/images/avatar.png',
+        userAvatar: '/images/default_teacher_avatar.png',
         rating: 5,
         content: '张老师非常有耐心，孩子很喜欢，学习成绩也有明显进步！',
         time: '2025-12-28',
@@ -120,7 +126,7 @@ Page({
       {
         id: 2,
         userName: '乐乐爸爸',
-        userAvatar: '/images/avatar.png',
+        userAvatar: '/images/default_teacher_avatar.png',
         rating: 5,
         content: '老师很专业，对孩子很有方法，推荐！',
         time: '2025-12-25',
@@ -129,14 +135,14 @@ Page({
       {
         id: 3,
         userName: '小红妈妈',
-        userAvatar: '/images/avatar.png',
+        userAvatar: '/images/default_teacher_avatar.png',
         rating: 4,
         content: '服务态度好，孩子的学习习惯有所改善。',
         time: '2025-12-20',
         serviceName: '习惯养成'
       }
     ]
-    
+
     const mockCases = [
       {
         id: 1,
@@ -151,7 +157,7 @@ Page({
         description: '引导孩子爱上阅读，每天坚持阅读30分钟'
       }
     ]
-    
+
     this.setData({
       teacher: mockTeacher,
       services: mockServices,
@@ -162,7 +168,7 @@ Page({
   },
 
   // 切换Tab
-  switchTab: function(e) {
+  switchTab: function (e) {
     const tab = e.currentTarget.dataset.tab
     this.setData({
       currentTab: tab
@@ -170,7 +176,7 @@ Page({
   },
 
   // 收藏/取消收藏
-  toggleFavorite: function() {
+  toggleFavorite: function () {
     const token = wx.getStorageSync('token')
     if (!token) {
       wx.showModal({
@@ -187,11 +193,11 @@ Page({
       })
       return
     }
-    
+
     this.setData({
       isFavorite: !this.data.isFavorite
     })
-    
+
     wx.showToast({
       title: this.data.isFavorite ? '收藏成功' : '已取消收藏',
       icon: 'success'
@@ -199,7 +205,7 @@ Page({
   },
 
   // 联系陪伴师
-  contactTeacher: function() {
+  contactTeacher: function () {
     const token = wx.getStorageSync('token')
     if (!token) {
       wx.showModal({
@@ -216,14 +222,14 @@ Page({
       })
       return
     }
-    
+
     wx.navigateTo({
       url: '/pages/chat/index?teacherId=' + this.data.teacherId
     })
   },
 
   // 立即预约
-  bookNow: function(e) {
+  bookNow: function (e) {
     const token = wx.getStorageSync('token')
     if (!token) {
       wx.showModal({
@@ -240,7 +246,7 @@ Page({
       })
       return
     }
-    
+
     const serviceId = e.currentTarget.dataset.serviceid || ''
     wx.navigateTo({
       url: '/pages/order-confirm/index?teacherId=' + this.data.teacherId + '&serviceId=' + serviceId
@@ -248,7 +254,7 @@ Page({
   },
 
   // 查看案例详情
-  viewCaseDetail: function(e) {
+  viewCaseDetail: function (e) {
     const id = e.currentTarget.dataset.id
     wx.navigateTo({
       url: '/pages/case-detail/index?id=' + id
@@ -256,7 +262,7 @@ Page({
   },
 
   // 预览图片
-  previewImage: function(e) {
+  previewImage: function (e) {
     const current = e.currentTarget.dataset.src
     wx.previewImage({
       current: current,
@@ -265,7 +271,7 @@ Page({
   },
 
   // 分享
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     return {
       title: this.data.teacher ? this.data.teacher.name + ' - 智伴家专业陪伴师' : '智伴家专业陪伴师',
       path: '/pages/teacher-detail/index?id=' + this.data.teacherId,

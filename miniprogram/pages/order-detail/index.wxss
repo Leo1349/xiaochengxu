@@ -508,6 +508,7 @@
   line-height: 1.6;
 }
 
+.review-time {
   font-size: 22rpx;
   color: #999999;
 }

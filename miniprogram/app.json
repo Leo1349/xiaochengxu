@@ -40,26 +40,26 @@
       {
         "pagePath": "pages/index/index",
         "text": "首页",
-        "iconPath": "images/icons/home.png",
-        "selectedIconPath": "images/icons/home-active.png"
+        "iconPath": "images/icons/home_v2.png",
+        "selectedIconPath": "images/icons/home-active_v2.png"
       },
       {
         "pagePath": "pages/service/index",
         "text": "服务",
-        "iconPath": "images/icons/service.png",
-        "selectedIconPath": "images/icons/service-active.png"
+        "iconPath": "images/icons/service_v2.png",
+        "selectedIconPath": "images/icons/service-active_v2.png"
       },
       {
         "pagePath": "pages/message/index",
         "text": "消息",
-        "iconPath": "images/icons/message.png",
-        "selectedIconPath": "images/icons/message-active.png"
+        "iconPath": "images/icons/message_v2.png",
+        "selectedIconPath": "images/icons/message-active_v2.png"
       },
       {
         "pagePath": "pages/mine/index",
         "text": "我的",
-        "iconPath": "images/icons/mine.png",
-        "selectedIconPath": "images/icons/mine-active.png"
+        "iconPath": "images/icons/mine_v2.png",
+        "selectedIconPath": "images/icons/mine-active_v2.png"
       }
     ]
   },

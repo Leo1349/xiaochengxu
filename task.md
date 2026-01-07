@@ -1,9 +1,9 @@
 # Task List
 
-- [ ] Explore project structure to identify icons <!-- id: 0 -->
-- [x] Research and download replacement icons <!-- id: 1 -->
-- [x] Replace icons and commit changes <!-- id: 2 -->
-- [x] Verify changes <!-- id: 3 -->
-- [x] Revamp icons on Mine page <!-- id: 4 -->
-- [x] Revamp icons on Message page <!-- id: 5 -->
-- [/] Fix icon on Review/Order page <!-- id: 6 -->
+- [x] Generate Default Teacher Avatar <!-- id: 11 -->
+- [x] Generate Quick Nav Icons <!-- id: 12 -->
+- [x] Generate Service Type Icons <!-- id: 13 -->
+- [x] Generate UI Utility Icons <!-- id: 14 -->
+- [x] Update index.js with new paths <!-- id: 15 -->
+- [x] Update index.wxml static images <!-- id: 16 -->
+- [x] Verify visual changes <!-- id: 17 -->

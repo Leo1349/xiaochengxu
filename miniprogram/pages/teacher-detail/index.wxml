@@ -99,9 +99,9 @@
       <view class="review-list">
         <view class="review-item" wx:for="{{reviews}}" wx:key="id">
           <view class="review-header">
-            <image class="reviewer-avatar" src="{{item.userAvatar}}" mode="aspectFill"></image>
-            <view class="reviewer-info">
-              <text class="reviewer-name">{{item.userName}}</text>
+            <image class="review-avatar" src="{{item.userAvatar}}" mode="aspectFill"></image>
+            <view class="review-info">
+              <text class="review-name">{{item.userName}}</text>
               <view class="review-meta">
                 <text class="review-service">{{item.serviceName}}</text>
                 <text class="review-time">{{item.time}}</text>

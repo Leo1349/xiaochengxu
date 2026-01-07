@@ -1,50 +1,64 @@
-# Icon Replacement Walkthrough
+# Home Page Icon Revamp Walkthrough
 
-I have replaced the default Tab Bar icons with a new custom-generated set in a modern, flat style, and revamped the icons for the "Mine" and "Message" pages.
+## Goal
 
-## Changes Overview
+To improve the visual aesthetic of the Home page and provide a professional default avatar for teachers.
 
-- **Backup**: Created a git commit "Backup before icon replacement" to save the original state.
-- **Replacement**: Generated 8 high-quality PNG icons (4 active, 4 inactive) and replaced the existing files in `miniprogram/images/icons/`.
-- **Mine Page Revamp**: Generated 12 new context-aware, colorful icons for the 'Mine' page to replace generic gray icons.
-- **Message Page Revamp**: Updated Message page with 5 new/reused icons for system, order, activity, service notifications, and empty state.
-- **Commit**: Committed all changes.
+## Changes
 
-## New Icons Preview
+1. **Generated Assets**: Created 14 high-quality, modern, flat-style icons and 1 avatar.
+    - **Default Avatar**: Mature, professional female cartoon character.
+    - **Quick Nav**: Find Tutor, My Orders, Child Info, Success Cases, Resume, Rebate.
+    - **Service Types**: Subject Tutoring, Interest Cultivation, Habit Formation, Psychological Counseling.
+    - **UI Utilities**: Search, Switch Role, Notice.
+2. **Updated `index.js`**:
+    - Mapped `menuList` to new icons.
+    - Mapped `teacherMenuList` to new icons.
+    - Mapped `serviceTypes` to new icons.
+    - Updated logic to use `default_teacher_avatar.png` when no avatar is present.
+3. **Updated `index.wxml`**:
+    - Replaced static icons in the Header (Search, Switch Role) and Notice Bar.
 
-### Tab Bar Icons
+## Visual Verification
 
-| Tab | Inactive (Gray) | Active (Blue) |
-| :--- | :---: | :---: |
-| **Home** | ![Home Inactive](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/home_icon_inactive_1767605927435.png) | ![Home Active](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/home_icon_active_1767605955944.png) |
-| **Service** | ![Service Inactive](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/service_icon_inactive_1767606002513.png) | ![Service Active](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/service_icon_active_1767606021687.png) |
-| **Message** | ![Message Inactive](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/message_icon_inactive_1767606041694.png) | ![Message Active](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/message_icon_active_1767606057624.png) |
-| **Mine** | ![Mine Inactive](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/mine_icon_inactive_1767606072142.png) | ![Mine Active](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/mine_icon_active_1767606086737.png) |
+### Default Avatar
 
-### Mine Page Icons
+![Default Teacher Avatar](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/default_teacher_avatar_1767663086880.png)
 
-**Quick Entry Row**
+### Quick Nav Icons
 
-| Pending | Processing | Completed | All Orders |
+| Find Tutor | Orders | Child Info | Success Cases | Resume | Rebate |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| ![Find Tutor](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/nav_find_tutor_1767663109591.png) | ![Orders](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/nav_orders_1767663128034.png) | ![Child](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/nav_child_1767663158646.png) | ![Cases](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/nav_cases_1767663178049.png) | ![Resume](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/nav_resume_1767663193530.png) | ![Rebate](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/nav_rebate_1767663210464.png) |
+
+### Service Type Icons
+
+| Subject | Interest | Habit | Psych |
 | :---: | :---: | :---: | :---: |
-| ![Pending](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/order_pending_1767606635131.png) | ![Processing](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/order_processing_1767606651358.png) | ![Completed](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/order_completed_1767606667164.png) | ![All](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/order_all_1767606695397.png) |
+| ![Subject](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/service_subject_1767663237893.png) | ![Interest](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/service_interest_1767663268037.png) | ![Habit](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/service_habit_1767663284669.png) | ![Psych](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/service_psych_1767663305010.png) |
 
-**Menu List**
+### UI Utility Icons
 
-| Item | Icon | Item | Icon |
-| :--- | :---: | :--- | :---: |
-| **Child Info** | ![Child](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/menu_child_1767606728309.png) | **Success Cases** | ![Case](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/menu_case_1767606746809.png) |
-| **Resume** | ![Resume](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/menu_resume_1767606766847.png) | **Rebate** | ![Rebate](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/menu_rebate_1767606787138.png) |
-| **Feedback** | ![Feedback](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/menu_feedback_1767606818281.png) | **Service** | ![Service](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/menu_service_1767606835861.png) |
-| **Settings** | ![Settings](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/menu_settings_1767606852623.png) | **Switch Role** | ![Switch](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/action_switch_1767606869369.png) |
+| Search | Switch Role | Notice |
+| :---: | :---: | :---: |
+| ![Search](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/search_icon_1767663334788.png) | ![Switch](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/switch_role_1767663353557.png) | ![Notice](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/notice_icon_1767663370123.png) |
 
-### Message Page Icons
+---
 
-| System | Order | Activity | Service | Empty |
-| :---: | :---: | :---: | :---: | :---: |
-| ![System](C:/Users/Administrator/.gemini/antigravity/brain/52a73f99-b2c1-440a-bbd2-dd2b686749a6/msg_system_1767607787733.png) | ![Order](e:/Users/Administrator/Desktop/xiaochengxu/miniprogram/images/mine/order-pending.png) | ![Activity](e:/Users/Administrator/Desktop/xiaochengxu/miniprogram/images/mine/menu-case.png) | ![Service](e:/Users/Administrator/Desktop/xiaochengxu/miniprogram/images/mine/order-completed.png) | ![Empty](e:/Users/Administrator/Desktop/xiaochengxu/miniprogram/images/icons/message.png) |
+# TabBar Icon Size Fix Walkthrough
 
-## Verification
+## Issue Noticed
 
-- Validated that files are present in `miniprogram/images/icons/`, `miniprogram/images/mine/`, and `miniprogram/images/message/` with correct sizes.
-- Git status confirms all files were updated.
+The `miniprogram/app.json` configuration for tabBar icons pointed to files that exceeded the 40KB specific size limit for WeChat Mini Programs. Although the files were resized, the IDE continued to report the error, likely due to caching.
+
+## Actions Taken
+
+1. **Identified Problematic Files:** Scanned `miniprogram/images/icons/` folder and found 8 icons exceeding 40KB.
+2. **Automated Resizing:** Created a Python script (`resize_icons.py`) to resize images to 81x81 pixels and optimized them (all now < 5KB).
+3. **Cache Busting:**
+    - Renamed all 8 tabBar icons from `*.png` to `*_v2.png`.
+4. **Configuration Update:** Updated `miniprogram/app.json` to reference the new `_v2` filenames.
+
+## Result
+
+Definitively resolved the 40KB size limit error.
