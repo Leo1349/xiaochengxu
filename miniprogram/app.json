@@ -19,10 +19,14 @@
     "pages/settings/index",
     "pages/chat/index",
     "pages/search/index",
-    "pages/rebate/index"
+    "pages/rebate/index",
+    "pages/admin/login/index",
+    "pages/admin/order-list/index",
+    "pages/admin/order-detail/index"
   ],
   "usingComponents": {
-    "rate": "/components/rate/index"
+    "rate": "/components/rate/index",
+    "privacy-popup": "/components/privacy-popup/index"
   },
   "window": {
     "backgroundColor": "#F7F8FA",

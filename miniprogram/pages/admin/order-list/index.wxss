@@ -1,0 +1,138 @@
+.container {
+  height: 100vh;
+  background-color: #F7F8FA;
+  display: flex;
+  flex-direction: column;
+}
+
+.tabs {
+  display: flex;
+  background: #fff;
+  padding: 0 30rpx;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 30rpx 0;
+  font-size: 28rpx;
+  color: #666;
+  position: relative;
+}
+
+.tab-item.active {
+  color: #4080FF;
+  font-weight: 500;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40rpx;
+  height: 4rpx;
+  background: #4080FF;
+  border-radius: 2rpx;
+}
+
+.order-list {
+  flex: 1;
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+
+.order-item {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #F5F7FA;
+  margin-bottom: 20rpx;
+}
+
+.order-no {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.order-status {
+  font-size: 26rpx;
+  font-weight: 500;
+}
+
+.status-pending { color: #FF9800; }
+.status-confirmed, .status-ongoing { color: #4080FF; }
+.status-completed { color: #4CAF50; }
+.status-cancelled { color: #999; }
+
+.order-content {
+  margin-bottom: 20rpx;
+}
+
+.info-row {
+  display: flex;
+  margin-bottom: 12rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.info-row .label {
+  color: #999;
+  width: 100rpx;
+}
+
+.info-row .value {
+  flex: 1;
+}
+
+.price-row .value {
+  color: #FE2C55;
+  font-weight: bold;
+}
+
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #F5F7FA;
+}
+
+.create-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.action-btn {
+  margin: 0;
+  padding: 0 30rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  background: #4080FF;
+  color: #fff;
+  font-size: 26rpx;
+  border-radius: 30rpx;
+}
+
+.action-btn::after {
+  border: none;
+}
+
+.loading-more, .no-more, .empty {
+  text-align: center;
+  padding: 30rpx;
+  color: #999;
+  font-size: 26rpx;
+}

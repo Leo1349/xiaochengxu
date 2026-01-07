@@ -1,45 +1,64 @@
-# Implementation Plan - UI Revamp & Icon Unification
+# 小程序上线详细计划 (Implementation Plan)
 
-## Goal
+## 目标
 
-Create a "beautiful", "high saturation", and "unified" UI by replacing icons and polishing styles.
+完成小程序 "智伴家" 的上线准备工作，确保符合微信审核规范，并顺利发布。同时开发手机端管理后台，便于运营查看订单。
 
-## Design Direction
+## ⚠️ 用户审核 (User Review Required)
+>
+> [!IMPORTANT]
+> **隐私协议 (Privacy Protocol)**: 微信平台要求极为严格。必须在小程序后台设置好《用户隐私保护指引》，并且在小程序端实现 **隐私授权弹窗**。
+> **管理员密码**: 管理后台将使用简单的密码保护，请在上线前确定一个访问密码。
 
-- **Style**: High saturation, soft 3D/gradient, concise shapes.
-- **Color Palette**: Vibrant Blue (Primary), Orange/Yellow (Accents).
-- **Vibe**: Professional yet friendly (suitable for a tutor/companion app).
+## 拟定修改 (Proposed Changes)
 
-## Icon List to Generate
+### 1. 新增隐私授权组件
 
-### 1. TabBar Icons (Size: 81x81 or similar, display 54x54)
+为了应对微信的隐私规范，我们需要添加一个通用的隐私弹窗组件。
 
-- **Home**: House/Home symbol. Blue/Colorful.
-- **Service**: Grid/Window symbol.
-- **Message**: Bubble/Chat symbol.
-- **Mine**: User/Person symbol.
+#### [NEW] `components/privacy-popup/`
 
-### 2. Home Page - Service Types (Colorful, Circular or Rounded Square)
+- `index.wxml`: 弹窗 UI，包含“同意”和“拒绝”按钮。
+- `index.js`: 使用 `wx.getPrivacySetting` 和 `wx.onNeedPrivacyAuthorization` 监听隐私授权需求。
 
-- **Subject Tutoring**: Book/Pen.
-- **Interest Cultivation**: Palette/Music Note.
-- **Habit Formation**: Clock/Checklist.
-- **Psych Counseling**: Heart/Speech Bubble.
+### 2. 开发手机端管理后台 (Admin Panel)
 
-### 3. Home Page - Main Grid (Clean, consistent background or shaped)
+#### [NEW] Cloud Function: `adminFunctions`
 
-- **Find Tutor**: Magnifying glass.
-- **My Orders**: Clipboard/List.
-- **Child Info**: Kid face/Smile.
-- **Success Cases**: Trophy/Star.
+- **目的**: 专门处理管理员相关的逻辑，避免污染普通用户接口。
+- **功能**:
+  - `login`: 验证管理员密码 (配置在云环境变量中)。
+  - `getOrderList`: 获取所有用户的订单数据 (支持分页)。
+  - `updateOrderStatus`: 修改订单状态 (如: 确认接单、已完成)。
 
-### 4. Mine Page & Others
+#### [NEW] `pages/admin/login/index`
 
-- **Menu Icons**: Standardized simple colored icons.
+- **界面**: 简单的输入框，输入访问密码。
+- **逻辑**: 调用 `adminFunctions/login` 验证。验证通过后缓存 token 或标记，跳转到列表页。
 
-## Execution Steps
+#### [NEW] `pages/admin/order-list/index`
 
-1. **Generate Icons**: Use AI image generation to create the assets.
-2. **Save Assets**: Save to `miniprogram/images/icons_v3/` (create new folder to keep clean).
-3. **Update Code**: Point `app.json` and JS files to new paths.
-4. **Style Polish**: Update WXSS for better spacing, shadows, and card styling.
+- **界面**:
+  - 顶部 Tab: 全部 / 待接单 / 进行中 / 已完成
+  - 列表项: 显示订单号、客户姓名、预约时间、金额、状态。
+  - 操作: 点击进入详情，或直接点击“接单”按钮。
+
+#### [NEW] `pages/admin/order-detail/index`
+
+- **界面**: 类似用户端的订单详情，但增加“管理员操作区” (修改状态、添加备注)。
+
+### 3. 全局配置
+
+#### [MODIFY] `app.json`
+
+- 引入隐私组件。
+- 注册新的管理员页面路由。
+
+## 验证计划 (Verification Plan)
+
+1. **隐私弹窗**: 清除缓存后测试是否弹出。
+2. **管理后台**:
+   - 访问 `/pages/admin/login/index`。
+   - 输入错误密码 -> 提示错误。
+   - 输入正确密码 -> 进入列表页。
+   - 列表页是否能看到刚才测试提交的订单。

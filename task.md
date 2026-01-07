@@ -1,18 +1,36 @@
-# Task: Unify UI Icons and Revamp Page Design
+# 小程序上线任务清单
 
-- [x] Explore codebase and identify icon usage
-- [x] Commit current state to Git
-- [x] Create Implementation Plan (Local)
-- [x] Generate New Icons (High Saturation, Unified Style)
-  - [x] TabBar Icons (Home, Service, Message, Mine)
-  - [x] Home Page Grid Icons
-  - [x] Service Type Icons
-  - [x] Mine Page Icons (Partially generated, others intelligently reused to fit style)
-- [x] Update Code References
-  - [x] Update `app.json`
-  - [x] Update `pages/index/index.js`
-  - [x] Update `pages/mine/index.js`
-- [x] Polish UI Styles (CSS)
-  - [x] Adjust Home Page Layout/Shadows
-  - [x] Adjust Mine Page Layout
-- [x] Verification
+## 1. 代码与功能准备
+
+- [x] **隐私合规 (Privacy Compliance)**
+  - [x] 实现 `PrivacyPopup` 组件 (适配微信最新隐私协议要求)
+  - [x] 在 `app.json` 或首页引入隐私弹窗
+- [ ] **功能自查**
+  - [ ] 检查 `app.js` 中的 `env` 环境ID是否为生产环境
+  - [ ] 清理明显的 `console.log` 和调试代码
+
+## 2. 管理后台开发 (Admin Panel)
+
+- [x] **后端逻辑 (Admin Cloud Functions)**
+  - [x] 创建 `cloudfunctions/adminFunctions`
+  - [x] 实现 `login` (密码验证)
+  - [x] 实现 `getOrderList` (查询所有订单)
+  - [x] 实现 `updateOrderStatus`
+- [/] **管理端界面 (Admin UI)**
+  - [x] 创建 `pages/admin/login/index` (登录页)
+  - [x] 创建 `pages/admin/order-list/index` (列表页)
+  - [x] 创建 `pages/admin/order-detail/index` (详情页)
+  - [x] 在 `app.json` 注册页面
+
+## 3. 配置与后台
+
+- [ ] **小程序后台配置**
+  - [ ] 配置合法域名
+  - [ ] 填写《用户隐私保护指引》
+  - [ ] 确认服务类目
+
+## 4. 发布流程
+
+- [ ] 上传代码
+- [ ] 提交审核
+- [ ] 正式发布

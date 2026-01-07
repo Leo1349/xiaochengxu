@@ -1,0 +1,65 @@
+<view class="container" wx:if="{{order}}">
+  <view class="status-card status-{{order.status}}">
+    <text class="status-text">{{order.statusText}}</text>
+    <text class="status-desc" wx:if="{{order.status === 'pending'}}">等待接单中</text>
+  </view>
+
+  <view class="section">
+    <view class="section-title">服务信息</view>
+    <view class="info-item">
+      <text class="label">服务项目</text>
+      <text class="value">{{order.serviceName}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">服务时长</text>
+      <text class="value">{{order.serviceDuration}}小时</text>
+    </view>
+    <view class="info-item">
+      <text class="label">预约时间</text>
+      <text class="value">{{order.serviceDate}} {{order.serviceTime}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">服务地址</text>
+      <text class="value">{{order.address}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">备注需求</text>
+      <text class="value">{{order.remark || '无'}}</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">客户信息</view>
+    <view class="info-item">
+      <text class="label">孩子姓名</text>
+      <text class="value">{{order.childName}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">联系人OpenID</text>
+      <text class="value openid">{{order._openid}}</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">订单信息</view>
+    <view class="info-item">
+      <text class="label">订单编号</text>
+      <text class="value">{{order.orderNo}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">下单时间</text>
+      <text class="value">{{order.createTimeStr}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">订单金额</text>
+      <text class="value price">¥{{order.finalPrice}}</text>
+    </view>
+  </view>
+
+  <view class="footer-action">
+    <button class="btn btn-confirm" wx:if="{{order.status === 'pending'}}" bindtap="updateStatus" data-status="confirmed">确认接单</button>
+    <button class="btn btn-start" wx:if="{{order.status === 'confirmed'}}" bindtap="updateStatus" data-status="ongoing">开始服务</button>
+    <button class="btn btn-complete" wx:if="{{order.status === 'ongoing'}}" bindtap="updateStatus" data-status="completed">完成订单</button>
+    <button class="btn btn-cancel" wx:if="{{order.status === 'pending' || order.status === 'confirmed'}}" bindtap="updateStatus" data-status="cancelled">取消订单</button>
+  </view>
+</view>

@@ -1,0 +1,17 @@
+<view wx:if="{{innerShow}}" class="privacy-mask">
+  <view class="privacy-container">
+    <view class="privacy-title">用户隐私保护提示</view>
+    <view class="privacy-content">
+      感谢您使用本服务。在使用前，请您仔细阅读<text class="privacy-link" bindtap="openPrivacyContract">《用户隐私保护指引》</text>。当您点击同意并开始使用产品服务时，即表示您已理解并同意该条款内容，该条款将对您产生法律约束力。如您拒绝，将无法使用部分功能。
+    </view>
+    <view class="privacy-btns">
+      <button class="btn-disagree" bindtap="handleDisagree">拒绝</button>
+      <button 
+        id="agree-btn" 
+        class="btn-agree" 
+        open-type="agreePrivacyAuthorization" 
+        bindagreeprivacyauthorization="handleAgree"
+      >同意</button>
+    </view>
+  </view>
+</view>

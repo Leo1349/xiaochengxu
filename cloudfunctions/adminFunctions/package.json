@@ -1,0 +1,11 @@
+{
+    "name": "adminFunctions",
+    "version": "1.0.0",
+    "description": "Admin panel functions",
+    "main": "index.js",
+    "author": "Antigravity",
+    "license": "ISC",
+    "dependencies": {
+        "wx-server-sdk": "latest"
+    }
+}

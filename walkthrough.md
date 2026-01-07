@@ -1,32 +1,51 @@
-# UI Revamp & Icon Unification Walkthrough
+# 上线准备与管理后台开发总结 (Walkthrough)
 
-I have successfully revamped the application's UI with a unified, high-saturation icon set and polished styles.
+## 本次更新内容
 
-## Changes Overview
+### 1. 隐私合规 (必选)
 
-### 1. New Icon Set (High Saturation / 3D Style)
+由于微信平台最新要求，小程序必须在用户使用前获取隐私授权。
 
-Located in `miniprogram/images/icons_v3/` and `miniprogram/images/mine_v3/`. All icons utilize a consistent vibrant blue/orange gradient style.
+- **新增组件**: `components/privacy-popup`
+- **应用范围**: 首页及核心入口
+- **效果**: 用户点击同意后，方可正常调用获取头像、位置等隐私接口。
 
-- **TabBar**: Home, Service, Message, Mine.
-- **Home**: Services (Book, Palette, Clock, Heart), Grid (Search, Order, Check, Trophy).
-- **Mine**: Orders (Pending, Process, Done, All), Menu items.
+### 2. 手机端管理后台 (新功能)
 
-### 2. Code Updates
+为了便于运营，开发了独立的管理端页面。
 
-- **`app.json`**: Configured to use the new `icons_v3` TabBar icons.
-- **`pages/index/index.js`**: Updated data source to point to new icons for the home grid and services.
-- **`pages/mine/index.js`**: Updated menu list data to use the new mine page icons.
-- **`pages/index/index.wxml` & `pages/mine/index.wxml`**: Updated static icon paths (search, notice, etc.).
+#### 入口与登录
 
-### 3. Visual Polish
+- **路径**: `/pages/admin/login/index`
+- **访问密码**: `admin_password_123` (硬编码在云函数 `adminFunctions` 中，上线前请修改)
 
-- **Depth**: Added drop shadows to icons and containers (`box-shadow`, `filter: drop-shadow`).
-- **Clean Layout**: Adjusted margins and rounded corners to complement the new 3D icons.
-- **Interaction**: Added subtle scale transitions to menu icons.
+#### 功能模块
 
-## Verification
+1. **订单列表**:
+   - 展示所有用户的订单
+   - 支持按状态筛选: 待接单、服务中、已完成等
+   - 支持一键“接单”操作
+2. **订单详情**:
+   - 查看客户姓名、地址、预约时间
+   - 修改订单状态 (开始服务、完成、取消)
 
-1. **Home Tab**: vibrant 3D icons for services and the top grid.
-2. **Mine Tab**: Unified order status icons and menu list icons with shadows.
-3. **General**: Navigate between tabs to see the new active/inactive states.
+## 验证与测试建议
+
+### 1. 测试管理后台
+
+1. 在开发者工具上方地址栏输入 `/pages/admin/login/index` 进入登录页。
+2. 输入密码 `admin_password_123` 登录。
+3. 进入列表页，查看是否有之前测试提交的订单。
+4. 点击某个订单进入详情页，尝试修改状态为“已接单”。
+5. 返回列表页下拉刷新，确认状态已更新。
+
+### 2. 检查隐私弹窗
+
+1. 清除开发者工具授权数据。
+2. 重新编译，观察首页底部是否弹窗。
+
+## 上线前最后检查
+
+- [ ] 确保 `app.js` 中的 `env` 设置为正式环境ID。
+- [ ] 在微信小程序后台配置 `request` 等合法域名。
+- [ ] 在后台 **[设置] -> [隐私与安全] -> [用户隐私保护指引]** 中如实填写信息。

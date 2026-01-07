@@ -1,0 +1,43 @@
+<view class="container">
+  <view class="tabs">
+    <view class="tab-item {{currentTab === 'all' ? 'active' : ''}}" bindtap="switchTab" data-status="all">全部</view>
+    <view class="tab-item {{currentTab === 'pending' ? 'active' : ''}}" bindtap="switchTab" data-status="pending">待接单</view>
+    <view class="tab-item {{currentTab === 'ongoing' ? 'active' : ''}}" bindtap="switchTab" data-status="ongoing">进行中</view>
+    <view class="tab-item {{currentTab === 'completed' ? 'active' : ''}}" bindtap="switchTab" data-status="completed">已完成</view>
+  </view>
+
+  <scroll-view scroll-y class="order-list" bindscrolltolower="onLoadMore">
+    <view class="order-item" wx:for="{{orderList}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
+      <view class="order-header">
+        <text class="order-no">订单号: {{item.orderNo}}</text>
+        <text class="order-status status-{{item.status}}">{{item.statusText}}</text>
+      </view>
+      <view class="order-content">
+        <view class="info-row">
+          <text class="label">客户:</text>
+          <text class="value">{{item.childName}} ({{item.address}})</text>
+        </view>
+        <view class="info-row">
+          <text class="label">服务:</text>
+          <text class="value">{{item.serviceName}} {{item.serviceDuration}}小时</text>
+        </view>
+        <view class="info-row">
+          <text class="label">时间:</text>
+          <text class="value">{{item.serviceDate}} {{item.serviceTime}}</text>
+        </view>
+        <view class="info-row price-row">
+          <text class="label">金额:</text>
+          <text class="value price">¥{{item.finalPrice}}</text>
+        </view>
+      </view>
+      <view class="order-footer">
+        <text class="create-time">{{item.createTimeStr}}</text>
+        <button class="action-btn" wx:if="{{item.status === 'pending'}}" catchtap="onQuickAccept" data-id="{{item._id}}">接单</button>
+      </view>
+    </view>
+    
+    <view class="loading-more" wx:if="{{loading}}">正在加载...</view>
+    <view class="no-more" wx:if="{{!hasMore && orderList.length > 0}}">没有更多了</view>
+    <view class="empty" wx:if="{{!loading && orderList.length === 0}}">暂无订单</view>
+  </scroll-view>
+</view>
