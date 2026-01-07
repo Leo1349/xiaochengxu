@@ -14,7 +14,7 @@
       </view>
       <view class="switch-role-btn" bindtap="switchRole">
         <text>切换身份</text>
-        <image class="switch-icon" src="/images/mine/action-switch.png" mode="aspectFit"></image>
+        <image class="switch-icon" src="/images/icons_v3/switch_role.png" mode="aspectFit"></image>
       </view>
     </view>
     
@@ -67,19 +67,19 @@
   <!-- 快捷入口 -->
   <view class="quick-entry" wx:if="{{isLoggedIn}}">
     <view class="quick-item" data-url="/pages/order-list/index?status=pending" bindtap="goToPage">
-      <image class="quick-icon" src="/images/mine/order-pending.png" mode="aspectFit"></image>
+      <image class="quick-icon" src="/images/mine_v3/order_pending.png" mode="aspectFit"></image>
       <text class="quick-text">待服务</text>
     </view>
     <view class="quick-item" data-url="/pages/order-list/index?status=ongoing" bindtap="goToPage">
-      <image class="quick-icon" src="/images/mine/order-processing.png" mode="aspectFit"></image>
+      <image class="quick-icon" src="/images/mine_v3/order_processing.png" mode="aspectFit"></image>
       <text class="quick-text">进行中</text>
     </view>
     <view class="quick-item" data-url="/pages/order-list/index?status=completed" bindtap="goToPage">
-      <image class="quick-icon" src="/images/mine/order-completed.png" mode="aspectFit"></image>
+      <image class="quick-icon" src="/images/mine_v3/order_completed.png" mode="aspectFit"></image>
       <text class="quick-text">已完成</text>
     </view>
     <view class="quick-item" data-url="/pages/order-list/index?status=all" bindtap="goToPage">
-      <image class="quick-icon" src="/images/mine/order-all.png" mode="aspectFit"></image>
+      <image class="quick-icon" src="/images/mine_v3/order_all.png" mode="aspectFit"></image>
       <text class="quick-text">全部订单</text>
     </view>
   </view>

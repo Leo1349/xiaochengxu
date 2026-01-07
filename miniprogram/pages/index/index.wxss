@@ -111,14 +111,22 @@
 }
 
 .menu-icon {
-  width: 64rpx;
-  height: 64rpx;
-  margin-bottom: 10rpx;
+  width: 80rpx;
+  height: 80rpx;
+  margin-bottom: 12rpx;
+  /* Add subtle drop shadow for new 3d icons */
+  filter: drop-shadow(0 4rpx 8rpx rgba(0, 0, 0, 0.1));
+  transition: transform 0.2s;
+}
+
+.menu-item:active .menu-icon {
+  transform: scale(0.95);
 }
 
 .menu-name {
   font-size: 24rpx;
   color: #333333;
+  font-weight: 500;
 }
 
 /* 通用 section */
@@ -126,11 +134,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 22rpx 24rpx 14rpx;
+  padding: 24rpx 24rpx 16rpx;
 }
 
 .section-title {
-  font-size: 30rpx;
+  font-size: 32rpx;
   font-weight: 600;
   color: #333333;
 }
@@ -142,30 +150,32 @@
 
 /* 服务类型 */
 .service-section {
-  margin: 16rpx 24rpx 0;
+  margin: 20rpx 24rpx 0;
   background: #ffffff;
-  border-radius: 16rpx;
+  border-radius: 20rpx;
   overflow: hidden;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
 }
 
 .service-grid {
   display: flex;
   flex-wrap: wrap;
-  padding: 0 12rpx 12rpx;
+  padding: 0 12rpx 20rpx;
 }
 
 .service-item {
   width: 25%;
-  padding: 18rpx 0;
+  padding: 20rpx 0;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .service-icon {
-  width: 60rpx;
-  height: 60rpx;
-  margin-bottom: 10rpx;
+  width: 72rpx;
+  height: 72rpx;
+  margin-bottom: 12rpx;
+  filter: drop-shadow(0 4rpx 6rpx rgba(0, 0, 0, 0.1));
 }
 
 .service-name {

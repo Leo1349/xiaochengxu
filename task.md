@@ -1,9 +1,18 @@
-# Task List
+# Task: Unify UI Icons and Revamp Page Design
 
-- [x] Generate Default Teacher Avatar <!-- id: 11 -->
-- [x] Generate Quick Nav Icons <!-- id: 12 -->
-- [x] Generate Service Type Icons <!-- id: 13 -->
-- [x] Generate UI Utility Icons <!-- id: 14 -->
-- [x] Update index.js with new paths <!-- id: 15 -->
-- [x] Update index.wxml static images <!-- id: 16 -->
-- [x] Verify visual changes <!-- id: 17 -->
+- [x] Explore codebase and identify icon usage
+- [x] Commit current state to Git
+- [x] Create Implementation Plan (Local)
+- [x] Generate New Icons (High Saturation, Unified Style)
+  - [x] TabBar Icons (Home, Service, Message, Mine)
+  - [x] Home Page Grid Icons
+  - [x] Service Type Icons
+  - [x] Mine Page Icons (Partially generated, others intelligently reused to fit style)
+- [x] Update Code References
+  - [x] Update `app.json`
+  - [x] Update `pages/index/index.js`
+  - [x] Update `pages/mine/index.js`
+- [x] Polish UI Styles (CSS)
+  - [x] Adjust Home Page Layout/Shadows
+  - [x] Adjust Mine Page Layout
+- [x] Verification

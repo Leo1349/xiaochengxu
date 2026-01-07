@@ -3,18 +3,18 @@
   <!-- 顶部搜索栏 -->
   <view class="header">
     <view class="search-bar" bindtap="goToSearch">
-      <image class="search-icon" src="/images/icons/search_icon.png" mode="aspectFit"></image>
+      <image class="search-icon" src="/images/icons_v3/search_icon.png" mode="aspectFit"></image>
       <text class="search-placeholder">搜索陪伴师</text>
     </view>
     <view class="role-switch" bindtap="switchRole">
       <text>{{currentRole === 'parent' ? '家长模式' : '陪伴师模式'}}</text>
-      <image class="switch-icon" src="/images/icons/switch_role.png" mode="aspectFit"></image>
+      <image class="switch-icon" src="/images/icons_v3/switch_role.png" mode="aspectFit"></image>
     </view>
   </view>
 
   <!-- 公告栏 -->
   <view class="notice-bar" wx:if="{{notice}}">
-    <image class="notice-icon" src="/images/icons/notice_icon.png" mode="aspectFit"></image>
+    <image class="notice-icon" src="/images/icons_v3/notice_icon.png" mode="aspectFit"></image>
     <text class="notice-text">{{notice}}</text>
   </view>
 

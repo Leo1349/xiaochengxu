@@ -1,64 +1,32 @@
-# Home Page Icon Revamp Walkthrough
+# UI Revamp & Icon Unification Walkthrough
 
-## Goal
+I have successfully revamped the application's UI with a unified, high-saturation icon set and polished styles.
 
-To improve the visual aesthetic of the Home page and provide a professional default avatar for teachers.
+## Changes Overview
 
-## Changes
+### 1. New Icon Set (High Saturation / 3D Style)
 
-1. **Generated Assets**: Created 14 high-quality, modern, flat-style icons and 1 avatar.
-    - **Default Avatar**: Mature, professional female cartoon character.
-    - **Quick Nav**: Find Tutor, My Orders, Child Info, Success Cases, Resume, Rebate.
-    - **Service Types**: Subject Tutoring, Interest Cultivation, Habit Formation, Psychological Counseling.
-    - **UI Utilities**: Search, Switch Role, Notice.
-2. **Updated `index.js`**:
-    - Mapped `menuList` to new icons.
-    - Mapped `teacherMenuList` to new icons.
-    - Mapped `serviceTypes` to new icons.
-    - Updated logic to use `default_teacher_avatar.png` when no avatar is present.
-3. **Updated `index.wxml`**:
-    - Replaced static icons in the Header (Search, Switch Role) and Notice Bar.
+Located in `miniprogram/images/icons_v3/` and `miniprogram/images/mine_v3/`. All icons utilize a consistent vibrant blue/orange gradient style.
 
-## Visual Verification
+- **TabBar**: Home, Service, Message, Mine.
+- **Home**: Services (Book, Palette, Clock, Heart), Grid (Search, Order, Check, Trophy).
+- **Mine**: Orders (Pending, Process, Done, All), Menu items.
 
-### Default Avatar
+### 2. Code Updates
 
-![Default Teacher Avatar](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/default_teacher_avatar_1767663086880.png)
+- **`app.json`**: Configured to use the new `icons_v3` TabBar icons.
+- **`pages/index/index.js`**: Updated data source to point to new icons for the home grid and services.
+- **`pages/mine/index.js`**: Updated menu list data to use the new mine page icons.
+- **`pages/index/index.wxml` & `pages/mine/index.wxml`**: Updated static icon paths (search, notice, etc.).
 
-### Quick Nav Icons
+### 3. Visual Polish
 
-| Find Tutor | Orders | Child Info | Success Cases | Resume | Rebate |
-| :---: | :---: | :---: | :---: | :---: | :---: |
-| ![Find Tutor](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/nav_find_tutor_1767663109591.png) | ![Orders](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/nav_orders_1767663128034.png) | ![Child](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/nav_child_1767663158646.png) | ![Cases](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/nav_cases_1767663178049.png) | ![Resume](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/nav_resume_1767663193530.png) | ![Rebate](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/nav_rebate_1767663210464.png) |
+- **Depth**: Added drop shadows to icons and containers (`box-shadow`, `filter: drop-shadow`).
+- **Clean Layout**: Adjusted margins and rounded corners to complement the new 3D icons.
+- **Interaction**: Added subtle scale transitions to menu icons.
 
-### Service Type Icons
+## Verification
 
-| Subject | Interest | Habit | Psych |
-| :---: | :---: | :---: | :---: |
-| ![Subject](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/service_subject_1767663237893.png) | ![Interest](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/service_interest_1767663268037.png) | ![Habit](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/service_habit_1767663284669.png) | ![Psych](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/service_psych_1767663305010.png) |
-
-### UI Utility Icons
-
-| Search | Switch Role | Notice |
-| :---: | :---: | :---: |
-| ![Search](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/search_icon_1767663334788.png) | ![Switch](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/switch_role_1767663353557.png) | ![Notice](C:/Users/Administrator/.gemini/antigravity/brain/66398ce1-6295-4ccc-8d0c-a4e462072d27/notice_icon_1767663370123.png) |
-
----
-
-# TabBar Icon Size Fix Walkthrough
-
-## Issue Noticed
-
-The `miniprogram/app.json` configuration for tabBar icons pointed to files that exceeded the 40KB specific size limit for WeChat Mini Programs. Although the files were resized, the IDE continued to report the error, likely due to caching.
-
-## Actions Taken
-
-1. **Identified Problematic Files:** Scanned `miniprogram/images/icons/` folder and found 8 icons exceeding 40KB.
-2. **Automated Resizing:** Created a Python script (`resize_icons.py`) to resize images to 81x81 pixels and optimized them (all now < 5KB).
-3. **Cache Busting:**
-    - Renamed all 8 tabBar icons from `*.png` to `*_v2.png`.
-4. **Configuration Update:** Updated `miniprogram/app.json` to reference the new `_v2` filenames.
-
-## Result
-
-Definitively resolved the 40KB size limit error.
+1. **Home Tab**: vibrant 3D icons for services and the top grid.
+2. **Mine Tab**: Unified order status icons and menu list icons with shadows.
+3. **General**: Navigate between tabs to see the new active/inactive states.

@@ -18,18 +18,18 @@ Page({
 
     // 功能入口
     menuList: [
-      { id: 1, icon: '/images/icons/nav_find_tutor.png', name: '找陪伴师', url: '/pages/search/index' },
-      { id: 2, icon: '/images/icons/nav_orders.png', name: '我的订单', url: '/pages/order-list/index' },
-      { id: 3, icon: '/images/icons/nav_child.png', name: '孩子信息', url: '/pages/child-info/index' },
-      { id: 4, icon: '/images/icons/nav_cases.png', name: '成功案例', url: '/pages/case-list/index' }
+      { id: 1, icon: '/images/icons_v3/nav_find_tutor.png', name: '找陪伴师', url: '/pages/search/index' },
+      { id: 2, icon: '/images/icons_v3/nav_orders.png', name: '我的订单', url: '/pages/order-list/index' },
+      { id: 3, icon: '/images/icons_v3/nav_child.png', name: '孩子信息', url: '/pages/child-info/index' },
+      { id: 4, icon: '/images/icons_v3/nav_cases.png', name: '成功案例', url: '/pages/case-list/index' }
     ],
 
     // 陪伴师功能入口
     teacherMenuList: [
-      { id: 1, icon: '/images/icons/nav_resume.png', name: '我的简历', url: '/pages/teacher-resume/index' },
-      { id: 2, icon: '/images/icons/nav_orders.png', name: '我的订单', url: '/pages/order-list/index' },
-      { id: 3, icon: '/images/icons/nav_rebate.png', name: '返利中心', url: '/pages/rebate/index' },
-      { id: 4, icon: '/images/icons/nav_cases.png', name: '成功案例', url: '/pages/case-list/index' }
+      { id: 1, icon: '/images/icons_v3/nav_cases.png', name: '我的简历', url: '/pages/teacher-resume/index' }, // 暂无 resume 图标，暂用 cases 替代或保持旧的
+      { id: 2, icon: '/images/icons_v3/nav_orders.png', name: '我的订单', url: '/pages/order-list/index' },
+      { id: 3, icon: '/images/icons_v3/nav_cases.png', name: '返利中心', url: '/pages/rebate/index' }, // 暂无 rebate 图标
+      { id: 4, icon: '/images/icons_v3/nav_cases.png', name: '成功案例', url: '/pages/case-list/index' }
     ],
 
     // 推荐陪伴师列表
@@ -37,10 +37,10 @@ Page({
 
     // 服务类型
     serviceTypes: [
-      { id: 1, name: '学科辅导', icon: '/images/icons/service_subject.png' },
-      { id: 2, name: '兴趣培养', icon: '/images/icons/service_interest.png' },
-      { id: 3, name: '习惯养成', icon: '/images/icons/service_habit.png' },
-      { id: 4, name: '心理疏导', icon: '/images/icons/service_psych.png' }
+      { id: 1, name: '学科辅导', icon: '/images/icons_v3/service_subject.png' },
+      { id: 2, name: '兴趣培养', icon: '/images/icons_v3/service_interest.png' },
+      { id: 3, name: '习惯养成', icon: '/images/icons_v3/service_habit.png' },
+      { id: 4, name: '心理疏导', icon: '/images/icons_v3/service_psych.png' }
     ],
 
     // 页面状态

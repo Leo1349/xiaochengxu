@@ -1,62 +1,45 @@
-# Home Page Icon Revamp Plan
+# Implementation Plan - UI Revamp & Icon Unification
 
 ## Goal
 
-Revamp the visual aesthetic of the Home page by replacing generic/incorrect icons with high-quality, modern, colorful icons. Also, provide a specific "mature cartoon" avatar for teachers without a photo.
+Create a "beautiful", "high saturation", and "unified" UI by replacing icons and polishing styles.
 
-## Proposed Changes
+## Design Direction
 
-### 1. Image Generation
+- **Style**: High saturation, soft 3D/gradient, concise shapes.
+- **Color Palette**: Vibrant Blue (Primary), Orange/Yellow (Accents).
+- **Vibe**: Professional yet friendly (suitable for a tutor/companion app).
 
-Generate the following assets using `generate_image`. All icons should use a consistent style (e.g., modern flat with soft gradients or colorful 3D elements, depending on consistency with the existing blue theme).
+## Icon List to Generate
 
-**Style Guide:**
+### 1. TabBar Icons (Size: 81x81 or similar, display 54x54)
 
-- Primary Color: Blue `#4080FF` (approximate based on screenshot/code).
-- Background: Transparent or Soft Container.
-- Style: Modern, Friendly, Clean.
+- **Home**: House/Home symbol. Blue/Colorful.
+- **Service**: Grid/Window symbol.
+- **Message**: Bubble/Chat symbol.
+- **Mine**: User/Person symbol.
 
-**List of Assets:**
+### 2. Home Page - Service Types (Colorful, Circular or Rounded Square)
 
-1. **Default Teacher Avatar**: `default_teacher_avatar.png` (Mature, professional, friendly cartoon character).
-2. **Search Icon**: `search_icon.png` (Magnifying glass).
-3. **Role Switch Icon**: `switch_role.png` (Two arrows or user swap).
-4. **Notice Icon**: `notice_icon.png` (Speaker/Bell).
-5. **Quick Nav Icons** (64x64):
-    - `nav_find_tutor.png` (Search/Person).
-    - `nav_orders.png` (List/Document).
-    - `nav_child.png` (Child/Face).
-    - `nav_cases.png` (Trophy/Star/Book).
-    - `nav_resume.png` (CV/Profile).
-    - `nav_rebate.png` (Money/Coin/Gift).
-6. **Service Type Icons** (60x60):
-    - `service_subject.png` (Book/Pen).
-    - `service_interest.png` (Palette/Music Note).
-    - `service_habit.png` (Clock/Checklist).
-    - `service_psych.png` (Heart/Chat).
+- **Subject Tutoring**: Book/Pen.
+- **Interest Cultivation**: Palette/Music Note.
+- **Habit Formation**: Clock/Checklist.
+- **Psych Counseling**: Heart/Speech Bubble.
 
-### 2. Code Updates
+### 3. Home Page - Main Grid (Clean, consistent background or shaped)
 
-#### [MODIFY] `miniprogram/pages/index/index.js`
+- **Find Tutor**: Magnifying glass.
+- **My Orders**: Clipboard/List.
+- **Child Info**: Kid face/Smile.
+- **Success Cases**: Trophy/Star.
 
-- Update `menuList` data to point to new icons.
-- Update `teacherMenuList` data to point to new icons.
-- Update `serviceTypes` data to point to new icons.
-- Update `useMockData` function to use `default_teacher_avatar.png` as the default avatar.
-- Update `loadTeacherList` to fallback to `default_teacher_avatar.png` if avatar is missing/empty.
+### 4. Mine Page & Others
 
-#### [MODIFY] `miniprogram/pages/index/index.wxml`
+- **Menu Icons**: Standardized simple colored icons.
 
-- Update static image sources (Search bar, Switch role, Notice bar).
+## Execution Steps
 
-## Verification Plan
-
-### Automated Tests
-
-- None.
-
-### Manual Verification
-
-1. **Visual Check**: Use the simulator to verify all icons appear correctly on the Home page.
-2. **Role Switch**: Toggle between Parent and Teacher modes to verify role-specific menu icons.
-3. **Default Avatar**: Temporarily modify a teacher's avatar in mock data to be empty to verify the default avatar renders.
+1. **Generate Icons**: Use AI image generation to create the assets.
+2. **Save Assets**: Save to `miniprogram/images/icons_v3/` (create new folder to keep clean).
+3. **Update Code**: Point `app.json` and JS files to new paths.
+4. **Style Polish**: Update WXSS for better spacing, shadows, and card styling.

@@ -140,11 +140,12 @@
 
 /* 快捷入口 */
 .quick-entry {
-  margin: 16rpx 24rpx 0;
+  margin: 20rpx 24rpx 0;
   background: #ffffff;
-  border-radius: 16rpx;
-  padding: 16rpx 12rpx;
+  border-radius: 20rpx;
+  padding: 20rpx 12rpx;
   display: flex;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
 }
 
 .quick-item {
@@ -156,42 +157,45 @@
 }
 
 .quick-icon {
-  width: 56rpx;
-  height: 56rpx;
-  margin-bottom: 10rpx;
+  width: 60rpx;
+  height: 60rpx;
+  margin-bottom: 12rpx;
+  filter: drop-shadow(0 4rpx 6rpx rgba(0, 0, 0, 0.1));
 }
 
 .quick-text {
   font-size: 24rpx;
   color: #333333;
+  font-weight: 500;
 }
 
 /* 菜单 */
 .menu-section {
-  margin: 16rpx 24rpx 0;
+  margin: 20rpx 24rpx 0;
 }
 
 .menu-group {
   background: #ffffff;
-  border-radius: 16rpx;
+  border-radius: 20rpx;
   overflow: hidden;
-  margin-bottom: 16rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
 }
 
 .group-title {
-  padding: 18rpx 18rpx 12rpx;
+  padding: 24rpx 24rpx 12rpx;
   font-size: 24rpx;
   color: #999999;
 }
 
 .menu-list {
-  padding: 0 18rpx;
+  padding: 0 24rpx;
 }
 
 .menu-item {
   display: flex;
   align-items: center;
-  padding: 18rpx 0;
+  padding: 24rpx 0;
   border-top: 1rpx solid rgba(0, 0, 0, 0.04);
 }
 
@@ -202,13 +206,16 @@
 .menu-icon {
   width: 48rpx;
   height: 48rpx;
-  margin-right: 16rpx;
+  margin-right: 20rpx;
+  /* Icon shadow makes them pop */
+  filter: drop-shadow(0 2rpx 4rpx rgba(0, 0, 0, 0.08));
 }
 
 .menu-name {
   flex: 1;
   font-size: 28rpx;
   color: #333333;
+  font-weight: 500;
 }
 
 /* 版本 */
