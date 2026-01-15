@@ -1,334 +1,71 @@
-/* pages/rebate/index.wxss */
-.page-container {
+/* pages/rebate/index.wxss - TDesign 风格返利页样式 (Hardcoded) */
+
+.container {
   min-height: 100vh;
-  background-color: #f5f5f5;
-  padding-bottom: 40rpx;
+  background-color: #F5F6F8;
 }
 
-.rebate-header {
-  background: linear-gradient(135deg, #ff9500 0%, #ff6b00 100%);
-  padding: 60rpx 30rpx;
-  color: #fff;
+.header-card {
+  background: linear-gradient(135deg, #3D7EFF 0%, #0052D9 100%);
+  padding: 48rpx 32rpx;
   text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.header-title {
-  font-size: 32rpx;
-  margin-bottom: 20rpx;
-}
-
-.balance-amount {
-  font-size: 80rpx;
-  font-weight: bold;
-  margin-bottom: 8rpx;
-}
-
-.balance-unit {
-  font-size: 32rpx;
-  margin-left: 8rpx;
-}
-
-.balance-label {
-  font-size: 26rpx;
-  opacity: 0.9;
-}
-
-.action-bar {
-  display: flex;
-  background: #fff;
-  margin: -30rpx 30rpx 0;
-  border-radius: 16rpx;
-  padding: 30rpx 0;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-}
-
-.action-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-right: 1rpx solid #eee;
-}
-
-.action-item:last-child {
-  border-right: none;
-}
-
-.action-icon {
-  width: 80rpx;
-  height: 80rpx;
+.header-card::before, .header-card::after {
+  content: '';
+  position: absolute;
   border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.header-card::before { width: 200rpx; height: 200rpx; top: -60rpx; right: -40rpx; }
+.header-card::after { width: 120rpx; height: 120rpx; bottom: -30rpx; left: 10%; }
+
+.balance-label { font-size: 28rpx; color: rgba(255, 255, 255, 0.8); margin-bottom: 16rpx; position: relative; z-index: 1; }
+.balance-value { font-size: 80rpx; font-weight: 700; color: #FFFFFF; position: relative; z-index: 1; }
+.balance-unit { font-size: 32rpx; }
+
+.action-btns { display: flex; gap: 24rpx; padding: 32rpx; margin-top: -40rpx; position: relative; z-index: 1; }
+.action-btn {
+  flex: 1;
+  height: 88rpx;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
 }
 
-.icon-emoji {
-  font-size: 40rpx;
-}
-
-.action-text {
-  font-size: 26rpx;
-  color: #333;
-}
-
-.stats-section {
-  display: flex;
-  background: #fff;
-  margin: 20rpx 30rpx;
-  border-radius: 16rpx;
-  padding: 30rpx 0;
-}
-
-.stat-item {
-  flex: 1;
-  text-align: center;
-  border-right: 1rpx solid #eee;
-}
-
-.stat-item:last-child {
-  border-right: none;
-}
-
-.stat-value {
-  font-size: 40rpx;
-  font-weight: bold;
-  color: #ff9500;
-  display: block;
-  margin-bottom: 8rpx;
-}
-
-.stat-label {
-  font-size: 24rpx;
-  color: #999;
-}
+.withdraw-btn { background-color: #FFFFFF; color: #3D7EFF; }
+.record-btn { background: linear-gradient(135deg, #FF8F1F 0%, #D16A1C 100%); color: #FFFFFF; }
 
 .section {
-  background: #fff;
-  margin: 20rpx 30rpx;
+  margin: 24rpx;
+  background-color: #FFFFFF;
   border-radius: 16rpx;
-  padding: 30rpx;
+  padding: 32rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.02);
 }
 
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24rpx;
-}
+.section-title { font-size: 30rpx; font-weight: 600; color: #333333; margin-bottom: 24rpx; }
 
-.section-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-}
+.stat-grid { display: flex; }
+.stat-item { flex: 1; text-align: center; }
+.stat-value { font-size: 36rpx; font-weight: 700; color: #333333; display: block; }
+.stat-label { font-size: 24rpx; color: #999999; margin-top: 8rpx; display: block; }
 
-.section-more {
-  font-size: 26rpx;
-  color: #999;
-}
+.record-list { margin-top: 24rpx; }
+.record-item { display: flex; justify-content: space-between; align-items: center; padding: 24rpx 0; border-bottom: 1rpx solid #F0F0F0; }
+.record-item:last-child { border-bottom: none; }
+.record-info { flex: 1; }
+.record-title { font-size: 28rpx; color: #333333; display: block; }
+.record-time { font-size: 24rpx; color: #999999; margin-top: 4rpx; display: block; }
+.record-amount { font-size: 30rpx; font-weight: 600; }
+.record-amount.income { color: #00B578; }
+.record-amount.expense { color: #FF3B30; }
 
-.invite-card {
-  background: linear-gradient(135deg, #fff8e6 0%, #ffe4b5 100%);
-  border-radius: 16rpx;
-  padding: 30rpx;
-}
-
-.invite-content {
-  display: flex;
-  align-items: center;
-  margin-bottom: 24rpx;
-}
-
-.invite-icon {
-  font-size: 80rpx;
-  margin-right: 24rpx;
-}
-
-.invite-info {
-  flex: 1;
-}
-
-.invite-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.invite-desc {
-  font-size: 26rpx;
-  color: #666;
-}
-
-.invite-btn {
-  width: 100%;
-  height: 88rpx;
-  background: #ff9500;
-  border-radius: 44rpx;
-  color: #fff;
-  font-size: 30rpx;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.invite-code {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20rpx;
-}
-
-.code-label {
-  font-size: 26rpx;
-  color: #666;
-}
-
-.code-value {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #ff9500;
-  margin: 0 16rpx;
-}
-
-.copy-btn {
-  padding: 8rpx 20rpx;
-  background: #fff;
-  border-radius: 20rpx;
-  font-size: 24rpx;
-  color: #ff9500;
-}
-
-.record-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.record-item {
-  display: flex;
-  align-items: center;
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid #f5f5f5;
-}
-
-.record-item:last-child {
-  border-bottom: none;
-}
-
-.record-icon {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 20rpx;
-}
-
-.record-icon.income {
-  background: rgba(82, 196, 26, 0.1);
-}
-
-.record-icon.expense {
-  background: rgba(255, 68, 68, 0.1);
-}
-
-.record-emoji {
-  font-size: 36rpx;
-}
-
-.record-info {
-  flex: 1;
-}
-
-.record-title {
-  font-size: 28rpx;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.record-time {
-  font-size: 24rpx;
-  color: #999;
-}
-
-.record-amount {
-  font-size: 32rpx;
-  font-weight: bold;
-}
-
-.record-amount.income {
-  color: #52c41a;
-}
-
-.record-amount.expense {
-  color: #ff4444;
-}
-
-.rule-section {
-  padding: 0 30rpx 30rpx;
-}
-
-.rule-card {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 30rpx;
-}
-
-.rule-title {
-  font-size: 30rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 20rpx;
-}
-
-.rule-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.rule-item {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 16rpx;
-}
-
-.rule-item:last-child {
-  margin-bottom: 0;
-}
-
-.rule-dot {
-  width: 12rpx;
-  height: 12rpx;
-  border-radius: 50%;
-  background: #ff9500;
-  margin-top: 12rpx;
-  margin-right: 16rpx;
-}
-
-.rule-text {
-  flex: 1;
-  font-size: 26rpx;
-  color: #666;
-  line-height: 1.6;
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 60rpx 0;
-}
-
-.empty-icon {
-  font-size: 80rpx;
-  margin-bottom: 16rpx;
-}
-
-.empty-text {
-  font-size: 26rpx;
-  color: #999;
-}
+.empty-state { text-align: center; padding: 48rpx; color: #999999; font-size: 28rpx; }

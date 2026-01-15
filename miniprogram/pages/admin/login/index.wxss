@@ -1,53 +1,57 @@
+/* pages/admin/login/index.wxss - TDesign 风格管理员登录样式 (Hardcoded) */
+
 .container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
   display: flex;
-  align-items: center;
   justify-content: center;
-  height: 100vh;
-  background-color: #F7F8FA;
+  align-items: center;
+  padding: 32rpx;
 }
 
 .login-box {
-  width: 80%;
-  background: #fff;
-  padding: 60rpx 40rpx;
-  border-radius: 20rpx;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100%;
+  background-color: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 48rpx 32rpx;
+  box-shadow: 0 24rpx 80rpx rgba(0, 0, 0, 0.3);
 }
 
 .title {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 60rpx;
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #333333;
+  text-align: center;
+  margin-bottom: 48rpx;
 }
 
 .password-input {
   width: 100%;
-  height: 88rpx;
-  background: #F5F7FA;
-  border-radius: 44rpx;
-  padding: 0 40rpx;
-  box-sizing: border-box;
-  font-size: 28rpx;
-  margin-bottom: 40rpx;
+  height: 100rpx;
+  padding: 0 32rpx;
+  background-color: #F5F6F8;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  color: #333333;
+  margin-bottom: 32rpx;
 }
+
+.password-input::placeholder { color: #999999; }
 
 .login-btn {
   width: 100%;
-  height: 88rpx;
-  background: #4080FF;
-  color: #fff;
-  border-radius: 44rpx;
+  height: 96rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #FFFFFF;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: 48rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32rpx;
-  font-weight: 500;
+  letter-spacing: 16rpx;
+  padding-left: 16rpx;
+  box-shadow: 0 8rpx 32rpx rgba(102, 126, 234, 0.4);
 }
 
-.login-btn::after {
-  border: none;
-}
+.login-btn:active { opacity: 0.9; transform: scale(0.98); }

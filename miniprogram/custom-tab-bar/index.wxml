@@ -1,0 +1,28 @@
+<!-- 毛玻璃效果自定义TabBar -->
+<view class="tab-bar">
+  <view class="tab-bar-border"></view>
+  <view 
+    wx:for="{{list}}" 
+    wx:key="index" 
+    class="tab-bar-item" 
+    data-path="{{item.pagePath}}" 
+    data-index="{{index}}" 
+    bindtap="switchTab"
+  >
+    <!-- 图标 -->
+    <image 
+      class="tab-bar-icon" 
+      src="{{selected === index ? item.selectedIconPath : item.iconPath}}"
+      mode="aspectFit"
+    />
+    <!-- 未读消息红点 -->
+    <view wx:if="{{item.showDot && selected !== index}}" class="unread-dot"></view>
+    <!-- 文字 -->
+    <view 
+      class="tab-bar-text" 
+      style="color: {{selected === index ? selectedColor : color}}"
+    >
+      {{item.text}}
+    </view>
+  </view>
+</view>

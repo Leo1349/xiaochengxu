@@ -1,45 +1,82 @@
-/* pages/mine/index.wxss */
+/* pages/mine/index.wxss - 智伴家个人中心柔和精致风格 */
 
 .container {
   padding: 0;
   min-height: 100vh;
-  background: #f6f6f6;
-  padding-bottom: 140rpx;
+  background-color: #FFF9F5;
+  padding-bottom: 160rpx;
 }
 
-/* 顶部用户区域 */
+/* ==================== 顶部用户区域 ==================== */
+
 .user-section {
   position: relative;
-  padding: 24rpx 24rpx 0;
+  padding: 28rpx;
 }
 
 .user-bg {
-  height: 220rpx;
-  border-radius: 20rpx;
-  background: linear-gradient(135deg, #4a90d9 0%, #357abd 100%);
+  height: 260rpx;
+  border-radius: 28rpx;
+  background: linear-gradient(135deg, #FF8066 0%, #FFAB91 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 背景装饰圆圈 */
+.user-bg::before,
+.user-bg::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.user-bg::before {
+  width: 240rpx;
+  height: 240rpx;
+  top: -80rpx;
+  right: -60rpx;
+}
+
+.user-bg::after {
+  width: 160rpx;
+  height: 160rpx;
+  bottom: -50rpx;
+  left: 12%;
 }
 
 .user-info {
   position: relative;
-  margin-top: -170rpx;
-  padding: 22rpx 18rpx;
-  border-radius: 18rpx;
-  background: rgba(255, 255, 255, 0.95);
+  margin-top: -180rpx;
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+  padding: 36rpx;
+  border-radius: 24rpx;
+  background-color: #FFFFFF;
   display: flex;
   align-items: center;
-  box-shadow: 0 8rpx 28rpx rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8rpx 32rpx rgba(61, 58, 56, 0.08);
 }
 
 .user-info.not-login {
-  background: rgba(255, 255, 255, 0.95);
+  background-color: #FFFFFF;
 }
 
 .user-avatar {
-  width: 110rpx;
-  height: 110rpx;
-  border-radius: 55rpx;
-  margin-right: 18rpx;
-  background: #f2f3f5;
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 50%;
+  margin-right: 28rpx;
+  background-color: #FFE8E4;
+  border: 5rpx solid #FFFFFF;
+  box-shadow: 0 4rpx 16rpx rgba(255, 128, 102, 0.25),
+              0 0 0 6rpx rgba(255, 128, 102, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.user-avatar:active {
+  transform: scale(1.05);
 }
 
 .user-detail {
@@ -48,39 +85,51 @@
 }
 
 .user-name {
-  font-size: 32rpx;
+  font-size: 36rpx;
   font-weight: 700;
-  color: #333333;
+  color: #3D3A38;
+  display: block;
+  font-family: 'DM Serif Display', 'Noto Serif SC', serif;
 }
 
 .user-phone {
-  margin-top: 6rpx;
-  font-size: 24rpx;
-  color: #999999;
+  margin-top: 10rpx;
+  font-size: 26rpx;
+  color: #A8A5A2;
+  display: block;
 }
 
 .user-role {
-  margin-top: 10rpx;
+  margin-top: 14rpx;
   display: inline-flex;
   align-items: center;
-  padding: 6rpx 12rpx;
-  border-radius: 16rpx;
-  background: rgba(74, 144, 217, 0.08);
+  padding: 8rpx 20rpx;
+  border-radius: 100rpx;
+  background: linear-gradient(135deg, #FFE8E4 0%, #FFF5F0 100%);
+  border: 1rpx solid rgba(255, 128, 102, 0.2);
 }
 
 .role-text {
   font-size: 22rpx;
-  color: #4a90d9;
+  color: #FF8066;
+  font-weight: 600;
 }
 
 .switch-role-btn {
   display: flex;
   align-items: center;
-  padding: 10rpx 12rpx;
-  border-radius: 16rpx;
-  background: rgba(74, 144, 217, 0.08);
-  color: #4a90d9;
-  font-size: 22rpx;
+  padding: 12rpx 24rpx;
+  border-radius: 100rpx;
+  background-color: #F8F6F3;
+  color: #FF8066;
+  font-size: 24rpx;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.switch-role-btn:active {
+  background-color: #FFE8E4;
+  transform: scale(0.97);
 }
 
 .switch-icon {
@@ -90,62 +139,90 @@
 }
 
 .arrow-icon {
-  font-size: 30rpx;
-  color: rgba(0, 0, 0, 0.35);
-  line-height: 1;
+  font-size: 36rpx;
+  color: #CCCCCC;
 }
 
 .login-text {
-  font-size: 30rpx;
+  font-size: 36rpx;
   font-weight: 700;
-  color: #333333;
+  color: #3D3A38;
+  display: block;
+  font-family: 'DM Serif Display', 'Noto Serif SC', serif;
 }
 
 .login-desc {
-  margin-top: 6rpx;
-  font-size: 24rpx;
-  color: #999999;
+  margin-top: 10rpx;
+  font-size: 26rpx;
+  color: #A8A5A2;
+  display: block;
 }
 
-/* 统计 */
+/* ==================== 统计数据 ==================== */
+
 .statistics-section {
-  margin: 16rpx 24rpx 0;
-  background: #ffffff;
-  border-radius: 16rpx;
+  margin: 28rpx 48rpx 0;
+  background-color: #FFFFFF;
+  border-radius: 24rpx;
   display: flex;
-  padding: 18rpx 0;
+  padding: 36rpx 0;
+  box-shadow: 0 4rpx 20rpx rgba(61, 58, 56, 0.06);
+}
+
+.statistics-section.teacher {
+  background: linear-gradient(135deg, #FFF9F0 0%, #FFE8DC 100%);
+  border: 1rpx solid rgba(255, 183, 77, 0.2);
 }
 
 .stat-item {
   flex: 1;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.stat-item:active {
+  transform: scale(0.96);
 }
 
 .stat-value {
-  font-size: 34rpx;
+  font-size: 40rpx;
   font-weight: 700;
-  color: #333333;
+  color: #3D3A38;
+  font-family: 'DM Serif Display', serif;
+}
+
+.statistics-section.teacher .stat-value {
+  color: #FF8066;
 }
 
 .stat-label {
-  margin-top: 6rpx;
-  font-size: 22rpx;
-  color: #999999;
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: #7A7673;
 }
 
 .stat-divider {
   width: 1rpx;
-  background: rgba(0, 0, 0, 0.06);
+  height: 50%;
+  background: linear-gradient(180deg, transparent 0%, #E8E5E2 50%, transparent 100%);
+  position: absolute;
+  right: 0;
+  top: 25%;
 }
 
-/* 快捷入口 */
+/* ==================== 快捷入口 ==================== */
+
 .quick-entry {
-  margin: 20rpx 24rpx 0;
-  background: #ffffff;
-  border-radius: 20rpx;
-  padding: 20rpx 12rpx;
+  margin: 28rpx 28rpx 0;
+  background-color: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 36rpx 20rpx;
   display: flex;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4rpx 20rpx rgba(61, 58, 56, 0.06);
 }
 
 .quick-item {
@@ -153,75 +230,91 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 14rpx 0;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.quick-item:active {
+  transform: scale(0.93) translateY(-4rpx);
 }
 
 .quick-icon {
-  width: 60rpx;
-  height: 60rpx;
-  margin-bottom: 12rpx;
-  filter: drop-shadow(0 4rpx 6rpx rgba(0, 0, 0, 0.1));
+  width: 64rpx;
+  height: 64rpx;
+  margin-bottom: 18rpx;
+  transition: transform 0.2s ease;
+}
+
+.quick-item:active .quick-icon {
+  transform: translateY(-4rpx);
 }
 
 .quick-text {
   font-size: 24rpx;
-  color: #333333;
+  color: #3D3A38;
   font-weight: 500;
 }
 
-/* 菜单 */
+/* ==================== 菜单列表 ==================== */
+
 .menu-section {
-  margin: 20rpx 24rpx 0;
+  margin: 28rpx 28rpx 0;
 }
 
 .menu-group {
-  background: #ffffff;
-  border-radius: 20rpx;
+  background-color: #FFFFFF;
+  border-radius: 24rpx;
   overflow: hidden;
-  margin-bottom: 20rpx;
-  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+  margin-bottom: 28rpx;
+  box-shadow: 0 4rpx 20rpx rgba(61, 58, 56, 0.06);
 }
 
 .group-title {
-  padding: 24rpx 24rpx 12rpx;
-  font-size: 24rpx;
-  color: #999999;
+  padding: 28rpx 32rpx 18rpx;
+  font-size: 26rpx;
+  color: #A8A5A2;
+  font-weight: 500;
+  border-bottom: 1rpx solid #F5F3F0;
 }
 
 .menu-list {
-  padding: 0 24rpx;
+  padding: 0 32rpx;
 }
 
 .menu-item {
   display: flex;
   align-items: center;
-  padding: 24rpx 0;
-  border-top: 1rpx solid rgba(0, 0, 0, 0.04);
+  padding: 32rpx 0;
+  border-bottom: 1rpx solid #F5F3F0;
+  transition: all 0.2s ease;
 }
 
-.menu-item:first-child {
-  border-top: none;
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item:active {
+  background-color: #FFFAF8;
+  padding-left: 12rpx;
 }
 
 .menu-icon {
   width: 48rpx;
   height: 48rpx;
-  margin-right: 20rpx;
-  /* Icon shadow makes them pop */
-  filter: drop-shadow(0 2rpx 4rpx rgba(0, 0, 0, 0.08));
+  margin-right: 24rpx;
 }
 
 .menu-name {
   flex: 1;
-  font-size: 28rpx;
-  color: #333333;
+  font-size: 30rpx;
+  color: #3D3A38;
   font-weight: 500;
 }
 
-/* 版本 */
+/* ==================== 版本信息 ==================== */
+
 .version-info {
-  padding: 28rpx 0 40rpx;
+  padding: 48rpx 0 72rpx;
   text-align: center;
   font-size: 22rpx;
-  color: #bbbbbb;
+  color: #CCCCCC;
 }

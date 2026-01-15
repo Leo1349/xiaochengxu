@@ -1,64 +1,159 @@
-# 小程序上线详细计划 (Implementation Plan)
+# 智伴家小程序 UI 重构实施方案
 
-## 目标
+> **日期**：2026-01-12  
+> **目标**：采用 TDesign 设计风格对小程序所有页面进行 UI/样式重构
 
-完成小程序 "智伴家" 的上线准备工作，确保符合微信审核规范，并顺利发布。同时开发手机端管理后台，便于运营查看订单。
+---
 
-## ⚠️ 用户审核 (User Review Required)
+## 背景说明
+
+当前小程序共有 22 个页面，现有样式较为基础。需要按照 TDesign（腾讯开源设计系统）的设计规范进行全面升级，使界面更加简洁、专业、现代。
+
+### TDesign 设计特点
+
+- 清晰的视觉层次
+- 简洁的交互设计
+- 统一的组件规范
+- 专业的配色方案
+
+### 设计规格
+
+- **屏幕适配**：模拟 iPhone 15 Pro (393×852px)
+- **圆角规范**：遵循 TDesign 圆角体系 (4px/8px/12px/16px)
+- **主色调**：TDesign 企业蓝 `#0052D9`
+
+---
+
+## 提议的修改
+
+### 第一阶段：设计系统基础
+
+#### [MODIFY] [app.wxss](file:///e:/Users/Administrator/Desktop/xiaochengxu/miniprogram/app.wxss)
+
+重构全局样式，建立 TDesign 风格的设计令牌：
+
+```css
+/* TDesign 设计令牌 */
+/* 主题色 */
+--td-brand-color: #0052D9;
+--td-brand-color-light: #ECF2FE;
+--td-brand-color-hover: #0957E3;
+--td-brand-color-active: #004BC7;
+
+/* 功能色 */
+--td-success-color: #00A870;
+--td-warning-color: #ED7B2F;
+--td-error-color: #E34D59;
+
+/* 中性色 */
+--td-text-color-primary: #181818;
+--td-text-color-secondary: #5F5F5F;
+--td-text-color-placeholder: #BBBBBB;
+--td-bg-color-page: #F5F5F5;
+--td-bg-color-container: #FFFFFF;
+
+/* 字体规范 */
+--td-font-size-xs: 20rpx;
+--td-font-size-s: 24rpx;
+--td-font-size-base: 28rpx;
+--td-font-size-m: 32rpx;
+--td-font-size-l: 36rpx;
+--td-font-size-xl: 40rpx;
+
+/* 圆角规范 */
+--td-radius-small: 8rpx;
+--td-radius-default: 12rpx;
+--td-radius-medium: 16rpx;
+--td-radius-large: 24rpx;
+--td-radius-round: 999rpx;
+
+/* 阴影规范 */
+--td-shadow-1: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+--td-shadow-2: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
+--td-shadow-3: 0 16rpx 48rpx rgba(0, 0, 0, 0.16);
+
+/* 间距规范 */
+--td-spacer-xs: 8rpx;
+--td-spacer-s: 16rpx;
+--td-spacer-m: 24rpx;
+--td-spacer-l: 32rpx;
+--td-spacer-xl: 48rpx;
+```
+
+---
+
+### 第二阶段：核心页面重构
+
+#### [MODIFY] [index.wxss](file:///e:/Users/Administrator/Desktop/xiaochengxu/miniprogram/pages/index/index.wxss)
+
+- 搜索栏：使用 TDesign 搜索框样式，圆角 `24rpx`，背景色 `#F3F3F3`
+- 轮播图：圆角 `16rpx`，添加柔和阴影
+- 功能入口：卡片化设计，悬浮效果
+- 陪伴师卡片：重新设计信息层级，突出价格和评分
+
+#### [MODIFY] [mine/index.wxss](file:///e:/Users/Administrator/Desktop/xiaochengxu/miniprogram/pages/mine/index.wxss)
+
+- 用户头部：渐变背景改为 TDesign 品牌蓝
+- 统计卡片：使用分隔线设计，数字突出
+- 菜单列表：右箭头使用 TDesign 图标风格
+
+#### [MODIFY] [teacher-detail/index.wxss](file:///e:/Users/Administrator/Desktop/xiaochengxu/miniprogram/pages/teacher-detail/index.wxss)
+
+- 头部信息：卡片浮层设计
+- Tab 切换：下划线指示器，使用 TDesign 样式
+- 服务卡片：价格标签突出，预约按钮醒目
+
+#### [MODIFY] [order-list/index.wxss](file:///e:/Users/Administrator/Desktop/xiaochengxu/miniprogram/pages/order-list/index.wxss)
+
+- 状态标签：使用 TDesign 状态色
+- 订单卡片：分区明确，操作按钮对齐
+
+---
+
+### 第三阶段及后续
+
+其他页面（登录、注册、订单详情、消息、聊天等）将延续相同的设计规范进行统一重构。
+
+---
+
+## 验证方案
+
+### 视觉验收
+
+1. 在微信开发者工具中选择 iPhone 15 Pro 模拟器
+2. 逐页检查各页面的视觉效果
+3. 确认颜色、字体、圆角是否符合 TDesign 规范
+
+### 用户测试（手动）
+
+请在以下页面进行视觉检查：
+
+1. **首页**：检查搜索栏、轮播图、功能入口、陪伴师列表是否符合新设计
+2. **个人中心**：检查用户信息、统计数据、菜单列表样式
+3. **老师详情**：检查 Tab 切换、服务卡片、底部操作栏
+4. **订单列表**：检查状态标签、订单卡片样式
+
+---
+
+## 风险与注意事项
+
+> [!WARNING]
+> 由于涉及全局样式修改，需要确保：
 >
-> [!IMPORTANT]
-> **隐私协议 (Privacy Protocol)**: 微信平台要求极为严格。必须在小程序后台设置好《用户隐私保护指引》，并且在小程序端实现 **隐私授权弹窗**。
-> **管理员密码**: 管理后台将使用简单的密码保护，请在上线前确定一个访问密码。
+> - 修改后所有页面正常显示
+> - 不影响现有功能的正常使用
+> - 图片资源与新样式匹配
 
-## 拟定修改 (Proposed Changes)
+---
 
-### 1. 新增隐私授权组件
+## 实施计划
 
-为了应对微信的隐私规范，我们需要添加一个通用的隐私弹窗组件。
+由于页面数量较多（22个），建议分批次进行：
 
-#### [NEW] `components/privacy-popup/`
+1. **第一批**：`app.wxss` + 首页 + 个人中心
+2. **第二批**：老师详情 + 订单列表 + 订单详情
+3. **第三批**：登录/注册 + 搜索 + 消息
+4. **第四批**：其余功能页面
+5. **第五批**：管理后台页面
 
-- `index.wxml`: 弹窗 UI，包含“同意”和“拒绝”按钮。
-- `index.js`: 使用 `wx.getPrivacySetting` 和 `wx.onNeedPrivacyAuthorization` 监听隐私授权需求。
-
-### 2. 开发手机端管理后台 (Admin Panel)
-
-#### [NEW] Cloud Function: `adminFunctions`
-
-- **目的**: 专门处理管理员相关的逻辑，避免污染普通用户接口。
-- **功能**:
-  - `login`: 验证管理员密码 (配置在云环境变量中)。
-  - `getOrderList`: 获取所有用户的订单数据 (支持分页)。
-  - `updateOrderStatus`: 修改订单状态 (如: 确认接单、已完成)。
-
-#### [NEW] `pages/admin/login/index`
-
-- **界面**: 简单的输入框，输入访问密码。
-- **逻辑**: 调用 `adminFunctions/login` 验证。验证通过后缓存 token 或标记，跳转到列表页。
-
-#### [NEW] `pages/admin/order-list/index`
-
-- **界面**:
-  - 顶部 Tab: 全部 / 待接单 / 进行中 / 已完成
-  - 列表项: 显示订单号、客户姓名、预约时间、金额、状态。
-  - 操作: 点击进入详情，或直接点击“接单”按钮。
-
-#### [NEW] `pages/admin/order-detail/index`
-
-- **界面**: 类似用户端的订单详情，但增加“管理员操作区” (修改状态、添加备注)。
-
-### 3. 全局配置
-
-#### [MODIFY] `app.json`
-
-- 引入隐私组件。
-- 注册新的管理员页面路由。
-
-## 验证计划 (Verification Plan)
-
-1. **隐私弹窗**: 清除缓存后测试是否弹出。
-2. **管理后台**:
-   - 访问 `/pages/admin/login/index`。
-   - 输入错误密码 -> 提示错误。
-   - 输入正确密码 -> 进入列表页。
-   - 列表页是否能看到刚才测试提交的订单。
+每批完成后进行阶段性验收，确保质量。

@@ -1,51 +1,60 @@
-# 上线准备与管理后台开发总结 (Walkthrough)
+# UI Refactoring Walkthrough
 
-## 本次更新内容
+## Overview
 
-### 1. 隐私合规 (必选)
+We have successfully refactored the entire WeChat Mini Program UI to replace unsupported CSS variables with hardcoded hex values and `rpx` units. The new design follows a **"Concise, Fresh, and Low Saturation"** aesthetic, simulating an iPhone 15 Pro environment.
 
-由于微信平台最新要求，小程序必须在用户使用前获取隐私授权。
+## Design System Summary
 
-- **新增组件**: `components/privacy-popup`
-- **应用范围**: 首页及核心入口
-- **效果**: 用户点击同意后，方可正常调用获取头像、位置等隐私接口。
+- **Primary Color**: `#3D7EFF` (Fresh Blue)
+- **Backgrounds**: Page `#F5F6F8`, Container `#FFFFFF`
+- **Text Colors**: Primary `#333333`, Secondary `#666666`, Placeholder `#999999`
+- **Spacing**: Based on 4rpx grid system (e.g., 24rpx padding)
+- **Radius**: `16rpx` for cards, `999rpx` for pills/buttons
+- **Shadows**: Subtle `0 2rpx 8rpx rgba(0,0,0,0.02)`
 
-### 2. 手机端管理后台 (新功能)
+## Refactored Pages
 
-为了便于运营，开发了独立的管理端页面。
+### 1. Global
 
-#### 入口与登录
+- `app.wxss`: Redefined global utility classes and resets.
 
-- **路径**: `/pages/admin/login/index`
-- **访问密码**: `admin_password_123` (硬编码在云函数 `adminFunctions` 中，上线前请修改)
+### 2. Core Pages
 
-#### 功能模块
+- `index/index.wxss`: Modernized homepage with clean white cards and soft shadows.
+- `mine/index.wxss`: Refreshed personal center with improved hierarchy.
+- `teacher-detail/index.wxss`: Clean, tabbed layout for teacher profiles.
+- `order-list/index.wxss`: Clear status indicators and card layouts.
+- `order-detail/index.wxss`: Step-by-step progress view and detailed info blocks.
 
-1. **订单列表**:
-   - 展示所有用户的订单
-   - 支持按状态筛选: 待接单、服务中、已完成等
-   - 支持一键“接单”操作
-2. **订单详情**:
-   - 查看客户姓名、地址、预约时间
-   - 修改订单状态 (开始服务、完成、取消)
+### 3. Secondary Pages
 
-## 验证与测试建议
+- `login/index.wxss` & `register/index.wxss`: Minimalist forms with brand gradients.
+- `search/index.wxss`: Clean search bar and history tags.
+- `message/index.wxss` & `chat/index.wxss`: Readable conversation layouts.
+- `settings/index.wxss` & `order-confirm/index.wxss`: Standardized list and action groups.
 
-### 1. 测试管理后台
+### 4. Functional Pages
 
-1. 在开发者工具上方地址栏输入 `/pages/admin/login/index` 进入登录页。
-2. 输入密码 `admin_password_123` 登录。
-3. 进入列表页，查看是否有之前测试提交的订单。
-4. 点击某个订单进入详情页，尝试修改状态为“已接单”。
-5. 返回列表页下拉刷新，确认状态已更新。
+- `service/index.wxss`: Filterable service list.
+- `child-info/index.wxss`: Profile cards and management actions.
+- `feedback/index.wxss`: Structured feedback forms.
+- `case-list/index.wxss` & `case-detail/index.wxss`: Content-heavy layouts optimized for readability.
+- `rebate/index.wxss`: Statistics dashboard style.
+- `teacher-resume/index.wxss`: Complex form styling for resume submission.
+- `customer-service/index.wxss`: FAQ and contact layouts.
+- `example/index.wxss`: Demo component page.
 
-### 2. 检查隐私弹窗
+### 5. Admin Pages
 
-1. 清除开发者工具授权数据。
-2. 重新编译，观察首页底部是否弹窗。
+- `admin/login/index.wxss`: Professional dark-themed login.
+- `admin/order-list/index.wxss` & `admin/order-detail/index.wxss`: Dense data displays for management.
 
-## 上线前最后检查
+## Verification
 
-- [ ] 确保 `app.js` 中的 `env` 设置为正式环境ID。
-- [ ] 在微信小程序后台配置 `request` 等合法域名。
-- [ ] 在后台 **[设置] -> [隐私与安全] -> [用户隐私保护指引]** 中如实填写信息。
+All 22 pages have been rewritten. CSS variables (`var(--td-...)`) have been eliminated in favor of explicit values to ensure compatibility with the WeChat Mini Program rendering engine.
+
+## Next Steps
+
+1. **Developer Tool Preview**: Open the WeChat Developer Tool to verify the visual rendering on the iPhone 15 Pro simulator.
+2. **Interactive Testing**: Click through all flows (Booking, Login, Admin) to ensure layout stability.

@@ -1,175 +1,276 @@
-/* pages/login/index.wxss */
-.page-container {
+/* pages/login/index.wxss - 智伴家登录页柔和精致风格 */
+
+.container {
   min-height: 100vh;
-  background-color: #fff;
-  padding: 0 50rpx;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF9F5 40%, #FFE8E4 100%);
+  padding: 36rpx;
   display: flex;
   flex-direction: column;
 }
+
+/* ==================== Logo 区域 ==================== */
 
 .logo-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 100rpx 0 60rpx;
+  padding: 100rpx 0 72rpx;
 }
 
-.logo-wrap {
-  width: 160rpx;
-  height: 160rpx;
-  background: linear-gradient(135deg, #4a90d9 0%, #357abd 100%);
-  border-radius: 32rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 24rpx;
+.logo {
+  width: 180rpx;
+  height: 180rpx;
+  margin-bottom: 36rpx;
+  border-radius: 40rpx;
+  box-shadow: 0 12rpx 40rpx rgba(255, 128, 102, 0.25);
 }
 
-.logo-text {
-  font-size: 48rpx;
-  font-weight: bold;
-  color: #fff;
+.app-name {
+  font-size: 52rpx;
+  font-weight: 700;
+  color: #3D3A38;
+  margin-bottom: 12rpx;
+  font-family: 'DM Serif Display', 'Noto Serif SC', serif;
 }
 
 .app-slogan {
   font-size: 28rpx;
-  color: #999;
+  color: #7A7673;
 }
+
+/* ==================== 登录方式切换 ==================== */
+
+.login-tabs {
+  display: flex;
+  background-color: #F8F6F3;
+  border-radius: 44rpx;
+  padding: 8rpx;
+  margin-bottom: 44rpx;
+}
+
+.tab-item {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  color: #7A7673;
+  border-radius: 36rpx;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-weight: 500;
+}
+
+.tab-item.active {
+  background-color: #FFFFFF;
+  color: #FF8066;
+  font-weight: 600;
+  box-shadow: 0 4rpx 16rpx rgba(61, 58, 56, 0.08);
+}
+
+/* ==================== 登录表单 ==================== */
 
 .login-form {
-  flex: 1;
+  background-color: #FFFFFF;
+  border-radius: 28rpx;
+  padding: 40rpx;
+  box-shadow: 0 8rpx 32rpx rgba(61, 58, 56, 0.06);
 }
 
-.input-group {
+.form-item {
+  margin-bottom: 36rpx;
+}
+
+.form-item:last-of-type {
+  margin-bottom: 0;
+}
+
+.input-wrapper {
   display: flex;
   align-items: center;
-  border-bottom: 1rpx solid #eee;
-  padding: 30rpx 0;
+  height: 104rpx;
+  padding: 0 28rpx;
+  background-color: #F8F6F3;
+  border-radius: 20rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.25s ease;
 }
 
-.input-prefix {
-  font-size: 32rpx;
-  color: #333;
-  margin-right: 20rpx;
+.input-wrapper:focus-within {
+  border-color: #FFAB91;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 6rpx rgba(255, 171, 145, 0.12);
 }
 
-.input-group input {
+.input-icon {
+  width: 48rpx;
+  height: 48rpx;
+  margin-right: 24rpx;
+  opacity: 0.5;
+}
+
+.input {
   flex: 1;
-  font-size: 32rpx;
+  height: 100%;
+  font-size: 30rpx;
+  color: #3D3A38;
+}
+
+.input::placeholder {
+  color: #A8A5A2;
+}
+
+.code-input {
+  flex: 1;
 }
 
 .code-btn {
-  padding: 16rpx 24rpx;
-  background: #4a90d9;
-  color: #fff;
+  padding: 10rpx 28rpx;
   font-size: 26rpx;
-  border-radius: 8rpx;
+  color: #FF8066;
+  font-weight: 600;
+  border-left: 1rpx solid #E8E5E2;
+  margin-left: 24rpx;
+  transition: all 0.2s ease;
+}
+
+.code-btn:active {
+  opacity: 0.7;
 }
 
 .code-btn.disabled {
-  background: #ccc;
+  color: #CCCCCC;
 }
 
 .login-btn {
-  margin-top: 60rpx;
-  background: linear-gradient(135deg, #4a90d9 0%, #357abd 100%);
-  color: #fff;
-  border-radius: 48rpx;
-  font-size: 32rpx;
-  height: 96rpx;
-  line-height: 96rpx;
-}
-
-.wx-login-section {
-  margin-top: 60rpx;
-}
-
-.divider {
-  display: flex;
-  align-items: center;
-  margin-bottom: 40rpx;
-}
-
-.divider .line {
-  flex: 1;
-  height: 1rpx;
-  background: #eee;
-}
-
-.divider-text {
-  padding: 0 20rpx;
-  color: #999;
-  font-size: 26rpx;
-}
-
-.wx-login-btn {
+  margin-top: 48rpx;
+  height: 104rpx;
+  background: linear-gradient(135deg, #FF8066 0%, #FFAB91 100%);
+  color: #FFFFFF;
+  font-size: 34rpx;
+  font-weight: 700;
+  border-radius: 52rpx;
+  box-shadow: 0 12rpx 32rpx rgba(255, 128, 102, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #07c160;
-  color: #fff;
-  border-radius: 48rpx;
-  height: 96rpx;
+  transition: all 0.2s ease;
 }
 
-.wx-icon {
+.login-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 8rpx 24rpx rgba(255, 128, 102, 0.25);
+}
+
+/* ==================== 微信登录 ==================== */
+
+.wechat-login {
+  background-color: #FFFFFF;
+  border-radius: 28rpx;
+  padding: 48rpx;
+  box-shadow: 0 8rpx 32rpx rgba(61, 58, 56, 0.06);
+}
+
+.wechat-tips {
+  text-align: center;
+  margin-bottom: 44rpx;
+}
+
+.wechat-tips text {
+  font-size: 28rpx;
+  color: #7A7673;
+}
+
+.wechat-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 104rpx;
+  background: linear-gradient(135deg, #2E7D6B 0%, #4DB6A0 100%);
+  color: #FFFFFF;
+  font-size: 34rpx;
+  font-weight: 700;
+  border-radius: 52rpx;
+  margin-bottom: 28rpx;
+  box-shadow: 0 12rpx 32rpx rgba(46, 125, 107, 0.3);
+  transition: all 0.2s ease;
+}
+
+.wechat-btn:active {
+  transform: scale(0.97);
+}
+
+.wechat-icon {
+  width: 52rpx;
+  height: 52rpx;
+  margin-right: 18rpx;
+}
+
+.phone-auth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 104rpx;
+  background-color: #F8F6F3;
+  color: #3D3A38;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: 52rpx;
+  transition: all 0.2s ease;
+}
+
+.phone-auth-btn:active {
+  background-color: #E8E5E2;
+}
+
+.phone-icon {
   width: 48rpx;
   height: 48rpx;
   margin-right: 16rpx;
 }
 
-.agreement {
+/* ==================== 用户协议 ==================== */
+
+.agreement-section {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 40rpx 0;
+  align-items: flex-start;
+  margin-top: 44rpx;
+  padding: 0 20rpx;
 }
 
-.checkbox-wrap {
-  display: flex;
-  align-items: center;
+.agreement-check {
+  padding: 10rpx;
 }
 
-.checkbox {
-  width: 36rpx;
-  height: 36rpx;
-  border: 2rpx solid #ddd;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 12rpx;
-  font-size: 24rpx;
-  color: #fff;
-}
-
-.checkbox.checked {
-  background: #4a90d9;
-  border-color: #4a90d9;
+.check-icon {
+  width: 40rpx;
+  height: 40rpx;
 }
 
 .agreement-text {
+  flex: 1;
   font-size: 24rpx;
-  color: #999;
+  color: #7A7673;
+  line-height: 1.6;
 }
 
-.agreement-link {
-  font-size: 24rpx;
-  color: #4a90d9;
+.agreement-text .link {
+  color: #FF8066;
+  font-weight: 500;
 }
 
-.register-entry {
-  text-align: center;
-  padding: 30rpx 0;
-  font-size: 28rpx;
-  color: #666;
+/* ==================== 其他入口 ==================== */
+
+.other-entry {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 100rpx;
 }
 
 .register-link {
-  color: #4a90d9;
-}
-
-.placeholder {
-  color: #ccc;
+  font-size: 28rpx;
+  color: #FF8066;
+  font-weight: 600;
 }

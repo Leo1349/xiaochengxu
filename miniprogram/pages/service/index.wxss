@@ -1,123 +1,146 @@
-/* pages/service/index.wxss */
+/* pages/service/index.wxss - 智伴家服务页柔和精致风格 */
 
 .container {
-  padding: 0;
   min-height: 100vh;
-  background: #f6f6f6;
-  padding-bottom: 140rpx;
+  background-color: #FFF9F5;
 }
 
-/* 顶部 4 个 tab */
+/* 顶部快捷 Tab */
 .quick-tabs {
-  background: #fff;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-around;
-  padding: 18rpx 18rpx 0;
+  background-color: #FFFFFF;
+  border-bottom: 1rpx solid #F5F3F0;
 }
 
 .tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 28rpx 0;
+  font-size: 30rpx;
+  color: #7A7673;
   position: relative;
-  padding: 18rpx 6rpx 16rpx;
-  font-size: 26rpx;
-  color: #666;
+  font-weight: 500;
+  transition: all 0.25s ease;
 }
 
 .tab-item.active {
-  color: #4a90d9;
+  color: #FF8066;
   font-weight: 600;
 }
 
 .tab-line {
   position: absolute;
-  left: 50%;
   bottom: 0;
-  width: 54rpx;
-  height: 6rpx;
-  border-radius: 3rpx;
-  background: #4a90d9;
+  left: 50%;
   transform: translateX(-50%);
+  width: 44rpx;
+  height: 6rpx;
+  background: linear-gradient(90deg, #FF8066 0%, #FFAB91 100%);
+  border-radius: 3rpx;
+  transition: all 0.25s ease;
 }
 
-/* 通用区块 */
+/* 区块 */
 .section {
-  margin: 16rpx 24rpx 0;
-  background: #fff;
-  border-radius: 16rpx;
-  overflow: hidden;
-}
-
-.section-title {
-  padding: 22rpx 24rpx 14rpx;
-  font-size: 30rpx;
-  font-weight: 600;
-  color: #333;
+  background-color: #FFFFFF;
+  margin: 28rpx 28rpx 0;
+  border-radius: 24rpx;
+  padding: 28rpx;
+  box-shadow: 0 4rpx 20rpx rgba(61, 58, 56, 0.06);
 }
 
 .section-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 22rpx 24rpx 14rpx;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.section-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #3D3A38;
+  font-family: 'DM Serif Display', 'Noto Serif SC', serif;
+  position: relative;
+  padding-left: 20rpx;
+}
+
+.section-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6rpx;
+  height: 28rpx;
+  background: linear-gradient(180deg, #FF8066 0%, #FFAB91 100%);
+  border-radius: 3rpx;
 }
 
 .view-more {
   font-size: 24rpx;
-  color: #999;
+  color: #A8A5A2;
 }
 
-/* 服务类型 chips */
+/* 服务类型 */
 .type-scroll {
-  padding: 0 24rpx 18rpx;
   white-space: nowrap;
 }
 
 .type-row {
-  display: inline-flex;
-  align-items: center;
-  gap: 12rpx;
+  display: flex;
+  gap: 16rpx;
+  padding: 10rpx 0;
 }
 
 .type-chip {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12rpx 18rpx;
-  border-radius: 20rpx;
-  background: #f2f3f5;
-  color: #666;
-  font-size: 24rpx;
+  padding: 18rpx 28rpx;
+  background-color: #F8F6F3;
+  color: #7A7673;
+  font-size: 26rpx;
+  font-weight: 500;
+  border-radius: 36rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.25s ease;
 }
 
 .type-chip.active {
-  background: rgba(74, 144, 217, 0.1);
-  color: #4a90d9;
-  font-weight: 600;
+  background: linear-gradient(135deg, #FFE8E4 0%, #FFF5F0 100%);
+  color: #FF8066;
+  border-color: rgba(255, 128, 102, 0.3);
+  transform: scale(1.02);
+  box-shadow: 0 4rpx 12rpx rgba(255, 128, 102, 0.15);
 }
 
-/* 推荐陪伴师列表 */
+/* 老师列表 */
 .teacher-list {
-  padding: 0 24rpx 18rpx;
+  padding-bottom: 24rpx;
 }
 
 .teacher-card {
   display: flex;
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 18rpx 0;
-  border-bottom: 1rpx solid #f1f1f1;
+  padding: 28rpx 0;
+  border-bottom: 1rpx solid #F5F3F0;
+  transition: all 0.25s ease;
 }
 
 .teacher-card:last-child {
   border-bottom: none;
 }
 
+.teacher-card:active {
+  background-color: #FFFAF8;
+  transform: scale(0.99);
+}
+
 .teacher-avatar {
-  width: 120rpx;
-  height: 120rpx;
-  border-radius: 12rpx;
-  margin-right: 18rpx;
-  background: #f2f3f5;
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 20rpx;
+  margin-right: 24rpx;
+  background-color: #FFE8E4;
+  box-shadow: 0 4rpx 12rpx rgba(255, 128, 102, 0.15);
 }
 
 .teacher-info {
@@ -128,86 +151,87 @@
 .teacher-top {
   display: flex;
   align-items: baseline;
-  gap: 12rpx;
+  gap: 16rpx;
 }
 
 .teacher-name {
-  font-size: 30rpx;
-  font-weight: 700;
-  color: #333;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #3D3A38;
+  font-family: 'DM Serif Display', 'Noto Serif SC', serif;
 }
 
 .teacher-title {
   font-size: 24rpx;
-  color: #4a90d9;
+  color: #2E7D6B;
+  font-weight: 500;
 }
 
 .teacher-meta {
-  margin-top: 6rpx;
   display: flex;
   align-items: center;
-  gap: 10rpx;
+  gap: 16rpx;
+  margin-top: 10rpx;
   font-size: 24rpx;
-  color: #999;
+  color: #A8A5A2;
 }
 
 .rating {
-  color: #ff9500;
-  font-weight: 700;
+  color: #FFB74D;
+  font-weight: 600;
 }
 
 .meta-split {
-  color: #c9c9c9;
+  color: #E8E5E2;
 }
 
 .teacher-tags {
-  margin-top: 10rpx;
   display: flex;
-  flex-wrap: wrap;
   gap: 10rpx;
+  margin-top: 16rpx;
 }
 
 .tag {
-  padding: 6rpx 10rpx;
-  border-radius: 10rpx;
-  background: #f2f3f5;
-  color: #666;
-  font-size: 22rpx;
+  padding: 6rpx 14rpx;
+  font-size: 20rpx;
+  font-weight: 500;
+  background-color: #F8F6F3;
+  color: #7A7673;
+  border-radius: 14rpx;
 }
 
 .teacher-intro {
-  margin-top: 10rpx;
+  margin-top: 16rpx;
   font-size: 24rpx;
-  color: #666;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #7A7673;
+  line-height: 1.5;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .teacher-price {
-  margin-left: 10rpx;
+  margin-left: 20rpx;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: space-between;
 }
 
 .price {
-  font-size: 34rpx;
-  font-weight: 800;
-  color: #ff9500;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #FF8066;
 }
 
 .unit {
-  font-size: 22rpx;
-  color: #999;
+  font-size: 24rpx;
+  color: #A8A5A2;
+  margin-top: 4rpx;
 }
 
 .loading {
-  padding: 30rpx;
   text-align: center;
-  font-size: 26rpx;
-  color: #999;
+  padding: 36rpx;
+  color: #A8A5A2;
 }
