@@ -11,9 +11,9 @@ Page({
 
     // 轮播图
     bannerList: [
-      { id: 1, image: '/images/ai_example1.png', url: '' },
-      { id: 2, image: '/images/ai_example2.png', url: '' },
-      { id: 3, image: '/images/cloud_dev.png', url: '' }
+      { id: 1, image: '/images/banner1.jpg', url: '' },
+      { id: 2, image: '/images/banner2.jpg', url: '' },
+      { id: 3, image: '/images/banner3.jpg', url: '' }
     ],
 
     // 功能入口
