@@ -1,6 +1,6 @@
 # 柔和精致风格 UI 图标设计教程
 
-本教程基于 Google Stitch、Icons8、Dribbble 等专业平台的设计理念，结合智伴家小程序的 Soft/Pastel + Luxury 美学风格编写。
+本教程基于 Google Stitch、Icons8、Dribbble 等专业平台的设计理念，结合智伴优程小程序的 Soft/Pastel + Luxury 美学风格编写。
 
 ---
 
@@ -239,4 +239,4 @@ white background, 48x48 pixels"
 
 ---
 
-*本教程基于专业UI设计最佳实践编写，适用于智伴家小程序柔和精致风格设计。*
+*本教程基于专业UI设计最佳实践编写，适用于智伴优程小程序柔和精致风格设计。*

@@ -1,4 +1,4 @@
-/* pages/order-confirm/index.wxss - 智伴家订单确认页柔和精致风格 */
+/* pages/order-confirm/index.wxss - 智伴优程订单确认页柔和精致风格 */
 
 .container {
   min-height: 100vh;

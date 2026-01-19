@@ -273,7 +273,7 @@ Page({
   // 分享
   onShareAppMessage: function () {
     return {
-      title: this.data.teacher ? this.data.teacher.name + ' - 智伴家专业陪伴师' : '智伴家专业陪伴师',
+      title: this.data.teacher ? this.data.teacher.name + ' - 智伴优程专业陪伴师' : '智伴优程专业陪伴师',
       path: '/pages/teacher-detail/index?id=' + this.data.teacherId,
       imageUrl: this.data.teacher ? this.data.teacher.avatar : ''
     }

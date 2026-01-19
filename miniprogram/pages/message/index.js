@@ -92,7 +92,7 @@ Page({
         id: 1,
         type: 'system',
         title: '系统通知',
-        content: '欢迎使用智伴家平台，祝您使用愉快！',
+        content: '欢迎使用智伴优程平台，祝您使用愉快！',
         time: '2026-01-01 10:00',
         isRead: false,
         icon: '/images/message/msg-system.png'

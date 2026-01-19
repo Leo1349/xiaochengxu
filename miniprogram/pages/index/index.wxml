@@ -95,7 +95,7 @@
   <!-- 陪伴师模式欢迎信息 -->
   <view class="teacher-welcome" wx:if="{{currentRole === 'teacher'}}">
     <image class="welcome-image" src="/images/teacher-welcome.png" mode="aspectFit"></image>
-    <text class="welcome-title">欢迎加入智伴家</text>
+    <text class="welcome-title">欢迎加入智伴优程</text>
     <text class="welcome-desc">完善您的简历，开始接单赚取收入</text>
     <button class="welcome-btn" bindtap="goToMenu" data-url="/pages/teacher-resume/index">完善简历</button>
   </view>

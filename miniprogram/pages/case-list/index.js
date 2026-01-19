@@ -12,22 +12,22 @@ Page({
       { id: 'interest', name: '兴趣培养' },
       { id: 'psychology', name: '心理疏导' }
     ],
-    
+
     // 当前分类
     currentCategory: 'all',
-    
+
     // 案例列表
     caseList: [],
-    
+
     // 分页
     page: 1,
     pageSize: 10,
     hasMore: true,
-    
+
     loading: false
   },
 
-  onLoad: function(options) {
+  onLoad: function (options) {
     if (options.category) {
       this.setData({
         currentCategory: options.category
@@ -36,7 +36,7 @@ Page({
     this.loadCaseList()
   },
 
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
     this.setData({
       page: 1,
       hasMore: true,
@@ -46,14 +46,14 @@ Page({
     wx.stopPullDownRefresh()
   },
 
-  onReachBottom: function() {
+  onReachBottom: function () {
     if (this.data.hasMore && !this.data.loading) {
       this.loadMoreCases()
     }
   },
 
   // 切换分类
-  switchCategory: function(e) {
+  switchCategory: function (e) {
     const category = e.currentTarget.dataset.category
     this.setData({
       currentCategory: category,
@@ -65,9 +65,9 @@ Page({
   },
 
   // 加载案例列表
-  loadCaseList: function() {
+  loadCaseList: function () {
     this.setData({ loading: true })
-    
+
     // 模拟数据
     const mockCases = [
       {
@@ -141,14 +141,14 @@ Page({
         createTime: '2025-12-01'
       }
     ]
-    
+
     setTimeout(() => {
       // 根据分类筛选
       let filteredCases = mockCases
       if (this.data.currentCategory !== 'all') {
         filteredCases = mockCases.filter(c => c.category === this.data.currentCategory)
       }
-      
+
       this.setData({
         caseList: filteredCases,
         loading: false,
@@ -158,7 +158,7 @@ Page({
   },
 
   // 加载更多案例
-  loadMoreCases: function() {
+  loadMoreCases: function () {
     this.setData({
       page: this.data.page + 1
     })
@@ -169,7 +169,7 @@ Page({
   },
 
   // 查看案例详情
-  viewCaseDetail: function(e) {
+  viewCaseDetail: function (e) {
     const id = e.currentTarget.dataset.id
     wx.navigateTo({
       url: '/pages/case-detail/index?id=' + id
@@ -177,7 +177,7 @@ Page({
   },
 
   // 查看陪伴师详情
-  viewTeacherDetail: function(e) {
+  viewTeacherDetail: function (e) {
     const id = e.currentTarget.dataset.teacherid
     wx.navigateTo({
       url: '/pages/teacher-detail/index?id=' + id
@@ -185,9 +185,9 @@ Page({
   },
 
   // 分享
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     return {
-      title: '智伴家 - 成功案例',
+      title: '智伴优程 - 成功案例',
       path: '/pages/case-list/index'
     }
   }

@@ -71,7 +71,7 @@ Page({
     loading: false
   },
 
-  onLoad: function(options) {
+  onLoad: function (options) {
     if (options.typeId) {
       this.setData({
         currentTypeId: parseInt(options.typeId)
@@ -81,7 +81,7 @@ Page({
     this.loadTeacherList()
   },
 
-  onShow: function() {
+  onShow: function () {
     // 更新tabbar选中状态
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({
@@ -91,7 +91,7 @@ Page({
   },
 
   // 顶部快捷入口
-  onQuickTabTap: function(e) {
+  onQuickTabTap: function (e) {
     const url = e.currentTarget.dataset.url
     const id = e.currentTarget.dataset.id
     this.setData({ activeQuickTab: id })
@@ -108,7 +108,7 @@ Page({
   },
 
   // 加载推荐陪伴师列表
-  loadTeacherList: function() {
+  loadTeacherList: function () {
     this.setData({ loading: true })
 
     const mockTeachers = [
@@ -160,7 +160,7 @@ Page({
     }, 300)
   },
 
-  updateFilteredTeachers: function() {
+  updateFilteredTeachers: function () {
     const currentTypeId = this.data.currentTypeId
     const type = this.data.serviceTypes.find((t) => t.id === currentTypeId)
     const typeName = type ? type.name : ''
@@ -172,7 +172,7 @@ Page({
   },
 
   // 选择服务类型
-  selectServiceType: function(e) {
+  selectServiceType: function (e) {
     const id = e.currentTarget.dataset.id
     this.setData({
       currentTypeId: id
@@ -182,14 +182,14 @@ Page({
   },
 
   // 查看更多陪伴师
-  viewMoreTeachers: function() {
+  viewMoreTeachers: function () {
     wx.navigateTo({
       url: '/pages/search/index?typeId=' + this.data.currentTypeId
     })
   },
 
   // 跳转到陪伴师详情
-  goToTeacherDetail: function(e) {
+  goToTeacherDetail: function (e) {
     const id = e.currentTarget.dataset.id
     wx.navigateTo({
       url: '/pages/teacher-detail/index?id=' + id
@@ -197,9 +197,9 @@ Page({
   },
 
   // 分享
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     return {
-      title: '智伴家 - 专业陪伴服务',
+      title: '智伴优程 - 专业陪伴服务',
       path: '/pages/service/index'
     }
   }

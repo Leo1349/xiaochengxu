@@ -3,7 +3,7 @@
   <!-- Logo -->
   <view class="logo-section">
     <image class="logo" src="/images/logo.png" mode="aspectFit"></image>
-    <text class="app-name">智伴家</text>
+    <text class="app-name">智伴优程</text>
     <text class="app-slogan">专业陪伴师平台</text>
   </view>
 

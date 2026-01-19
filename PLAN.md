@@ -1,7 +1,7 @@
-# 智伴家（微信小程序）任务清单与执行计划
+# 智伴优程（微信小程序）任务清单与执行计划
 
 > 日期：2026-01-05
-> 
+>
 > 目标：让项目在微信开发者工具中可稳定运行（首页/老师详情/订单列表等），并且云函数 + 云数据库数据链路可用。
 
 ## 现状快照（基于仓库代码）
@@ -60,7 +60,7 @@
 
 - 新增脚本：`tools/setup-git-config.ps1`（默认写入本仓库的本地 git config，不影响全局）。
 - 用法示例（推荐，本地 repo 级别）：
-	- `powershell -NoProfile -ExecutionPolicy Bypass -File tools/setup-git-config.ps1 -Name "你的名字" -Email "you@example.com"`
+ 	- `powershell -NoProfile -ExecutionPolicy Bypass -File tools/setup-git-config.ps1 -Name "你的名字" -Email "you@example.com"`
 - `tools/git-auto-commit.ps1` 现在会在缺少 `user.name/email` 时直接阻止提交并提示如何配置。
 
 ---

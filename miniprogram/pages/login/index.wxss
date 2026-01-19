@@ -1,4 +1,4 @@
-/* pages/login/index.wxss - 智伴家登录页柔和精致风格 */
+/* pages/login/index.wxss - 智伴优程登录页柔和精致风格 */
 
 .container {
   min-height: 100vh;

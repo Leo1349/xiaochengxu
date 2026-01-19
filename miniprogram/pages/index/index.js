@@ -47,7 +47,7 @@ Page({
     loading: false,
 
     // 公告
-    notice: '欢迎使用智伴家，专业陪伴师为您的孩子提供一对一陪伴服务！'
+    notice: '欢迎使用智伴优程，专业陪伴师为您的孩子提供一对一陪伴服务！'
   },
 
   onLoad: function (options) {
@@ -285,7 +285,7 @@ Page({
   // 分享
   onShareAppMessage: function () {
     return {
-      title: '智伴家 - 专业陪伴师平台',
+      title: '智伴优程 - 专业陪伴师平台',
       path: '/pages/index/index',
       imageUrl: '/images/share.png'
     }

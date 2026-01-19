@@ -191,7 +191,7 @@ Page({
   // 分享
   onShareAppMessage: function () {
     return {
-      title: '智伴家 - 专业陪伴师平台',
+      title: '智伴优程 - 专业陪伴师平台',
       path: '/pages/index/index'
     }
   }

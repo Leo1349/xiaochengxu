@@ -6,7 +6,7 @@
       <view class="service-header">
         <image class="service-logo" src="/images/icons/service.png" mode="aspectFit"></image>
         <view class="service-info">
-          <text class="service-title">智伴家客服</text>
+          <text class="service-title">智伴优程客服</text>
           <text class="service-time">服务时间：{{serviceInfo.workTime}}</text>
         </view>
       </view>
