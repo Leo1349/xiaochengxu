@@ -4,10 +4,8 @@ const api = require('../../utils/api.js')
 
 Page({
   data: {
-    // 用户信息
     userInfo: null,
     isLoggedIn: false,
-    currentRole: 'parent', // parent: 家长, teacher: 陪伴师
 
     // 轮播图
     bannerList: [
@@ -21,14 +19,6 @@ Page({
       { id: 1, icon: '/images/icons_v3/nav_find_tutor.png', name: '找陪伴师', url: '/pages/search/index' },
       { id: 2, icon: '/images/icons_v3/nav_orders.png', name: '我的订单', url: '/pages/order-list/index' },
       { id: 3, icon: '/images/icons_v3/nav_child.png', name: '孩子信息', url: '/pages/child-info/index' },
-      { id: 4, icon: '/images/icons_v3/nav_cases.png', name: '成功案例', url: '/pages/case-list/index' }
-    ],
-
-    // 陪伴师功能入口
-    teacherMenuList: [
-      { id: 1, icon: '/images/icons_v3/nav_cases.png', name: '我的简历', url: '/pages/teacher-resume/index' }, // 暂无 resume 图标，暂用 cases 替代或保持旧的
-      { id: 2, icon: '/images/icons_v3/nav_orders.png', name: '我的订单', url: '/pages/order-list/index' },
-      { id: 3, icon: '/images/icons_v3/nav_cases.png', name: '返利中心', url: '/pages/rebate/index' }, // 暂无 rebate 图标
       { id: 4, icon: '/images/icons_v3/nav_cases.png', name: '成功案例', url: '/pages/case-list/index' }
     ],
 
@@ -77,14 +67,12 @@ Page({
     if (userInfo && token) {
       this.setData({
         userInfo: userInfo,
-        isLoggedIn: true,
-        currentRole: userInfo.currentRole || 'parent'
+        isLoggedIn: true
       })
     } else {
       this.setData({
         userInfo: null,
-        isLoggedIn: false,
-        currentRole: 'parent'
+        isLoggedIn: false
       })
     }
   },
@@ -199,30 +187,6 @@ Page({
     this.setData({
       teacherList: mockTeachers,
       loading: false
-    })
-  },
-
-  // 切换角色
-  switchRole: function () {
-    if (!this.data.isLoggedIn) {
-      this.goToLogin()
-      return
-    }
-
-    const newRole = this.data.currentRole === 'parent' ? 'teacher' : 'parent'
-    const userInfo = this.data.userInfo
-    userInfo.currentRole = newRole
-
-    this.setData({
-      currentRole: newRole,
-      userInfo: userInfo
-    })
-
-    wx.setStorageSync('userInfo', userInfo)
-
-    wx.showToast({
-      title: newRole === 'parent' ? '已切换到家长模式' : '已切换到陪伴师模式',
-      icon: 'none'
     })
   },
 

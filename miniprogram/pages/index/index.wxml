@@ -6,10 +6,6 @@
       <image class="search-icon" src="/images/icons_v3/search_icon.png" mode="aspectFit"></image>
       <text class="search-placeholder">搜索陪伴师</text>
     </view>
-    <view class="role-switch" bindtap="switchRole">
-      <text>{{currentRole === 'parent' ? '家长模式' : '陪伴师模式'}}</text>
-      <image class="switch-icon" src="/images/icons_v3/switch_role.png" mode="aspectFit"></image>
-    </view>
   </view>
 
   <!-- 公告栏 -->
@@ -28,23 +24,15 @@
   <!-- 功能入口 -->
   <view class="menu-section">
     <view class="menu-grid">
-      <block wx:if="{{currentRole === 'parent'}}">
-        <view class="menu-item" wx:for="{{menuList}}" wx:key="id" data-url="{{item.url}}" bindtap="goToMenu">
-          <image class="menu-icon" src="{{item.icon}}" mode="aspectFit"></image>
-          <text class="menu-name">{{item.name}}</text>
-        </view>
-      </block>
-      <block wx:else>
-        <view class="menu-item" wx:for="{{teacherMenuList}}" wx:key="id" data-url="{{item.url}}" bindtap="goToMenu">
-          <image class="menu-icon" src="{{item.icon}}" mode="aspectFit"></image>
-          <text class="menu-name">{{item.name}}</text>
-        </view>
-      </block>
+      <view class="menu-item" wx:for="{{menuList}}" wx:key="id" data-url="{{item.url}}" bindtap="goToMenu">
+        <image class="menu-icon" src="{{item.icon}}" mode="aspectFit"></image>
+        <text class="menu-name">{{item.name}}</text>
+      </view>
     </view>
   </view>
 
-  <!-- 服务类型（仅家长模式显示） -->
-  <view class="service-section" wx:if="{{currentRole === 'parent'}}">
+  <!-- 服务类型 -->
+  <view class="service-section">
     <view class="section-header">
       <text class="section-title">服务类型</text>
     </view>
@@ -56,8 +44,8 @@
     </view>
   </view>
 
-  <!-- 推荐陪伴师（仅家长模式显示） -->
-  <view class="teacher-section" wx:if="{{currentRole === 'parent'}}">
+  <!-- 推荐陪伴师 -->
+  <view class="teacher-section">
     <view class="section-header">
       <text class="section-title">推荐陪伴师</text>
       <text class="view-more" bindtap="viewMoreTeachers">查看更多 ></text>
@@ -92,12 +80,6 @@
     </view>
   </view>
 
-  <!-- 陪伴师模式欢迎信息 -->
-  <view class="teacher-welcome" wx:if="{{currentRole === 'teacher'}}">
-    <image class="welcome-image" src="/images/teacher-welcome.png" mode="aspectFit"></image>
-    <text class="welcome-title">欢迎加入智伴优程</text>
-    <text class="welcome-desc">完善您的简历，开始接单赚取收入</text>
-    <button class="welcome-btn" bindtap="goToMenu" data-url="/pages/teacher-resume/index">完善简历</button>
-  </view>
+
   <privacy-popup />
 </view>
