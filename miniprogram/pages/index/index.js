@@ -102,12 +102,15 @@ Page({
           const { banners, recommendTeachers } = res.result.data
 
           // 格式化 Banner 数据以适配前端
-          const formattedBanners = banners.map(item => {
-            let imageUrl = item.url;
-            // Fix for old data in DB pointing to missing images
-            if (imageUrl === '/images/banner1.png') imageUrl = '/images/ai_example1.png';
-            if (imageUrl === '/images/banner2.png') imageUrl = '/images/ai_example2.png';
-            if (imageUrl === '/images/banner3.png') imageUrl = '/images/cloud_dev.png';
+          const formattedBanners = banners.map((item, index) => {
+            // 将云数据库中的所有旧图片路径统一替换为新的轮播图
+            const newBannerImages = [
+              '/images/banner1.jpg',  // 新叶成长课堂
+              '/images/banner2.jpg',  // 教育服务保障包
+              '/images/banner3.jpg'   // 核心流程
+            ];
+            // 按索引分配新图片，确保使用新的轮播图
+            const imageUrl = newBannerImages[index % newBannerImages.length];
 
             return {
               id: item.id || item._id,
