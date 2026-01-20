@@ -3,34 +3,82 @@
 .container {
   min-height: 100vh;
   background-color: #F5F6F8;
-  padding: 24rpx;
+  padding-bottom: 24rpx;
 }
 
-.case-list { display: flex; flex-direction: column; gap: 24rpx; }
+/* 分类Tab */
+.category-scroll {
+  background-color: #FFFFFF;
+  white-space: nowrap;
+  padding: 24rpx 0;
+  margin-bottom: 24rpx;
+}
+
+.category-list {
+  display: inline-flex;
+  padding: 0 24rpx;
+  gap: 24rpx;
+}
+
+.category-item {
+  display: inline-block;
+  padding: 12rpx 32rpx;
+  font-size: 28rpx;
+  color: #666666;
+  background-color: #F5F6F8;
+  border-radius: 32rpx;
+  transition: all 0.2s ease;
+}
+
+.category-item.active {
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+  font-weight: 500;
+}
+
+/* 案例列表 */
+.case-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+  padding: 0 24rpx;
+}
 
 .case-card {
   background-color: #FFFFFF;
   border-radius: 16rpx;
   overflow: hidden;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.02);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
   transition: all 0.2s ease;
 }
 
-.case-card:active { transform: scale(0.98); box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05); }
-
-.case-cover { width: 100%; height: 280rpx; background-color: #F9FAFC; }
-
-.case-info { padding: 24rpx; }
-
-.case-title {
-  font-size: 30rpx;
-  font-weight: 600;
-  color: #333333;
-  margin-bottom: 16rpx;
-  display: block;
+.case-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
 }
 
-.case-desc {
+/* 案例封面 */
+.case-cover {
+  width: 100%;
+  height: 320rpx;
+  background-color: #F5F6F8;
+}
+
+/* 案例内容 */
+.case-content {
+  padding: 24rpx;
+}
+
+.case-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 12rpx;
+  display: block;
+  line-height: 1.4;
+}
+
+.case-summary {
   font-size: 26rpx;
   color: #666666;
   line-height: 1.6;
@@ -38,15 +86,85 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
+  margin-bottom: 20rpx;
 }
 
-.case-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 16rpx; }
-.case-author { display: flex; align-items: center; }
-.author-avatar { width: 48rpx; height: 48rpx; border-radius: 50%; margin-right: 16rpx; background-color: #F9FAFC; }
-.author-name { font-size: 24rpx; color: #666666; }
-.case-stats { font-size: 24rpx; color: #999999; }
+/* 案例底部 */
+.case-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #F0F0F0;
+}
 
-.empty-state { display: flex; flex-direction: column; align-items: center; padding: 120rpx 40rpx; }
-.empty-icon { width: 200rpx; height: 200rpx; margin-bottom: 32rpx; opacity: 0.5; }
-.empty-text { font-size: 28rpx; color: #999999; }
-.loading-more, .no-more { text-align: center; padding: 32rpx; font-size: 24rpx; color: #999999; }
+/* 教师信息 */
+.teacher-info {
+  display: flex;
+  align-items: center;
+}
+
+.teacher-avatar {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  margin-right: 12rpx;
+  background-color: #F5F6F8;
+}
+
+.teacher-name {
+  font-size: 26rpx;
+  color: #666666;
+}
+
+/* 统计数据 */
+.case-stats {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.stat-icon {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.stat-value {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 40rpx;
+}
+
+.empty-icon {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 32rpx;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999999;
+}
+
+/* 加载状态 */
+.loading-more,
+.no-more {
+  text-align: center;
+  padding: 32rpx;
+  font-size: 24rpx;
+  color: #999999;
+}

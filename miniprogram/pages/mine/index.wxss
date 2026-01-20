@@ -238,8 +238,8 @@
 }
 
 .quick-icon {
-  width: 64rpx;
-  height: 64rpx;
+  width: 88rpx;
+  height: 88rpx;
   margin-bottom: 18rpx;
   transition: transform 0.2s ease;
 }
@@ -298,9 +298,11 @@
 }
 
 .menu-icon {
-  width: 48rpx;
-  height: 48rpx;
+  width: 88rpx;
+  height: 88rpx;
   margin-right: 24rpx;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .menu-name {

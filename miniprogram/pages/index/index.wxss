@@ -157,8 +157,8 @@
 }
 
 .menu-icon {
-  width: 96rpx;
-  height: 96rpx;
+  width: 88rpx;
+  height: 88rpx;
   margin-bottom: 14rpx;
   transition: transform 0.25s ease;
 }

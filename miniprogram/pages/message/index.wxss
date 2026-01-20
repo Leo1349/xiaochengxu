@@ -123,11 +123,9 @@
 }
 
 .icon-img {
-  width: 104rpx;
-  height: 104rpx;
-  padding: 20rpx;
-  background: linear-gradient(135deg, #FFE8E4 0%, #FFF5F0 100%);
-  border-radius: 24rpx;
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
 }
 
 .unread-dot {
