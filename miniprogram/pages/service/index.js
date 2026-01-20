@@ -115,7 +115,7 @@ Page({
       {
         id: 1,
         name: '张老师',
-        avatar: '/images/avatar.png',
+        avatar: '/images/avatars/teacher-male-default.png',
         title: '高级陪伴师',
         rating: 4.9,
         orderCount: 128,
@@ -126,7 +126,7 @@ Page({
       {
         id: 2,
         name: '李老师',
-        avatar: '/images/avatar.png',
+        avatar: '/images/avatars/teacher-female-default.png',
         title: '资深陪伴师',
         rating: 5.0,
         orderCount: 256,
@@ -137,7 +137,7 @@ Page({
       {
         id: 3,
         name: '王老师',
-        avatar: '/images/avatar.png',
+        avatar: '/images/avatars/teacher-female-default.png',
         title: '心理陪伴师',
         rating: 4.8,
         orderCount: 89,

@@ -6,10 +6,10 @@ Page({
   data: {
     // 搜索关键词
     keyword: '',
-    
+
     // 搜索历史
     searchHistory: [],
-    
+
     // 热门搜索
     hotSearchList: [
       '数学辅导',
@@ -21,17 +21,17 @@ Page({
       '编程启蒙',
       '书法练习'
     ],
-    
+
     // 搜索结果
     resultList: [],
-    
+
     // 是否显示结果
     showResult: false,
 
     // 筛选栏展示文案（避免在 WXML 里做复杂表达式）
     serviceTypeLabel: '服务类型',
     sortByLabel: '综合排序',
-    
+
     // 筛选条件
     filters: {
       serviceType: '',
@@ -39,7 +39,7 @@ Page({
       priceRange: '',
       distance: ''
     },
-    
+
     // 服务类型选项
     serviceTypes: [
       { id: '', name: '全部' },
@@ -48,7 +48,7 @@ Page({
       { id: 'sport', name: '运动陪伴' },
       { id: 'life', name: '生活陪伴' }
     ],
-    
+
     // 排序选项
     sortOptions: [
       { id: 'default', name: '综合排序' },
@@ -57,24 +57,24 @@ Page({
       { id: 'price_asc', name: '价格从低到高' },
       { id: 'price_desc', name: '价格从高到低' }
     ],
-    
+
     // 是否显示筛选面板
     showFilterPanel: false,
     activeFilter: '',
-    
+
     // 加载状态
     loading: false,
     hasMore: true,
     pageNum: 1
   },
 
-  onLoad: function(options) {
+  onLoad: function (options) {
     // 加载搜索历史
     this.loadSearchHistory()
 
     // 初始化筛选展示文案
     this.updateFilterLabels()
-    
+
     // 如果有传入关键词，直接搜索
     if (options.keyword) {
       this.setData({
@@ -85,7 +85,7 @@ Page({
   },
 
   // 加载搜索历史
-  loadSearchHistory: function() {
+  loadSearchHistory: function () {
     const history = wx.getStorageSync('searchHistory') || []
     this.setData({
       searchHistory: history
@@ -93,23 +93,23 @@ Page({
   },
 
   // 保存搜索历史
-  saveSearchHistory: function(keyword) {
+  saveSearchHistory: function (keyword) {
     let history = wx.getStorageSync('searchHistory') || []
-    
+
     // 去重
     const index = history.indexOf(keyword)
     if (index > -1) {
       history.splice(index, 1)
     }
-    
+
     // 添加到开头
     history.unshift(keyword)
-    
+
     // 最多保存10条
     if (history.length > 10) {
       history = history.slice(0, 10)
     }
-    
+
     wx.setStorageSync('searchHistory', history)
     this.setData({
       searchHistory: history
@@ -117,7 +117,7 @@ Page({
   },
 
   // 清空搜索历史
-  clearHistory: function() {
+  clearHistory: function () {
     wx.showModal({
       title: '提示',
       content: '确定清空搜索历史吗？',
@@ -133,11 +133,11 @@ Page({
   },
 
   // 输入搜索关键词
-  onInput: function(e) {
+  onInput: function (e) {
     this.setData({
       keyword: e.detail.value
     })
-    
+
     if (!e.detail.value) {
       this.setData({
         showResult: false,
@@ -147,7 +147,7 @@ Page({
   },
 
   // 清空输入
-  clearInput: function() {
+  clearInput: function () {
     this.setData({
       keyword: '',
       showResult: false,
@@ -156,7 +156,7 @@ Page({
   },
 
   // 点击搜索
-  onSearch: function() {
+  onSearch: function () {
     const keyword = this.data.keyword.trim()
     if (!keyword) {
       wx.showToast({
@@ -165,12 +165,12 @@ Page({
       })
       return
     }
-    
+
     this.doSearch()
   },
 
   // 点击历史/热门标签
-  onTagTap: function(e) {
+  onTagTap: function (e) {
     const keyword = e.currentTarget.dataset.keyword
     this.setData({
       keyword: keyword
@@ -179,19 +179,19 @@ Page({
   },
 
   // 执行搜索
-  doSearch: function() {
+  doSearch: function () {
     const keyword = this.data.keyword.trim()
     if (!keyword) return
-    
+
     // 保存搜索历史
     this.saveSearchHistory(keyword)
-    
+
     this.setData({
       loading: true,
       showResult: true,
       pageNum: 1
     })
-    
+
     // 模拟搜索结果
     setTimeout(() => {
       const results = this.getMockResults(keyword)
@@ -204,12 +204,12 @@ Page({
   },
 
   // 获取模拟结果
-  getMockResults: function(keyword) {
+  getMockResults: function (keyword) {
     return [
       {
         id: '1',
         name: '王老师',
-        avatar: '/images/avatar.png',
+        avatar: '/images/avatars/teacher-female-default.png',
         title: '资深' + keyword + '老师',
         rating: 4.9,
         orders: 128,
@@ -221,7 +221,7 @@ Page({
       {
         id: '2',
         name: '李老师',
-        avatar: '/images/avatar.png',
+        avatar: '/images/avatars/teacher-female-default.png',
         title: '专业' + keyword + '辅导',
         rating: 4.8,
         orders: 95,
@@ -233,7 +233,7 @@ Page({
       {
         id: '3',
         name: '张老师',
-        avatar: '/images/avatar.png',
+        avatar: '/images/avatars/teacher-male-default.png',
         title: keyword + '启蒙专家',
         rating: 4.7,
         orders: 76,
@@ -246,14 +246,14 @@ Page({
   },
 
   // 加载更多
-  loadMore: function() {
+  loadMore: function () {
     if (this.data.loading || !this.data.hasMore) return
-    
+
     this.setData({
       loading: true,
       pageNum: this.data.pageNum + 1
     })
-    
+
     setTimeout(() => {
       this.setData({
         loading: false,
@@ -263,7 +263,7 @@ Page({
   },
 
   // 显示筛选面板
-  showFilter: function(e) {
+  showFilter: function (e) {
     const type = e.currentTarget.dataset.type
     this.setData({
       showFilterPanel: true,
@@ -272,7 +272,7 @@ Page({
   },
 
   // 隐藏筛选面板
-  hideFilter: function() {
+  hideFilter: function () {
     this.setData({
       showFilterPanel: false,
       activeFilter: ''
@@ -280,7 +280,7 @@ Page({
   },
 
   // 选择筛选项
-  selectFilterOption: function(e) {
+  selectFilterOption: function (e) {
     const type = this.data.activeFilter
     const value = e.currentTarget.dataset.value
 
@@ -302,7 +302,7 @@ Page({
   },
 
   // 更新筛选栏展示文案
-  updateFilterLabels: function() {
+  updateFilterLabels: function () {
     const filters = this.data.filters
 
     let serviceTypeLabel = '服务类型'
@@ -332,7 +332,7 @@ Page({
   },
 
   // 查看老师详情
-  viewTeacher: function(e) {
+  viewTeacher: function (e) {
     const id = e.currentTarget.dataset.id
     wx.navigateTo({
       url: '/pages/teacher-detail/index?id=' + id
@@ -340,7 +340,7 @@ Page({
   },
 
   // 返回
-  goBack: function() {
+  goBack: function () {
     wx.navigateBack({
       fail: () => {
         wx.switchTab({

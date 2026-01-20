@@ -109,10 +109,13 @@ Page({
 
           // 格式化老师数据以适配前端
           const formattedTeachers = recommendTeachers.map(item => {
-            // 强制替换旧的默认头像路径
+            // 根据性别选择默认头像
             let avatarUrl = item.avatar;
             if (!avatarUrl || avatarUrl === '/images/avatar.png' || avatarUrl === '/images/icons/default-avatar.png') {
-              avatarUrl = '/images/default_teacher_avatar.png';
+              // 根据性别使用不同的默认头像
+              avatarUrl = item.gender === 'male'
+                ? '/images/avatars/teacher-male-default.png'
+                : '/images/avatars/teacher-female-default.png';
             }
 
             return {
@@ -124,7 +127,8 @@ Page({
               orderCount: item.orderCount,
               tags: item.tags,
               price: item.price,
-              priceUnit: item.priceUnit
+              priceUnit: item.priceUnit,
+              introduction: item.introduction
             };
           })
 
@@ -151,7 +155,7 @@ Page({
       {
         id: 1,
         name: '张老师',
-        avatar: '/images/default_teacher_avatar.png',
+        avatar: '/images/avatars/teacher-male-default.png',
         title: '专业陪伴师',
         rating: 4.9,
         orderCount: 128,
@@ -162,7 +166,7 @@ Page({
       {
         id: 2,
         name: '李老师',
-        avatar: '/images/default_teacher_avatar.png',
+        avatar: '/images/avatars/teacher-female-default.png',
         title: '金牌陪伴师',
         rating: 5.0,
         orderCount: 256,
@@ -173,7 +177,7 @@ Page({
       {
         id: 3,
         name: '王老师',
-        avatar: '/images/default_teacher_avatar.png',
+        avatar: '/images/avatars/teacher-female-default.png',
         title: '高级陪伴师',
         rating: 4.8,
         orderCount: 89,

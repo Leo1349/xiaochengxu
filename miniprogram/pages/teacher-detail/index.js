@@ -87,7 +87,8 @@ Page({
     const mockTeacher = {
       id: id,
       name: '张老师',
-      avatar: '/images/default_teacher_avatar.png',
+      gender: 'male',
+      avatar: '/images/avatars/teacher-male-default.png',
       title: '专业陪伴师',
       rating: 4.9,
       orderCount: 128,
@@ -117,7 +118,7 @@ Page({
       {
         id: 1,
         userName: '小明妈妈',
-        userAvatar: '/images/default_teacher_avatar.png',
+        userAvatar: '/images/avatar.png',
         rating: 5,
         content: '张老师非常有耐心，孩子很喜欢，学习成绩也有明显进步！',
         time: '2025-12-28',
@@ -126,7 +127,7 @@ Page({
       {
         id: 2,
         userName: '乐乐爸爸',
-        userAvatar: '/images/default_teacher_avatar.png',
+        userAvatar: '/images/avatar.png',
         rating: 5,
         content: '老师很专业，对孩子很有方法，推荐！',
         time: '2025-12-25',
@@ -135,7 +136,7 @@ Page({
       {
         id: 3,
         userName: '小红妈妈',
-        userAvatar: '/images/default_teacher_avatar.png',
+        userAvatar: '/images/avatar.png',
         rating: 4,
         content: '服务态度好，孩子的学习习惯有所改善。',
         time: '2025-12-20',

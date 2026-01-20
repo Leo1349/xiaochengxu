@@ -4,10 +4,13 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const db = cloud.database()
 
 // 模拟数据 - 老师列表
+// NOTE: gender 字段用于确定默认头像（male/female）
+// 如果 avatar 为空，前端会根据 gender 显示默认头像
 const teachers = [
   {
     name: '张老师',
-    avatar: '/images/avatar.png',
+    gender: 'male',
+    avatar: '/images/avatars/teacher-male-default.png',
     title: '专业陪伴师',
     rating: 4.9,
     orderCount: 128,
@@ -29,7 +32,8 @@ const teachers = [
   },
   {
     name: '李老师',
-    avatar: '/images/avatar.png',
+    gender: 'female',
+    avatar: '/images/avatars/teacher-female-default.png',
     title: '资深家教',
     rating: 4.8,
     orderCount: 96,
@@ -47,7 +51,8 @@ const teachers = [
   },
   {
     name: '王老师',
-    avatar: '/images/avatar.png',
+    gender: 'female',
+    avatar: '/images/avatars/teacher-female-default.png',
     title: '金牌陪伴师',
     rating: 5.0,
     orderCount: 210,
@@ -94,7 +99,7 @@ exports.main = async (event, context) => {
     const teachersCollection = db.collection('teachers')
     // 先清空（可选，这里为了演示简单直接添加，实际生产慎用）
     // await teachersCollection.where({}).remove() 
-    
+
     // 检查是否已有数据，避免重复添加
     const countResult = await teachersCollection.count()
     if (countResult.total === 0) {
