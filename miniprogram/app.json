@@ -2,7 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/service/index",
-    "pages/message/index",
+    "pages/publish/index",
     "pages/mine/index",
     "pages/login/index",
     "pages/register/index",
@@ -54,10 +54,10 @@
         "selectedIconPath": "images/icons_v3/service_active_v3.png"
       },
       {
-        "pagePath": "pages/message/index",
-        "text": "消息",
-        "iconPath": "images/icons_v3/message_v3.png",
-        "selectedIconPath": "images/icons_v3/message_active_v3.png"
+        "pagePath": "pages/publish/index",
+        "text": "发布",
+        "iconPath": "images/icons_v3/publish_v9.png",
+        "selectedIconPath": "images/icons_v3/publish_active_v9.png"
       },
       {
         "pagePath": "pages/mine/index",

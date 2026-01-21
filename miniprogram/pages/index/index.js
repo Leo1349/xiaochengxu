@@ -90,20 +90,11 @@ Page({
           const { banners, recommendTeachers } = res.result.data
 
           // 格式化 Banner 数据以适配前端
-          const formattedBanners = banners.map((item, index) => {
-            // 将云数据库中的所有旧图片路径统一替换为新的轮播图
-            const newBannerImages = [
-              '/images/banner1.jpg',  // 新叶成长课堂
-              '/images/banner2.jpg',  // 教育服务保障包
-              '/images/banner3.jpg'   // 核心流程
-            ];
-            // 按索引分配新图片，确保使用新的轮播图
-            const imageUrl = newBannerImages[index % newBannerImages.length];
-
+          const formattedBanners = banners.map(item => {
             return {
-              id: item.id || item._id,
-              image: imageUrl,
-              url: item.link
+              id: item._id,
+              image: item.image, // 直接使用数据库中的图片字段
+              url: item.url || ''
             };
           })
 

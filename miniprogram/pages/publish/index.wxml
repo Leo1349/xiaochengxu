@@ -1,0 +1,136 @@
+<!--pages/publish/index.wxml-->
+<view class="container safe-bottom">
+  <form bindsubmit="submitForm">
+    <!-- 基础信息卡片 -->
+    <view class="card m-4 mt-2">
+      <!-- 服务项目 -->
+      <picker bindchange="onServiceChange" value="{{serviceIndex}}" range="{{serviceOptions}}">
+        <view class="form-item">
+          <view class="label required">服务项目</view>
+          <view class="content flex-1 text-right">
+            <text class="{{serviceIndex !== -1 ? 'text-dark' : 'text-light'}}">{{serviceIndex !== -1 ? serviceOptions[serviceIndex] : '请选择服务项目'}}</text>
+            <text class="arrow ml-2">></text>
+          </view>
+        </view>
+      </picker>
+
+      <view class="divider-h"></view>
+
+      <!-- 服务内容 -->
+      <view class="form-item-vertical">
+        <view class="label required mb-2">服务内容</view>
+        <view class="textarea-wrapper">
+          <textarea class="textarea" placeholder="请详细描述您的服务需求" placeholder-class="text-light" maxlength="500" bindinput="onContentInput" name="content"></textarea>
+        </view>
+      </view>
+
+      <!-- 图片/视频上传 -->
+      <view class="form-item-vertical mt-4">
+        <view class="label required mb-3">图片/视频 <text class="text-xs text-light font-normal">有助于陪伴师更快接单</text></view>
+        <view class="media-grid">
+          <view class="media-item" wx:for="{{mediaList}}" wx:key="index">
+            <image class="media-preview" src="{{item.url}}" mode="aspectFill" catchtap="previewImage" data-url="{{item.url}}"></image>
+            <view class="delete-btn" catchtap="deleteMedia" data-index="{{index}}">×</view>
+          </view>
+          <view class="upload-btn" bindtap="chooseMedia" wx:if="{{mediaList.length < 9}}">
+            <text class="plus">+</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 地址与时间卡片 -->
+    <view class="card m-4">
+      <!-- 服务地址 -->
+      <view class="form-item" bindtap="chooseAddress">
+        <view class="label flex align-center">
+          <image class="icon-sm mr-2" src="/images/icons_v3/home_v3.png" mode="aspectFit" style="width: 32rpx; height: 32rpx; opacity: 0.6;"></image>
+          服务地址
+        </view>
+        <view class="content flex-1 text-right">
+          <text class="{{address ? 'text-dark' : 'text-light'}}">{{address || '请选择服务地址'}}</text>
+          <text class="arrow ml-2">></text>
+        </view>
+      </view>
+
+      <view class="divider-h"></view>
+
+      <!-- 服务时间 -->
+      <picker mode="multiSelector" bindchange="onTimeChange" bindcolumnchange="onTimeColumnChange" value="{{timeIndex}}" range="{{timeArray}}">
+        <view class="form-item">
+          <view class="label flex align-center">
+            <image class="icon-sm mr-2" src="/images/icons_v3/service_v3.png" mode="aspectFit" style="width: 32rpx; height: 32rpx; opacity: 0.6;"></image>
+            服务时间
+          </view>
+          <view class="content flex-1 text-right">
+            <text class="tag-gray mr-2 text-xs">最近</text>
+            <text class="{{selectedTime ? 'text-warning' : 'text-light'}}">{{selectedTime || '请选择服务时间'}}</text>
+            <text class="arrow ml-2">></text>
+          </view>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 服务介绍（详细信息）卡片 -->
+    <view class="card m-4">
+      <view class="section-header text-center mb-4">
+        <text class="text-light">-- 服务介绍 --</text>
+      </view>
+
+      <view class="info-title mb-3 font-serif text-lg">陪伴对象信息完善</view>
+      
+      <!-- 年龄 -->
+      <view class="form-row">
+        <view class="label">年龄：</view>
+        <input class="input" placeholder="请输入孩子年龄" name="age" type="number"></input>
+      </view>
+      
+      <!-- 性别 -->
+      <view class="form-row">
+        <view class="label">性别：</view>
+        <radio-group class="radio-group" name="gender">
+          <label class="radio"><radio value="male" color="#FF8066"/>男</label>
+          <label class="radio ml-4"><radio value="female" color="#FF8066"/>女</label>
+        </radio-group>
+      </view>
+
+      <!-- 性格爱好 -->
+      <view class="form-row">
+        <view class="label">性格爱好：</view>
+        <input class="input" placeholder="简述性格与爱好" name="hobby"></input>
+      </view>
+
+      <!-- 陪伴内容 -->
+      <view class="form-row">
+        <view class="label">陪伴内容：</view>
+        <input class="input" placeholder="期望的陪伴内容" name="content_detail"></input>
+      </view>
+
+      <!-- 陪伴时间及频率 -->
+      <view class="form-row">
+        <view class="label">陪伴时间及频率：</view>
+        <input class="input" placeholder="例如：每周三次，每次2小时" name="frequency"></input>
+      </view>
+
+      <!-- 陪伴地址 -->
+      <view class="form-row">
+        <view class="label">陪伴地址：</view>
+        <input class="input" placeholder="详细地址" name="address_detail" value="{{address}}"></input>
+      </view>
+
+      <!-- 期望陪伴师特征 -->
+      <view class="form-row">
+        <view class="label">希望陪伴师具备哪些特征：</view>
+        <input class="input" placeholder="例如：有耐心、英语好" name="requirements"></input>
+      </view>
+    </view>
+
+    <!-- 底部占位 -->
+    <view style="height: 120rpx;"></view>
+
+    <!-- 底部固定栏 -->
+    <view class="bottom-bar">
+      <button class="btn btn-primary submit-btn" form-type="submit">立即预约</button>
+    </view>
+  </form>
+</view>

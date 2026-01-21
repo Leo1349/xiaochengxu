@@ -1,6 +1,5 @@
 // pages/service/index.js
 const app = getApp()
-const api = require('../../utils/api.js')
 
 Page({
   data: {
@@ -72,6 +71,7 @@ Page({
   },
 
   onLoad: function (options) {
+    console.log('Service Page onLoad', options)
     if (options.typeId) {
       this.setData({
         currentTypeId: parseInt(options.typeId)
@@ -82,6 +82,7 @@ Page({
   },
 
   onShow: function () {
+    console.log('Service Page onShow')
     // 更新tabbar选中状态
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({
@@ -157,6 +158,7 @@ Page({
           this.updateFilteredTeachers()
         }
       )
+      console.log('Teacher list loaded', mockTeachers)
     }, 300)
   },
 

@@ -186,8 +186,8 @@
 
 .order-footer {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 20rpx;
   padding: 24rpx 32rpx;
   border-top: 1rpx solid #F0F0F0;
 }
@@ -195,6 +195,7 @@
 .order-price {
   display: flex;
   align-items: baseline;
+  flex-shrink: 0;
 }
 
 .price-label {
@@ -212,6 +213,8 @@
 .order-actions {
   display: flex;
   gap: 16rpx;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .action-btn {
