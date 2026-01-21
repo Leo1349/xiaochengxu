@@ -1,18 +1,25 @@
 /**
  * API 服务层 - 调用云函数
  * 
- * 本地开发模式：使用模拟数据
- * 生产模式：通过云开发 HTTP API 调用真实云函数
+ * 支持三种模式：
+ * 1. DEV_MODE: 开发模式，使用模拟数据
+ * 2. PROXY_MODE: 代理模式，通过本地代理服务调用云函数
+ * 3. 生产模式: 直接调用云函数 HTTP 触发器
  */
 import axios from 'axios'
 
-// 开发模式标志 - 设为 false 启用真实 API 调用
-const DEV_MODE = true
+// ==================== 模式配置 ====================
+// 开发模式：使用模拟数据
+const DEV_MODE = false
 
-// 云函数调用配置（生产模式需要配置）
+// 代理模式：通过本地代理服务调用云函数（推荐本地开发使用）
+const PROXY_MODE = true
+
+// 代理服务地址
+const PROXY_URL = 'http://localhost:3001/api/cloud'
+
+// 云函数直接调用配置（生产模式，需要 HTTP 触发器）
 const CLOUD_CONFIG = {
-    // 云开发 HTTP API 触发器地址
-    // 格式: https://{env-id}.service.tcloudbase.com/{function-name}
     baseURL: 'https://your-env-id.service.tcloudbase.com',
     functionName: 'adminFunctions'
 }
@@ -21,11 +28,23 @@ const CLOUD_CONFIG = {
  * 调用云函数
  */
 async function callCloudFunction(type, data = {}) {
+    // 开发模式：返回模拟数据
     if (DEV_MODE) {
-        // 开发模式：返回模拟数据
         return mockResponse(type, data)
     }
 
+    // 代理模式：通过本地代理服务调用
+    if (PROXY_MODE) {
+        try {
+            const response = await axios.post(PROXY_URL, { type, data })
+            return response.data
+        } catch (error) {
+            console.error('Proxy call error:', error)
+            return { success: false, error: error.message || '代理服务调用失败' }
+        }
+    }
+
+    // 生产模式：直接调用云函数
     try {
         const response = await axios.post(
             `${CLOUD_CONFIG.baseURL}/${CLOUD_CONFIG.functionName}`,

@@ -21,12 +21,32 @@ function Dashboard() {
         const res = await api.getStats()
         if (res.success) {
             setStats(res.data)
+        } else {
+            // API 调用失败时设置默认值
+            setStats({
+                totalTeachers: 0,
+                totalOrders: 0,
+                todayOrders: 0,
+                totalUsers: 0,
+                todayUsers: 0,
+                pendingFeedbacks: 0
+            })
         }
         setLoading(false)
     }
 
     if (loading) {
         return <Spin size="large" style={{ display: 'block', margin: '100px auto' }} />
+    }
+
+    // 使用默认值防止渲染错误
+    const safeStats = stats || {
+        totalTeachers: 0,
+        totalOrders: 0,
+        todayOrders: 0,
+        totalUsers: 0,
+        todayUsers: 0,
+        pendingFeedbacks: 0
     }
 
     return (
@@ -38,7 +58,7 @@ function Dashboard() {
                     <Card>
                         <Statistic
                             title="老师总数"
-                            value={stats.totalTeachers}
+                            value={safeStats.totalTeachers}
                             prefix={<TeamOutlined style={{ color: '#1890ff' }} />}
                         />
                     </Card>
@@ -48,9 +68,9 @@ function Dashboard() {
                     <Card>
                         <Statistic
                             title="订单总数"
-                            value={stats.totalOrders}
+                            value={safeStats.totalOrders}
                             prefix={<ShoppingCartOutlined style={{ color: '#52c41a' }} />}
-                            suffix={<span style={{ fontSize: 14, color: '#999' }}>今日 +{stats.todayOrders}</span>}
+                            suffix={<span style={{ fontSize: 14, color: '#999' }}>今日 +{safeStats.todayOrders}</span>}
                         />
                     </Card>
                 </Col>
@@ -59,9 +79,9 @@ function Dashboard() {
                     <Card>
                         <Statistic
                             title="用户总数"
-                            value={stats.totalUsers}
+                            value={safeStats.totalUsers}
                             prefix={<UserOutlined style={{ color: '#722ed1' }} />}
-                            suffix={<span style={{ fontSize: 14, color: '#999' }}>今日 +{stats.todayUsers}</span>}
+                            suffix={<span style={{ fontSize: 14, color: '#999' }}>今日 +{safeStats.todayUsers}</span>}
                         />
                     </Card>
                 </Col>
@@ -70,7 +90,7 @@ function Dashboard() {
                     <Card>
                         <Statistic
                             title="待处理反馈"
-                            value={stats.pendingFeedbacks}
+                            value={safeStats.pendingFeedbacks}
                             prefix={<MessageOutlined style={{ color: '#fa8c16' }} />}
                         />
                     </Card>
