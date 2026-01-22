@@ -1,62 +1,16 @@
 import { useState, useEffect } from 'react'
 import {
     Table, Button, Space, Modal, Form, Input, InputNumber,
-    Select, Tag, message, Popconfirm, Avatar, Switch, Upload
+    Select, Tag, message, Popconfirm, Avatar, Switch, Upload, Image
 } from 'antd'
 import {
     PlusOutlined, EditOutlined, DeleteOutlined,
-    UserOutlined, UploadOutlined
+    UserOutlined, LoadingOutlined
 } from '@ant-design/icons'
 import { api } from '../services/api'
 
 const { TextArea } = Input
 const { Option } = Select
-
-// 模拟数据
-const mockTeachers = [
-    {
-        _id: '1',
-        name: '张老师',
-        gender: 'male',
-        avatar: '',
-        title: '专业陪伴师',
-        rating: 4.9,
-        orderCount: 128,
-        tags: ['学科辅导', '耐心细致', '经验丰富'],
-        price: 150,
-        introduction: '5年教育经验，擅长小学全科辅导',
-        isRecommended: true,
-        createTime: '2026-01-15 10:00:00'
-    },
-    {
-        _id: '2',
-        name: '李老师',
-        gender: 'female',
-        avatar: '',
-        title: '资深家教',
-        rating: 4.8,
-        orderCount: 96,
-        tags: ['英语专精', '口语流利'],
-        price: 180,
-        introduction: '英语专业八级，拥有丰富的少儿英语教学经验',
-        isRecommended: true,
-        createTime: '2026-01-14 09:30:00'
-    },
-    {
-        _id: '3',
-        name: '王老师',
-        gender: 'female',
-        avatar: '',
-        title: '金牌陪伴师',
-        rating: 5.0,
-        orderCount: 210,
-        tags: ['全能型', '心理辅导'],
-        price: 200,
-        introduction: '擅长与孩子沟通，注重心理健康和习惯培养',
-        isRecommended: false,
-        createTime: '2026-01-13 14:20:00'
-    }
-]
 
 function Teachers() {
     const [teachers, setTeachers] = useState([])
@@ -64,6 +18,8 @@ function Teachers() {
     const [modalVisible, setModalVisible] = useState(false)
     const [editingTeacher, setEditingTeacher] = useState(null)
     const [form] = Form.useForm()
+    const [uploading, setUploading] = useState(false)
+    const [avatarUrl, setAvatarUrl] = useState('')
 
     useEffect(() => {
         fetchTeachers()
@@ -78,9 +34,35 @@ function Teachers() {
         setLoading(false)
     }
 
+    // 头像上传处理
+    const handleAvatarUpload = async (options) => {
+        const { file, onSuccess, onError } = options
+        setUploading(true)
+
+        try {
+            const res = await api.uploadImage(file)
+            if (res.success) {
+                const url = res.data.url
+                setAvatarUrl(url)
+                form.setFieldsValue({ avatar: url })
+                onSuccess(res)
+                message.success('头像上传成功')
+            } else {
+                onError(new Error(res.error))
+                message.error(res.error || '上传失败')
+            }
+        } catch (error) {
+            onError(error)
+            message.error('上传失败')
+        } finally {
+            setUploading(false)
+        }
+    }
+
     const handleAdd = () => {
         setEditingTeacher(null)
         form.resetFields()
+        setAvatarUrl('')
         setModalVisible(true)
     }
 
@@ -90,6 +72,7 @@ function Teachers() {
             ...record,
             tags: record.tags || []
         })
+        setAvatarUrl(record.avatar || '')
         setModalVisible(true)
     }
 
@@ -267,49 +250,105 @@ function Teachers() {
                 onCancel={() => setModalVisible(false)}
                 okText="确定"
                 cancelText="取消"
-                width={600}
+                width={700}
             >
                 <Form form={form} layout="vertical">
-                    <Form.Item
-                        name="name"
-                        label="姓名"
-                        rules={[{ required: true, message: '请输入姓名' }]}
-                    >
-                        <Input placeholder="请输入老师姓名" />
-                    </Form.Item>
+                    {/* 基本信息 */}
+                    <div style={{ marginBottom: 16, fontWeight: 'bold', borderBottom: '1px solid #eee', paddingBottom: 8 }}>
+                        基本信息
+                    </div>
 
                     <Form.Item
-                        name="gender"
-                        label="性别"
-                        rules={[{ required: true, message: '请选择性别' }]}
+                        name="avatar"
+                        label="头像"
                     >
-                        <Select placeholder="请选择性别">
-                            <Option value="male">男</Option>
-                            <Option value="female">女</Option>
-                        </Select>
+                        <div>
+                            <Upload
+                                name="file"
+                                listType="picture-card"
+                                showUploadList={false}
+                                customRequest={handleAvatarUpload}
+                                accept="image/*"
+                            >
+                                {avatarUrl ? (
+                                    <Avatar size={80} src={avatarUrl} />
+                                ) : (
+                                    <div>
+                                        {uploading ? <LoadingOutlined /> : <PlusOutlined />}
+                                        <div style={{ marginTop: 8 }}>
+                                            {uploading ? '上传中...' : '上传头像'}
+                                        </div>
+                                    </div>
+                                )}
+                            </Upload>
+                        </div>
                     </Form.Item>
 
-                    <Form.Item name="title" label="头衔">
-                        <Input placeholder="如：专业陪伴师" />
-                    </Form.Item>
+                    <Space style={{ width: '100%' }} size="large">
+                        <Form.Item
+                            name="name"
+                            label="姓名"
+                            rules={[{ required: true, message: '请输入姓名' }]}
+                            style={{ width: 200 }}
+                        >
+                            <Input placeholder="请输入老师姓名" />
+                        </Form.Item>
+
+                        <Form.Item
+                            name="gender"
+                            label="性别"
+                            rules={[{ required: true, message: '请选择性别' }]}
+                            style={{ width: 120 }}
+                        >
+                            <Select placeholder="选择性别">
+                                <Option value="male">男</Option>
+                                <Option value="female">女</Option>
+                            </Select>
+                        </Form.Item>
+
+                        <Form.Item name="title" label="头衔" style={{ width: 200 }}>
+                            <Input placeholder="如：专业陪伴师" />
+                        </Form.Item>
+                    </Space>
 
                     <Form.Item
                         name="price"
                         label="价格（元/小时）"
                         rules={[{ required: true, message: '请输入价格' }]}
                     >
-                        <InputNumber min={0} style={{ width: '100%' }} />
+                        <InputNumber min={0} style={{ width: 200 }} placeholder="请输入价格" />
                     </Form.Item>
 
                     <Form.Item name="tags" label="标签">
-                        <Select mode="tags" placeholder="输入后按回车添加标签" />
+                        <Select mode="tags" placeholder="输入后按回车添加标签（如：学科辅导、耐心细致）" />
                     </Form.Item>
 
-                    <Form.Item name="introduction" label="简介">
-                        <TextArea rows={4} placeholder="请输入老师简介" />
+                    <Form.Item name="introduction" label="个人介绍">
+                        <TextArea rows={3} placeholder="请介绍老师的教学特点、服务理念等" />
                     </Form.Item>
 
-                    <Form.Item name="isRecommended" label="推荐" valuePropName="checked">
+                    {/* 详细信息 */}
+                    <div style={{ marginBottom: 16, marginTop: 24, fontWeight: 'bold', borderBottom: '1px solid #eee', paddingBottom: 8 }}>
+                        详细信息
+                    </div>
+
+                    <Form.Item name="education" label="教育背景">
+                        <Input placeholder="如：北京师范大学 教育学硕士" />
+                    </Form.Item>
+
+                    <Form.Item name="experience" label="从业经验">
+                        <Input placeholder="如：5年教育行业经验" />
+                    </Form.Item>
+
+                    <Form.Item name="serviceTime" label="服务时间">
+                        <Input placeholder="如：周一至周五 14:00-20:00，周末全天" />
+                    </Form.Item>
+
+                    <Form.Item name="serviceArea" label="服务区域">
+                        <Input placeholder="如：北京市海淀区、朝阳区" />
+                    </Form.Item>
+
+                    <Form.Item name="isRecommended" label="首页推荐" valuePropName="checked">
                         <Switch />
                     </Form.Item>
                 </Form>

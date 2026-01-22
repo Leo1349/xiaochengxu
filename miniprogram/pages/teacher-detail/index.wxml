@@ -48,12 +48,6 @@
         <text class="block-content">{{teacher.experience}}</text>
       </view>
       
-      <view class="info-block">
-        <text class="block-title">资质证书</text>
-        <view class="certificates">
-          <text class="certificate" wx:for="{{teacher.certificates}}" wx:key="*this">{{item}}</text>
-        </view>
-      </view>
       
       <view class="info-block">
         <text class="block-title">服务时间</text>
@@ -140,10 +134,6 @@
 
   <!-- 底部操作栏 -->
   <view class="bottom-bar">
-    <view class="contact-btn" bindtap="contactTeacher">
-      <image class="contact-icon" src="/images/icons/chat.png" mode="aspectFit"></image>
-      <text>联系TA</text>
-    </view>
     <button class="book-now-btn" bindtap="bookNow">立即预约</button>
   </view>
 </view>

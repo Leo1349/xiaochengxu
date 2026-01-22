@@ -506,36 +506,16 @@
   right: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 24rpx 36rpx 48rpx;
   background-color: #FFFFFF;
   box-shadow: 0 -6rpx 24rpx rgba(61, 58, 56, 0.06);
   z-index: 100;
 }
 
-.contact-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 44rpx;
-  background: transparent;
-  padding: 0;
-  line-height: 1.2;
-  width: auto;
-}
-
-.contact-icon {
-  width: 48rpx;
-  height: 48rpx;
-  margin-bottom: 8rpx;
-}
-
-.contact-btn text {
-  font-size: 22rpx;
-  color: #7A7673;
-}
-
 .book-now-btn {
-  flex: 1;
+  width: 90%;
+  max-width: 600rpx;
   height: 88rpx;
   background: linear-gradient(135deg, #FF8066 0%, #FFAB91 100%);
   border-radius: 44rpx;

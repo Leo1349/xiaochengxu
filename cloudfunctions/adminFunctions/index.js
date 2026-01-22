@@ -231,7 +231,10 @@ async function handleGetTeachers(data) {
 }
 
 async function handleAddTeacher(data) {
-    const { name, gender, title, price, tags, introduction, isRecommended } = data
+    const {
+        name, gender, avatar, title, price, tags, introduction,
+        education, experience, serviceTime, serviceArea, isRecommended
+    } = data
 
     if (!name) {
         return { success: false, error: '姓名不能为空' }
@@ -240,13 +243,18 @@ async function handleAddTeacher(data) {
     const teacher = {
         name,
         gender: gender || 'male',
-        avatar: '',
+        avatar: avatar || '',
         title: title || '',
         rating: 5.0,
         orderCount: 0,
         tags: tags || [],
         price: price || 0,
         introduction: introduction || '',
+        education: education || '',
+        experience: experience || '',
+        serviceTime: serviceTime || '',
+        serviceArea: serviceArea || '',
+        photos: [],
         isRecommended: isRecommended || false,
         createTime: db.serverDate(),
         updateTime: db.serverDate()

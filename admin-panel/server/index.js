@@ -201,12 +201,12 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
             headers: formData.getHeaders()
         })
 
-        // 步骤3: 获取文件下载链接
+        // 步骤3: 获取文件下载链接（有效期7天）
         const downloadRes = await axios.post(
             `https://api.weixin.qq.com/tcb/batchdownloadfile`,
             {
                 env: WX_CLOUD_ENV,
-                file_list: [{ fileid: file_id, max_age: 7200 }]
+                file_list: [{ fileid: file_id, max_age: 604800 }]  // 7天有效期
             },
             {
                 params: { access_token: accessToken },
@@ -240,6 +240,51 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
     }
 })
 
+/**
+ * 刷新文件下载链接接口
+ * POST /api/refresh-url
+ * Body: { fileId: string } 或 { fileIds: string[] }
+ * 用于刷新过期的云存储文件下载链接
+ */
+app.post('/api/refresh-url', async (req, res) => {
+    const { fileId, fileIds } = req.body
+    const ids = fileIds || (fileId ? [fileId] : [])
+
+    if (ids.length === 0) {
+        return res.status(400).json({ success: false, error: '缺少 fileId 或 fileIds 参数' })
+    }
+
+    console.log(`🔄 刷新下载链接: ${ids.length} 个文件`)
+
+    try {
+        const accessToken = await getAccessToken()
+        const downloadRes = await axios.post(
+            `https://api.weixin.qq.com/tcb/batchdownloadfile`,
+            {
+                env: WX_CLOUD_ENV,
+                file_list: ids.map(id => ({ fileid: id, max_age: 604800 }))  // 7天有效期
+            },
+            {
+                params: { access_token: accessToken },
+                headers: { 'Content-Type': 'application/json' }
+            }
+        )
+
+        if (downloadRes.data.file_list) {
+            const urls = downloadRes.data.file_list.map(f => ({
+                fileId: f.fileid,
+                url: f.download_url
+            }))
+            res.json({ success: true, data: urls })
+        } else {
+            throw new Error('获取下载链接失败')
+        }
+    } catch (error) {
+        console.error('❌ 刷新链接失败:', error.message)
+        res.status(500).json({ success: false, error: error.message })
+    }
+})
+
 // 启动服务器
 app.listen(PORT, () => {
     console.log('')
@@ -249,6 +294,8 @@ app.listen(PORT, () => {
     console.log('')
     console.log('📋 API 接口:')
     console.log(`   POST http://localhost:${PORT}/api/cloud`)
+    console.log(`   POST http://localhost:${PORT}/api/upload`)
+    console.log(`   POST http://localhost:${PORT}/api/refresh-url`)
     console.log(`   GET  http://localhost:${PORT}/health`)
     console.log('')
 })
