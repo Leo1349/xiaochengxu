@@ -83,10 +83,25 @@ function Orders() {
 
     const fetchOrders = async () => {
         setLoading(true)
-        setTimeout(() => {
-            setOrders(mockOrders)
-            setLoading(false)
-        }, 500)
+        try {
+            const res = await api.getOrders({
+                page: 1,
+                pageSize: 100,
+                status: filters.status !== 'all' ? filters.status : undefined,
+                keyword: filters.keyword || undefined
+            })
+            console.log('获取订单响应:', res)  // 调试日志
+            if (res.success) {
+                console.log('订单列表:', res.data.list)  // 调试日志
+                setOrders(res.data.list || [])
+            } else {
+                message.error(res.error || '获取订单失败')
+            }
+        } catch (error) {
+            console.error('获取订单失败:', error)
+            message.error('获取订单失败')
+        }
+        setLoading(false)
     }
 
     const handleViewDetail = (record) => {
@@ -94,14 +109,24 @@ function Orders() {
         setDetailVisible(true)
     }
 
-    const handleStatusChange = (orderId, newStatus) => {
-        setOrders(orders.map(o =>
-            o._id === orderId ? { ...o, status: newStatus } : o
-        ))
-        message.success('状态更新成功')
+    const handleStatusChange = async (orderId, newStatus) => {
+        try {
+            const res = await api.updateOrderStatus(orderId, newStatus)
+            if (res.success) {
+                setOrders(orders.map(o =>
+                    o._id === orderId ? { ...o, status: newStatus } : o
+                ))
+                message.success('状态更新成功')
 
-        if (currentOrder?._id === orderId) {
-            setCurrentOrder({ ...currentOrder, status: newStatus })
+                if (currentOrder?._id === orderId) {
+                    setCurrentOrder({ ...currentOrder, status: newStatus })
+                }
+            } else {
+                message.error(res.error || '状态更新失败')
+            }
+        } catch (error) {
+            console.error('状态更新失败:', error)
+            message.error('状态更新失败')
         }
     }
 
@@ -109,10 +134,14 @@ function Orders() {
         if (filters.status !== 'all' && order.status !== filters.status) {
             return false
         }
-        if (filters.keyword && !order.orderNo.includes(filters.keyword) &&
-            !order.teacherName.includes(filters.keyword) &&
-            !order.childName.includes(filters.keyword)) {
-            return false
+        if (filters.keyword) {
+            const keyword = filters.keyword.toLowerCase()
+            const orderNo = (order.orderNo || '').toLowerCase()
+            const teacherName = (order.teacherName || '').toLowerCase()
+            const childName = (order.childName || '').toLowerCase()
+            if (!orderNo.includes(keyword) && !teacherName.includes(keyword) && !childName.includes(keyword)) {
+                return false
+            }
         }
         return true
     })
@@ -170,7 +199,21 @@ function Orders() {
         {
             title: '下单时间',
             dataIndex: 'createTime',
-            width: 180
+            width: 180,
+            render: (time) => {
+                if (!time) return '-'
+                // 处理云数据库的日期格式
+                if (typeof time === 'object' && time.$date) {
+                    return new Date(time.$date).toLocaleString('zh-CN')
+                }
+                if (typeof time === 'string') {
+                    return time
+                }
+                if (time instanceof Date) {
+                    return time.toLocaleString('zh-CN')
+                }
+                return String(time)
+            }
         },
         {
             title: '操作',

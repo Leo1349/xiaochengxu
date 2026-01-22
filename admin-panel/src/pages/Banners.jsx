@@ -47,6 +47,7 @@ function Banners() {
     const [form] = Form.useForm()
     const [uploading, setUploading] = useState(false)
     const [imageUrl, setImageUrl] = useState('')
+    const [imageFileId, setImageFileId] = useState('')
 
     useEffect(() => {
         fetchBanners()
@@ -56,6 +57,7 @@ function Banners() {
         setLoading(true)
         const res = await api.getBanners({ page: 1, pageSize: 100 })
         if (res.success) {
+            // NOTE: 云函数已经自动刷新了云存储图片链接，这里直接使用返回的数据
             setBanners(res.data.list)
         }
         setLoading(false)
@@ -69,9 +71,11 @@ function Banners() {
         try {
             const res = await api.uploadImage(file)
             if (res.success) {
-                const url = res.data.url
+                const { url, fileId } = res.data
                 setImageUrl(url)
-                form.setFieldsValue({ url })
+                setImageFileId(fileId)
+                // 同时保存 url 和 fileId，fileId 用于后续刷新过期链接
+                form.setFieldsValue({ url, fileId })
                 onSuccess(res)
                 message.success('图片上传成功')
             } else {
@@ -91,6 +95,7 @@ function Banners() {
         form.resetFields()
         form.setFieldsValue({ order: banners.length + 1, isActive: true })
         setImageUrl('')
+        setImageFileId('')
         setModalVisible(true)
     }
 
@@ -98,6 +103,7 @@ function Banners() {
         setEditingBanner(record)
         form.setFieldsValue(record)
         setImageUrl(record.url || '')
+        setImageFileId(record.fileId || '')
         setModalVisible(true)
     }
 
@@ -327,6 +333,11 @@ function Banners() {
                                 style={{ marginTop: 8 }}
                             />
                         </div>
+                    </Form.Item>
+
+                    {/* 隐藏字段，用于保存 fileId 到数据库 */}
+                    <Form.Item name="fileId" hidden>
+                        <Input />
                     </Form.Item>
 
                     <Form.Item name="link" label="跳转链接">

@@ -301,10 +301,54 @@ async function handleGetBanners(data) {
             .get()
     ])
 
+    let bannerList = listRes.data
+
+    // 自动刷新有 fileId 的云存储图片链接
+    const fileIdsToRefresh = bannerList
+        .map(item => {
+            // 如果只有 cloud:// 开头的 url 但没有 fileId，尝试提取
+            if (!item.fileId && item.url && item.url.startsWith('cloud://')) {
+                return item.url
+            }
+            return item.fileId
+        })
+        .filter(id => id) // 过滤掉空值
+
+    if (fileIdsToRefresh.length > 0) {
+        try {
+            const refreshRes = await cloud.getTempFileURL({
+                fileList: fileIdsToRefresh
+            })
+
+            if (refreshRes.fileList) {
+                // 构建 fileId -> 新 URL 映射
+                const urlMap = new Map()
+                refreshRes.fileList.forEach(file => {
+                    if (file.tempFileURL) {
+                        urlMap.set(file.fileID, file.tempFileURL)
+                    }
+                })
+
+                // 更新 banner 列表中的 URL
+                bannerList = bannerList.map(item => {
+                    // 尝试匹配 fileId 或 url (对于旧数据)
+                    const id = item.fileId || (item.url && item.url.startsWith('cloud://') ? item.url : null)
+                    if (id && urlMap.has(id)) {
+                        return { ...item, url: urlMap.get(id) }
+                    }
+                    return item
+                })
+            }
+        } catch (err) {
+            console.warn('刷新云存储链接失败:', err.message)
+            // 刷新失败不影响返回原数据
+        }
+    }
+
     return {
         success: true,
         data: {
-            list: listRes.data,
+            list: bannerList,
             total: countRes.total,
             page,
             pageSize
@@ -313,7 +357,7 @@ async function handleGetBanners(data) {
 }
 
 async function handleAddBanner(data) {
-    const { title, url, link, order, isActive } = data
+    const { title, url, fileId, link, order, isActive } = data
 
     if (!title || !url) {
         return { success: false, error: '标题和图片地址不能为空' }
@@ -322,6 +366,7 @@ async function handleAddBanner(data) {
     const banner = {
         title,
         url,
+        fileId: fileId || '',  // 保存 fileId 用于刷新过期链接
         link: link || '',
         order: order || 1,
         isActive: isActive !== false,

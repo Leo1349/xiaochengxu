@@ -22,10 +22,16 @@ exports.main = async (event, context) => {
 
     const [bannerResult, teacherResult] = await Promise.all([bannerPromise, teacherPromise])
 
+    // 处理 Banner 数据：如果有 fileId，优先使用 fileId 作为 url (小程序支持 cloud://协议)
+    const banners = bannerResult.data.map(item => ({
+      ...item,
+      url: item.fileId || item.url
+    }))
+
     return {
       success: true,
       data: {
-        banners: bannerResult.data,
+        banners: banners,
         recommendTeachers: teacherResult.data
       }
     }

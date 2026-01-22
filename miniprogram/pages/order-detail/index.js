@@ -60,64 +60,90 @@ Page({
   loadOrderDetail: function (id) {
     this.setData({ loading: true })
 
-    // 模拟数据
-    const mockOrder = {
-      id: id,
-      status: 'confirmed',
-      statusText: '待服务',
-      teacher: {
-        id: 1,
-        name: '张老师',
-        avatar: '/images/avatar.png',
-        phone: '138****8888',
-        title: '专业陪伴师'
-      },
-      parent: {
-        id: 1,
-        name: '王先生',
-        phone: '139****9999'
-      },
-      child: {
-        id: 1,
-        name: '小明',
-        age: 8,
-        grade: '小学二年级',
-        gender: '男'
-      },
-      service: {
-        id: 1,
-        name: '学科辅导',
-        price: 150,
-        unit: '小时'
-      },
-      serviceDate: '2026-01-05',
-      serviceTime: '14:00',
-      duration: 2,
-      address: '北京市海淀区中关村大街1号',
-      remark: '孩子数学基础较弱，希望重点辅导',
+    // 从数据库获取订单详情
+    const db = wx.cloud.database()
+    db.collection('orders').doc(id).get().then(res => {
+      console.log('获取订单详情:', res)
+      const orderData = res.data
 
-      // 价格
-      totalPrice: 300,
-      discountPrice: 50,
-      finalPrice: 250,
-      couponName: '新人优惠券',
+      // 映射订单状态文本
+      const statusTextMap = {
+        'pending': '待确认',
+        'confirmed': '待服务',
+        'ongoing': '进行中',
+        'completed': '已完成',
+        'cancelled': '已取消'
+      }
 
-      // 时间
-      createTime: '2026-01-01 10:00:00',
-      confirmTime: '2026-01-01 10:30:00',
-      startTime: '',
-      endTime: '',
+      // 格式化订单数据
+      const order = {
+        id: orderData._id,
+        orderNo: orderData.orderNo,
+        status: orderData.status,
+        statusText: statusTextMap[orderData.status] || '未知',
+        teacher: {
+          id: orderData.teacherId,
+          name: orderData.teacherName,
+          avatar: orderData.teacherAvatar || '/images/avatar.png',
+          title: '专业陪伴师'
+        },
+        child: {
+          id: orderData.childId,
+          name: orderData.childName,
+          age: '',
+          grade: '',
+          gender: ''
+        },
+        service: {
+          id: orderData.serviceId,
+          name: orderData.serviceName,
+          price: orderData.totalPrice / orderData.serviceDuration,
+          unit: '小时'
+        },
+        serviceDate: orderData.serviceDate,
+        serviceTime: orderData.serviceTime,
+        duration: orderData.serviceDuration,
+        address: orderData.address,
+        remark: orderData.remark || '',
 
-      // 评价
-      review: null
-    }
+        // 价格
+        totalPrice: orderData.totalPrice,
+        discountPrice: orderData.discountPrice || 0,
+        finalPrice: orderData.finalPrice || orderData.totalPrice,
+        couponName: orderData.discountPrice > 0 ? '优惠券' : '',
 
-    setTimeout(() => {
+        // 时间
+        createTime: this.formatServerDate(orderData.createTime),
+        confirmTime: '',
+        startTime: '',
+        endTime: '',
+
+        // 评价
+        review: null
+      }
+
       this.setData({
-        order: mockOrder,
+        order: order,
         loading: false
       })
-    }, 500)
+    }).catch(err => {
+      console.error('获取订单详情失败:', err)
+      this.setData({ loading: false })
+      wx.showToast({ title: '获取订单失败', icon: 'none' })
+    })
+  },
+
+  // 格式化服务端日期
+  formatServerDate: function (serverDate) {
+    if (!serverDate) return ''
+    if (typeof serverDate === 'string') return serverDate
+    if (serverDate.$date) {
+      return new Date(serverDate.$date).toLocaleString('zh-CN')
+    }
+    if (serverDate instanceof Date) {
+      return this.formatTime(serverDate)
+    }
+    return String(serverDate)
   },
 
   // 复制订单号

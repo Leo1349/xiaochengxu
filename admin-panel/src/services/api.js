@@ -108,6 +108,28 @@ export const api = {
             console.error('Upload error:', error)
             return { success: false, error: error.message || '上传失败' }
         }
+    },
+
+    // 刷新单个云存储图片链接
+    refreshImageUrl: async (fileId) => {
+        try {
+            const response = await axios.post('http://localhost:3001/api/refresh-url', { fileId })
+            return response.data
+        } catch (error) {
+            console.error('Refresh URL error:', error)
+            return { success: false, error: error.message || '刷新链接失败' }
+        }
+    },
+
+    // 批量刷新云存储图片链接
+    refreshImageUrls: async (fileIds) => {
+        try {
+            const response = await axios.post('http://localhost:3001/api/refresh-url', { fileIds })
+            return response.data
+        } catch (error) {
+            console.error('Refresh URLs error:', error)
+            return { success: false, error: error.message || '刷新链接失败' }
+        }
     }
 }
 
