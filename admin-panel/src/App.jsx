@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { ConfigProvider } from 'antd'
+import zhCN from 'antd/locale/zh_CN'
 import AdminLayout from './components/AdminLayout'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
@@ -38,22 +40,28 @@ function App() {
   }
 
   if (!isLoggedIn) {
-    return <Login onLogin={handleLogin} />
+    return (
+      <ConfigProvider locale={zhCN}>
+        <Login onLogin={handleLogin} />
+      </ConfigProvider>
+    )
   }
 
   return (
-    <AdminLayout adminInfo={adminInfo} onLogout={handleLogout}>
-      <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/teachers" element={<Teachers />} />
-        <Route path="/banners" element={<Banners />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/users" element={<Users />} />
-        <Route path="/feedbacks" element={<Feedbacks />} />
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
-      </Routes>
-    </AdminLayout>
+    <ConfigProvider locale={zhCN}>
+      <AdminLayout adminInfo={adminInfo} onLogout={handleLogout}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/teachers" element={<Teachers />} />
+          <Route path="/banners" element={<Banners />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/feedbacks" element={<Feedbacks />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </AdminLayout>
+    </ConfigProvider>
   )
 }
 

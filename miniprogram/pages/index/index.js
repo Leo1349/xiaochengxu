@@ -93,8 +93,8 @@ Page({
           const formattedBanners = banners.map(item => {
             return {
               id: item._id,
-              image: item.image, // 直接使用数据库中的图片字段
-              url: item.url || ''
+              image: item.url, // 使用数据库中的 url 字段（后台管理系统存储为 url）
+              url: item.link || ''  // link 字段是跳转链接
             };
           })
 

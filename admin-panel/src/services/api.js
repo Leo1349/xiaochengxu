@@ -93,7 +93,22 @@ export const api = {
 
     // 反馈管理
     getFeedbacks: (params) => callCloudFunction('getFeedbacks', params),
-    updateFeedbackStatus: (_id, status) => callCloudFunction('updateFeedbackStatus', { _id, status })
+    updateFeedbackStatus: (_id, status) => callCloudFunction('updateFeedbackStatus', { _id, status }),
+
+    // 图片上传
+    uploadImage: async (file) => {
+        const formData = new FormData()
+        formData.append('file', file)
+        try {
+            const response = await axios.post('http://localhost:3001/api/upload', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
+            return response.data
+        } catch (error) {
+            console.error('Upload error:', error)
+            return { success: false, error: error.message || '上传失败' }
+        }
+    }
 }
 
 // ==================== 模拟数据（开发模式） ====================

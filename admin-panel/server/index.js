@@ -10,8 +10,18 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const axios = require('axios')
+const multer = require('multer')
+const FormData = require('form-data')
+const fs = require('fs')
+const path = require('path')
 
 const app = express()
+
+// 配置 multer 用于处理文件上传
+const upload = multer({
+    dest: 'uploads/',
+    limits: { fileSize: 10 * 1024 * 1024 } // 最大10MB
+})
 const PORT = process.env.PORT || 3001
 
 // 配置检查
@@ -136,6 +146,96 @@ app.post('/api/cloud', async (req, res) => {
         res.json(result)
     } catch (error) {
         console.error('云函数调用失败:', error.message)
+        res.status(500).json({ success: false, error: error.message })
+    }
+})
+
+/**
+ * 图片上传接口
+ * POST /api/upload
+ * 将图片上传到微信云存储
+ */
+app.post('/api/upload', upload.single('file'), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ success: false, error: '没有上传文件' })
+    }
+
+    console.log(`📤 上传文件: ${req.file.originalname}`)
+
+    try {
+        const accessToken = await getAccessToken()
+        const cloudPath = `admin-uploads/${Date.now()}_${req.file.originalname}`
+
+        // 步骤1: 获取上传链接
+        const uploadInfoRes = await axios.post(
+            `https://api.weixin.qq.com/tcb/uploadfile`,
+            {
+                env: WX_CLOUD_ENV,
+                path: cloudPath
+            },
+            {
+                params: { access_token: accessToken },
+                headers: { 'Content-Type': 'application/json' }
+            }
+        )
+
+        if (uploadInfoRes.data.errcode && uploadInfoRes.data.errcode !== 0) {
+            throw new Error(uploadInfoRes.data.errmsg || '获取上传链接失败')
+        }
+
+        const { url, authorization, token, cos_file_id, file_id } = uploadInfoRes.data
+
+        // 步骤2: 上传文件到云存储
+        const fileBuffer = fs.readFileSync(req.file.path)
+        const formData = new FormData()
+        formData.append('key', cloudPath)
+        formData.append('Signature', authorization)
+        formData.append('x-cos-security-token', token)
+        formData.append('x-cos-meta-fileid', cos_file_id)
+        formData.append('file', fileBuffer, {
+            filename: req.file.originalname,
+            contentType: req.file.mimetype
+        })
+
+        await axios.post(url, formData, {
+            headers: formData.getHeaders()
+        })
+
+        // 步骤3: 获取文件下载链接
+        const downloadRes = await axios.post(
+            `https://api.weixin.qq.com/tcb/batchdownloadfile`,
+            {
+                env: WX_CLOUD_ENV,
+                file_list: [{ fileid: file_id, max_age: 7200 }]
+            },
+            {
+                params: { access_token: accessToken },
+                headers: { 'Content-Type': 'application/json' }
+            }
+        )
+
+        // 删除临时文件
+        fs.unlinkSync(req.file.path)
+
+        if (downloadRes.data.file_list && downloadRes.data.file_list[0]) {
+            const fileUrl = downloadRes.data.file_list[0].download_url
+            console.log(`✅ 上传成功: ${fileUrl}`)
+            res.json({
+                success: true,
+                data: {
+                    url: fileUrl,
+                    fileId: file_id
+                }
+            })
+        } else {
+            throw new Error('获取下载链接失败')
+        }
+    } catch (error) {
+        console.error('❌ 上传失败:', error.message)
+        // 清理临时文件
+        if (req.file && req.file.path && fs.existsSync(req.file.path)) {
+            fs.unlinkSync(req.file.path)
+        }
         res.status(500).json({ success: false, error: error.message })
     }
 })

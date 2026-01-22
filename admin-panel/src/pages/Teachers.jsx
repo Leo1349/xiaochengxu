@@ -226,6 +226,8 @@ function Teachers() {
                     <Popconfirm
                         title="确定删除这位老师吗？"
                         onConfirm={() => handleDelete(record._id)}
+                        okText="确定"
+                        cancelText="取消"
                     >
                         <Button type="link" danger icon={<DeleteOutlined />}>
                             删除
@@ -263,6 +265,8 @@ function Teachers() {
                 open={modalVisible}
                 onOk={handleSubmit}
                 onCancel={() => setModalVisible(false)}
+                okText="确定"
+                cancelText="取消"
                 width={600}
             >
                 <Form form={form} layout="vertical">

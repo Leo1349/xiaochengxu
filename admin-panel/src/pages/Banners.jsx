@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import {
     Table, Button, Space, Modal, Form, Input,
-    message, Popconfirm, Switch, Image
+    message, Popconfirm, Switch, Image, Upload
 } from 'antd'
 import {
-    PlusOutlined, EditOutlined, DeleteOutlined, PictureOutlined
+    PlusOutlined, EditOutlined, DeleteOutlined, PictureOutlined, LoadingOutlined
 } from '@ant-design/icons'
 import { api } from '../services/api'
 
@@ -45,6 +45,8 @@ function Banners() {
     const [modalVisible, setModalVisible] = useState(false)
     const [editingBanner, setEditingBanner] = useState(null)
     const [form] = Form.useForm()
+    const [uploading, setUploading] = useState(false)
+    const [imageUrl, setImageUrl] = useState('')
 
     useEffect(() => {
         fetchBanners()
@@ -59,16 +61,43 @@ function Banners() {
         setLoading(false)
     }
 
+    // 自定义上传处理
+    const handleUpload = async (options) => {
+        const { file, onSuccess, onError } = options
+        setUploading(true)
+
+        try {
+            const res = await api.uploadImage(file)
+            if (res.success) {
+                const url = res.data.url
+                setImageUrl(url)
+                form.setFieldsValue({ url })
+                onSuccess(res)
+                message.success('图片上传成功')
+            } else {
+                onError(new Error(res.error))
+                message.error(res.error || '上传失败')
+            }
+        } catch (error) {
+            onError(error)
+            message.error('上传失败')
+        } finally {
+            setUploading(false)
+        }
+    }
+
     const handleAdd = () => {
         setEditingBanner(null)
         form.resetFields()
         form.setFieldsValue({ order: banners.length + 1, isActive: true })
+        setImageUrl('')
         setModalVisible(true)
     }
 
     const handleEdit = (record) => {
         setEditingBanner(record)
         form.setFieldsValue(record)
+        setImageUrl(record.url || '')
         setModalVisible(true)
     }
 
@@ -208,6 +237,8 @@ function Banners() {
                     <Popconfirm
                         title="确定删除这个轮播图吗？"
                         onConfirm={() => handleDelete(record._id)}
+                        okText="确定"
+                        cancelText="取消"
                     >
                         <Button type="link" danger icon={<DeleteOutlined />}>
                             删除
@@ -245,6 +276,8 @@ function Banners() {
                 open={modalVisible}
                 onOk={handleSubmit}
                 onCancel={() => setModalVisible(false)}
+                okText="确定"
+                cancelText="取消"
                 width={500}
             >
                 <Form form={form} layout="vertical">
@@ -258,10 +291,42 @@ function Banners() {
 
                     <Form.Item
                         name="url"
-                        label="图片地址"
-                        rules={[{ required: true, message: '请输入图片地址' }]}
+                        label="轮播图图片"
+                        rules={[{ required: true, message: '请上传图片' }]}
                     >
-                        <Input placeholder="请输入图片 URL 或上传图片" />
+                        <div>
+                            <Upload
+                                name="file"
+                                listType="picture-card"
+                                showUploadList={false}
+                                customRequest={handleUpload}
+                                accept="image/*"
+                            >
+                                {imageUrl ? (
+                                    <img
+                                        src={imageUrl}
+                                        alt="轮播图"
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    />
+                                ) : (
+                                    <div>
+                                        {uploading ? <LoadingOutlined /> : <PlusOutlined />}
+                                        <div style={{ marginTop: 8 }}>
+                                            {uploading ? '上传中...' : '点击上传'}
+                                        </div>
+                                    </div>
+                                )}
+                            </Upload>
+                            <Input
+                                value={imageUrl}
+                                onChange={(e) => {
+                                    setImageUrl(e.target.value)
+                                    form.setFieldsValue({ url: e.target.value })
+                                }}
+                                placeholder="或直接输入图片 URL"
+                                style={{ marginTop: 8 }}
+                            />
+                        </div>
                     </Form.Item>
 
                     <Form.Item name="link" label="跳转链接">
