@@ -11,6 +11,8 @@ import Orders from './pages/Orders'
 import Users from './pages/Users'
 import Cases from './pages/Cases'
 import Feedbacks from './pages/Feedbacks'
+import Demands from './pages/Demands'
+import CustomerService from './pages/CustomerService'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -60,6 +62,8 @@ function App() {
           <Route path="/users" element={<Users />} />
           <Route path="/cases" element={<Cases />} />
           <Route path="/feedbacks" element={<Feedbacks />} />
+          <Route path="/demands" element={<Demands />} />
+          <Route path="/customer-service" element={<CustomerService />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </AdminLayout>

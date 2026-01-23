@@ -142,6 +142,37 @@ exports.main = async (event, context) => {
                 result = await handleDeleteCase(data)
                 break
 
+            // ==================== 预约管理 ====================
+            case 'getDemands':
+                result = await handleGetDemands(data)
+                break
+            case 'updateDemandStatus':
+                result = await handleUpdateDemandStatus(data)
+                break
+            case 'replyDemand':
+                result = await handleReplyDemand(data)
+                break
+
+            // ==================== 客服管理 ====================
+            case 'getServiceConfig':
+                result = await handleGetServiceConfig()
+                break
+            case 'updateServiceConfig':
+                result = await handleUpdateServiceConfig(data)
+                break
+            case 'getFaqList':
+                result = await handleGetFaqList()
+                break
+            case 'addFaq':
+                result = await handleAddFaq(data)
+                break
+            case 'updateFaq':
+                result = await handleUpdateFaq(data)
+                break
+            case 'deleteFaq':
+                result = await handleDeleteFaq(data)
+                break
+
             default:
                 result = { success: false, error: '未知操作类型' }
         }
@@ -828,5 +859,232 @@ async function handleDeleteCase(data) {
     }
 
     await db.collection('case').doc(_id).remove()
+    return { success: true }
+}
+
+// ==================== 预约管理 ====================
+async function handleGetDemands(data) {
+    const { page = 1, pageSize = 20, status, keyword } = data
+    const skip = (page - 1) * pageSize
+
+    let query = {}
+    if (status && status !== 'all') {
+        query.status = status
+    }
+    if (keyword) {
+        query.content = db.RegExp({ regexp: keyword, options: 'i' })
+    }
+
+    try {
+        const [countRes, listRes] = await Promise.all([
+            db.collection('demands').where(query).count(),
+            db.collection('demands')
+                .where(query)
+                .orderBy('createTime', 'desc')
+                .skip(skip)
+                .limit(pageSize)
+                .get()
+        ])
+
+        let demandList = listRes.data
+
+        // 收集所有需要转换的 cloud:// 图片链接
+        const fileIdsToRefresh = []
+        demandList.forEach(item => {
+            if (item.mediaList && Array.isArray(item.mediaList)) {
+                item.mediaList.forEach(media => {
+                    if (media.fileID && media.fileID.startsWith('cloud://')) {
+                        fileIdsToRefresh.push(media.fileID)
+                    }
+                })
+            }
+        })
+
+        // 去重并批量获取临时链接
+        const uniqueFileIds = [...new Set(fileIdsToRefresh)]
+        if (uniqueFileIds.length > 0) {
+            try {
+                const refreshRes = await cloud.getTempFileURL({
+                    fileList: uniqueFileIds
+                })
+
+                if (refreshRes.fileList) {
+                    const urlMap = new Map()
+                    refreshRes.fileList.forEach(file => {
+                        if (file.tempFileURL && file.status === 0) {
+                            urlMap.set(file.fileID, file.tempFileURL)
+                        }
+                    })
+
+                    // 更新列表中的图片链接
+                    demandList = demandList.map(item => {
+                        if (item.mediaList && Array.isArray(item.mediaList)) {
+                            item.mediaList = item.mediaList.map(media => {
+                                if (media.fileID && urlMap.has(media.fileID)) {
+                                    return { ...media, url: urlMap.get(media.fileID) }
+                                }
+                                return media
+                            })
+                        }
+                        return item
+                    })
+                }
+            } catch (err) {
+                console.warn('刷新预约图片链接失败:', err.message)
+            }
+        }
+
+        return {
+            success: true,
+            data: {
+                list: demandList,
+                total: countRes.total,
+                page,
+                pageSize
+            }
+        }
+    } catch (err) {
+        // 集合不存在时返回空数据
+        if (err.code === 502005 || (err.message && err.message.indexOf('not exist') > -1)) {
+            return {
+                success: true,
+                data: {
+                    list: [],
+                    total: 0,
+                    page,
+                    pageSize
+                }
+            }
+        }
+        throw err
+    }
+}
+
+async function handleUpdateDemandStatus(data) {
+    const { _id, status } = data
+
+    if (!_id || !status) {
+        return { success: false, error: 'ID和状态不能为空' }
+    }
+
+    await db.collection('demands').doc(_id).update({
+        data: {
+            status,
+            updateTime: db.serverDate()
+        }
+    })
+    return { success: true }
+}
+
+// 回复预约
+async function handleReplyDemand(data) {
+    const { _id, reply } = data
+
+    if (!_id || !reply) {
+        return { success: false, error: 'ID和回复内容不能为空' }
+    }
+
+    await db.collection('demands').doc(_id).update({
+        data: {
+            adminReply: reply,
+            replyTime: db.serverDate(),
+            updateTime: db.serverDate()
+        }
+    })
+    return { success: true }
+}
+
+// ==================== 客服管理 ====================
+async function handleGetServiceConfig() {
+    try {
+        const res = await db.collection('configs').doc('customer_service').get()
+        return { success: true, data: res.data }
+    } catch (err) {
+        return {
+            success: true,
+            data: {
+                serviceHours: '',
+                phone: '',
+                wechat: '',
+                email: ''
+            }
+        }
+    }
+}
+
+async function handleUpdateServiceConfig(data) {
+    const { _id, ...configData } = data
+
+    // Ensure the ID is always 'customer_service'
+    const docId = 'customer_service'
+    configData.updateTime = db.serverDate()
+
+    // Check if exists, if so update, else set (add)
+    const check = await db.collection('configs').doc(docId).get().catch(() => null)
+
+    if (check) {
+        await db.collection('configs').doc(docId).update({ data: configData })
+    } else {
+        configData._id = docId
+        await db.collection('configs').add({ data: configData })
+    }
+
+    return { success: true }
+}
+
+async function handleGetFaqList() {
+    const listRes = await db.collection('faqs')
+        .orderBy('order', 'asc')
+        .get()
+
+    return { success: true, data: listRes.data }
+}
+
+async function handleAddFaq(data) {
+    const { question, answer, order, isActive } = data
+
+    if (!question || !answer) {
+        return { success: false, error: '问题和回答不能为空' }
+    }
+
+    const faq = {
+        question,
+        answer,
+        order: Number(order) || 0,
+        isActive: isActive !== false,
+        createTime: db.serverDate(),
+        updateTime: db.serverDate()
+    }
+
+    const res = await db.collection('faqs').add({ data: faq })
+    return { success: true, data: { _id: res._id } }
+}
+
+async function handleUpdateFaq(data) {
+    const { _id, ...updateData } = data
+
+    if (!_id) {
+        return { success: false, error: 'ID不能为空' }
+    }
+
+    updateData.updateTime = db.serverDate()
+
+    // Ensure order is number if present
+    if (updateData.order !== undefined) {
+        updateData.order = Number(updateData.order)
+    }
+
+    await db.collection('faqs').doc(_id).update({ data: updateData })
+    return { success: true }
+}
+
+async function handleDeleteFaq(data) {
+    const { _id } = data
+
+    if (!_id) {
+        return { success: false, error: 'ID不能为空' }
+    }
+
+    await db.collection('faqs').doc(_id).remove()
     return { success: true }
 }

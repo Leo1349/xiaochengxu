@@ -322,10 +322,4 @@ Page({
     })
   },
 
-  // 跳转到注册页
-  goToRegister: function () {
-    wx.navigateTo({
-      url: '/pages/register/index'
-    })
-  }
 })

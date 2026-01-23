@@ -25,6 +25,20 @@ exports.main = async (event, context) => {
     // 处理 Banner 数据：如果有 fileId，需要获取临时 URL
     let banners = bannerResult.data
 
+    // 内存中再次排序，防止数据库字段类型不一致（字符串vs数字）导致排序错误
+    // 同时也解决了相同序号的稳定性问题
+    banners.sort((a, b) => {
+      const orderA = Number(a.order) || 0;
+      const orderB = Number(b.order) || 0;
+      if (orderA !== orderB) {
+        return orderA - orderB; // 升序
+      }
+      // 如果序号相同，按创建时间降序（后创建的在前）
+      const timeA = a.createTime ? new Date(a.createTime).getTime() : 0;
+      const timeB = b.createTime ? new Date(b.createTime).getTime() : 0;
+      return timeB - timeA;
+    });
+
     // 收集所有需要获取临时 URL 的 fileId
     const fileIds = banners
       .filter(item => item.fileId && item.fileId.startsWith('cloud://'))

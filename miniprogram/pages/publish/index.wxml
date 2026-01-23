@@ -42,33 +42,57 @@
     <!-- 地址与时间卡片 -->
     <view class="card m-4">
       <!-- 服务地址 -->
-      <view class="form-item" bindtap="chooseAddress">
-        <view class="label flex align-center">
-          <image class="icon-sm mr-2" src="/images/icons_v3/home_v3.png" mode="aspectFit" style="width: 32rpx; height: 32rpx; opacity: 0.6;"></image>
-          服务地址
+      <view class="form-item-column">
+        <view class="form-item-header">
+          <view class="label flex align-center">
+            <image class="icon-sm mr-2" src="/images/icons_v3/home_v3.png" mode="aspectFit" style="width: 32rpx; height: 32rpx; opacity: 0.6;"></image>
+            服务地址
+          </view>
+          <view class="mode-switch" bindtap="toggleAddressMode">
+            <text class="switch-text">{{addressInputMode ? '选择地址' : '手动输入'}}</text>
+          </view>
         </view>
-        <view class="content flex-1 text-right">
+        
+        <!-- 选择模式 -->
+        <view class="form-item-body" wx:if="{{!addressInputMode}}" bindtap="chooseAddress">
           <text class="{{address ? 'text-dark' : 'text-light'}}">{{address || '请选择服务地址'}}</text>
           <text class="arrow ml-2">></text>
+        </view>
+        
+        <!-- 输入模式 -->
+        <view class="form-item-body" wx:else>
+          <input class="input-inline" placeholder="请输入详细地址" value="{{address}}" bindinput="onAddressInput" />
         </view>
       </view>
 
       <view class="divider-h"></view>
 
       <!-- 服务时间 -->
-      <picker mode="multiSelector" bindchange="onTimeChange" bindcolumnchange="onTimeColumnChange" value="{{timeIndex}}" range="{{timeArray}}">
-        <view class="form-item">
+      <view class="form-item-column">
+        <view class="form-item-header">
           <view class="label flex align-center">
             <image class="icon-sm mr-2" src="/images/icons_v3/service_v3.png" mode="aspectFit" style="width: 32rpx; height: 32rpx; opacity: 0.6;"></image>
             服务时间
           </view>
-          <view class="content flex-1 text-right">
+          <view class="mode-switch" bindtap="toggleTimeMode">
+            <text class="switch-text">{{timeInputMode ? '选择时间' : '手动输入'}}</text>
+          </view>
+        </view>
+        
+        <!-- 选择模式 -->
+        <picker wx:if="{{!timeInputMode}}" mode="multiSelector" bindchange="onTimeChange" bindcolumnchange="onTimeColumnChange" value="{{timeIndex}}" range="{{timeArray}}">
+          <view class="form-item-body">
             <text class="tag-gray mr-2 text-xs">最近</text>
             <text class="{{selectedTime ? 'text-warning' : 'text-light'}}">{{selectedTime || '请选择服务时间'}}</text>
             <text class="arrow ml-2">></text>
           </view>
+        </picker>
+        
+        <!-- 输入模式 -->
+        <view class="form-item-body" wx:else>
+          <input class="input-inline" placeholder="例如：明天下午3点" value="{{selectedTime}}" bindinput="onTimeInput" />
         </view>
-      </picker>
+      </view>
     </view>
 
     <!-- 服务介绍（详细信息）卡片 -->

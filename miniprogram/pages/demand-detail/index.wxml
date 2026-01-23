@@ -1,0 +1,91 @@
+<!--pages/demand-detail/index.wxml-->
+<view class="container">
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <block wx:if="{{demand && !loading}}">
+    <!-- 状态卡片 -->
+    <view class="status-card status-{{demand.status}}">
+      <view class="status-icon">
+        <text wx:if="{{demand.status === 'pending'}}">⏳</text>
+        <text wx:elif="{{demand.status === 'matched'}}">✅</text>
+        <text wx:elif="{{demand.status === 'completed'}}">🎉</text>
+        <text wx:else>❌</text>
+      </view>
+      <view class="status-info">
+        <text class="status-text">{{demand.statusText}}</text>
+        <text class="status-desc" wx:if="{{demand.status === 'pending'}}">我们正在为您匹配合适的陪伴师</text>
+        <text class="status-desc" wx:elif="{{demand.status === 'matched'}}">已为您匹配陪伴师，请耐心等待服务</text>
+        <text class="status-desc" wx:elif="{{demand.status === 'completed'}}">服务已完成，感谢您的信任</text>
+        <text class="status-desc" wx:else>预约已取消</text>
+      </view>
+    </view>
+
+    <!-- 预约信息 -->
+    <view class="info-card">
+      <view class="card-title">预约信息</view>
+      
+      <view class="info-item">
+        <text class="label">服务类型</text>
+        <text class="value">{{demand.serviceType || '-'}}</text>
+      </view>
+      
+      <view class="info-item">
+        <text class="label">服务内容</text>
+        <text class="value">{{demand.content || '-'}}</text>
+      </view>
+      
+      <view class="info-item" wx:if="{{demand.address}}">
+        <text class="label">服务地址</text>
+        <text class="value">{{demand.address}}</text>
+      </view>
+      
+      <view class="info-item" wx:if="{{demand.selectedTime}}">
+        <text class="label">预约时间</text>
+        <text class="value highlight">{{demand.selectedTime}}</text>
+      </view>
+      
+      <view class="info-item">
+        <text class="label">提交时间</text>
+        <text class="value">{{demand.createTimeText}}</text>
+      </view>
+    </view>
+
+    <!-- 上传的图片 -->
+    <view class="info-card" wx:if="{{demand.mediaList && demand.mediaList.length > 0}}">
+      <view class="card-title">上传的图片</view>
+      <view class="image-grid">
+        <image 
+          class="preview-image" 
+          wx:for="{{demand.mediaList}}" 
+          wx:key="index"
+          src="{{item.tempUrl || item.url || item.fileID}}" 
+          mode="aspectFill"
+          data-url="{{item.tempUrl || item.url || item.fileID}}"
+          bindtap="previewImage"
+        ></image>
+      </view>
+    </view>
+
+    <!-- 平台回复 -->
+    <view class="info-card reply-card" wx:if="{{demand.adminReply}}">
+      <view class="card-title">
+        <text class="reply-icon">💬</text>
+        <text>平台回复</text>
+      </view>
+      <view class="reply-content">{{demand.adminReply}}</view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-bar">
+      <button class="btn-secondary" bindtap="contactService">联系客服</button>
+      <button 
+        class="btn-cancel" 
+        wx:if="{{demand.status === 'pending'}}"
+        bindtap="cancelDemand"
+      >取消预约</button>
+    </view>
+  </block>
+</view>

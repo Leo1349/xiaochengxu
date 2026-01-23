@@ -23,7 +23,9 @@
     "pages/rebate/index",
     "pages/admin/login/index",
     "pages/admin/order-list/index",
-    "pages/admin/order-detail/index"
+    "pages/admin/order-detail/index",
+    "pages/demand-list/index",
+    "pages/demand-detail/index"
   ],
   "usingComponents": {
     "rate": "/components/rate/index",

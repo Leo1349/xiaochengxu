@@ -14,6 +14,7 @@ Page({
       {
         title: '我的服务',
         items: [
+          { id: 'demands', icon: '/images/mine_v3/order_pending.png', name: '我的预约', url: '/pages/demand-list/index' },
           { id: 'orders', icon: '/images/mine_v3/order_all.png', name: '我的订单', url: '/pages/order-list/index' },
           { id: 'children', icon: '/images/mine_v3/menu_child.png', name: '孩子信息', url: '/pages/child-info/index' },
           { id: 'favorites', icon: '/images/mine_v3/menu_favorite.png', name: '我的收藏', url: '/pages/favorite/index' }

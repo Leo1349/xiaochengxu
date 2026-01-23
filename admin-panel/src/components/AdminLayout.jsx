@@ -32,6 +32,11 @@ const menuItems = [
         label: '轮播图管理'
     },
     {
+        key: '/demands',
+        icon: <ShoppingCartOutlined />,
+        label: '预约管理'
+    },
+    {
         key: '/orders',
         icon: <ShoppingCartOutlined />,
         label: '订单管理'
@@ -43,13 +48,18 @@ const menuItems = [
     },
     {
         key: '/cases',
-        icon: <PictureOutlined />, // 暂用 PictureOutlined，或引入 ReadOutlined
+        icon: <PictureOutlined />,
         label: '成功案例'
     },
     {
         key: '/feedbacks',
         icon: <MessageOutlined />,
         label: '反馈管理'
+    },
+    {
+        key: '/customer-service',
+        icon: <TeamOutlined />,
+        label: '客服管理'
     }
 ]
 

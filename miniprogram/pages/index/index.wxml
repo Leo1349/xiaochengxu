@@ -11,7 +11,9 @@
   <!-- 公告栏 -->
   <view class="notice-bar" wx:if="{{notice}}">
     <image class="notice-icon" src="/images/icons_v3/notice_icon.png" mode="aspectFit"></image>
-    <text class="notice-text">{{notice}}</text>
+    <view class="notice-content">
+      <text class="notice-text">{{notice}}</text>
+    </view>
   </view>
 
   <!-- 轮播图 -->

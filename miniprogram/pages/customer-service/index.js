@@ -54,7 +54,7 @@ Page({
         expanded: false
       }
     ],
-    
+
     // 客服信息
     serviceInfo: {
       phone: '400-123-4567',
@@ -64,12 +64,34 @@ Page({
     }
   },
 
-  onLoad: function(options) {
-    
+  onLoad: function (options) {
+    this.loadServiceData()
+  },
+
+  // 加载客服数据
+  loadServiceData: function () {
+    wx.showLoading({ title: '加载中...' })
+    wx.cloud.callFunction({
+      name: 'getServiceData',
+      success: res => {
+        if (res.result.success) {
+          this.setData({
+            serviceInfo: res.result.data.serviceInfo,
+            faqList: res.result.data.faqList
+          })
+        }
+      },
+      fail: err => {
+        console.error('获取客服数据失败', err)
+      },
+      complete: () => {
+        wx.hideLoading()
+      }
+    })
   },
 
   // 展开/收起问题
-  toggleFaq: function(e) {
+  toggleFaq: function (e) {
     const id = e.currentTarget.dataset.id
     const faqList = this.data.faqList.map(item => {
       if (item.id === id) {
@@ -81,14 +103,14 @@ Page({
   },
 
   // 拨打电话
-  callService: function() {
+  callService: function () {
     wx.makePhoneCall({
       phoneNumber: this.data.serviceInfo.phone.replace(/-/g, '')
     })
   },
 
   // 复制微信号
-  copyWechat: function() {
+  copyWechat: function () {
     wx.setClipboardData({
       data: this.data.serviceInfo.wechat,
       success: () => {
@@ -101,7 +123,7 @@ Page({
   },
 
   // 复制邮箱
-  copyEmail: function() {
+  copyEmail: function () {
     wx.setClipboardData({
       data: this.data.serviceInfo.email,
       success: () => {
@@ -114,13 +136,13 @@ Page({
   },
 
   // 在线客服
-  openCustomerService: function() {
+  openCustomerService: function () {
     // 微信小程序客服功能
     // 需要在小程序后台配置客服
   },
 
   // 跳转到反馈页面
-  goToFeedback: function() {
+  goToFeedback: function () {
     wx.navigateTo({
       url: '/pages/feedback/index'
     })

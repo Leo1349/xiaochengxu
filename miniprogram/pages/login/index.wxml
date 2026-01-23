@@ -69,8 +69,5 @@
     </view>
   </view>
 
-  <!-- 其他入口 -->
-  <view class="other-entry">
-    <text class="register-link" bindtap="goToRegister">还没有账号？立即注册</text>
-  </view>
+
 </view>

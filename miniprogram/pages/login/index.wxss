@@ -268,18 +268,3 @@
   font-weight: 500;
 }
 
-/* ==================== 其他入口 ==================== */
-
-.other-entry {
-  flex: 1;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 100rpx;
-}
-
-.register-link {
-  font-size: 28rpx;
-  color: #FF8066;
-  font-weight: 600;
-}

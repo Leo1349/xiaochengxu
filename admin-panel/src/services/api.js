@@ -101,6 +101,19 @@ export const api = {
     updateCase: (data) => callCloudFunction('updateCase', data),
     deleteCase: (_id) => callCloudFunction('deleteCase', { _id }),
 
+    // 预约管理
+    getDemands: (params) => callCloudFunction('getDemands', params),
+    updateDemandStatus: (_id, status) => callCloudFunction('updateDemandStatus', { _id, status }),
+    replyDemand: (_id, reply) => callCloudFunction('replyDemand', { _id, reply }),
+
+    // 客服管理
+    getServiceConfig: () => callCloudFunction('getServiceConfig'),
+    updateServiceConfig: (data) => callCloudFunction('updateServiceConfig', data),
+    getFaqList: () => callCloudFunction('getFaqList'),
+    addFaq: (data) => callCloudFunction('addFaq', data),
+    updateFaq: (data) => callCloudFunction('updateFaq', data),
+    deleteFaq: (_id) => callCloudFunction('deleteFaq', { _id }),
+
     // 图片上传
     uploadImage: async (file) => {
         const formData = new FormData()

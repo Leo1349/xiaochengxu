@@ -1,0 +1,195 @@
+/* pages/demand-detail/index.wxss */
+/* 预约详情页面样式 */
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF9F5 40%, #FFE8E4 100%);
+  padding: 24rpx;
+  padding-bottom: 200rpx;
+}
+
+/* ==================== 加载状态 ==================== */
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400rpx;
+  color: #9E9B98;
+  font-size: 28rpx;
+}
+
+/* ==================== 状态卡片 ==================== */
+
+.status-card {
+  display: flex;
+  align-items: center;
+  padding: 32rpx;
+  border-radius: 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.status-pending {
+  background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+}
+
+.status-matched {
+  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+}
+
+.status-completed {
+  background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+}
+
+.status-cancelled {
+  background: linear-gradient(135deg, #F5F5F5 0%, #E0E0E0 100%);
+}
+
+.status-icon {
+  font-size: 64rpx;
+  margin-right: 24rpx;
+}
+
+.status-info {
+  flex: 1;
+}
+
+.status-text {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #3D3A38;
+  margin-bottom: 8rpx;
+}
+
+.status-desc {
+  font-size: 26rpx;
+  color: #7A7673;
+}
+
+/* ==================== 信息卡片 ==================== */
+
+.info-card {
+  background-color: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 28rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 8rpx 32rpx rgba(61, 58, 56, 0.06);
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #3D3A38;
+  margin-bottom: 24rpx;
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid #F0EDEA;
+}
+
+.info-item {
+  display: flex;
+  margin-bottom: 20rpx;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  font-size: 26rpx;
+  color: #9E9B98;
+  width: 160rpx;
+  flex-shrink: 0;
+}
+
+.value {
+  font-size: 26rpx;
+  color: #3D3A38;
+  flex: 1;
+  line-height: 1.6;
+}
+
+.value.highlight {
+  color: #FF8066;
+  font-weight: 600;
+}
+
+/* ==================== 图片网格 ==================== */
+
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.preview-image {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 16rpx;
+  object-fit: cover;
+}
+
+/* ==================== 平台回复 ==================== */
+
+.reply-card {
+  background: linear-gradient(135deg, #E3F2FD 0%, #E8EAF6 100%);
+  border-left: 8rpx solid #2196F3;
+}
+
+.reply-icon {
+  margin-right: 12rpx;
+}
+
+.reply-content {
+  font-size: 28rpx;
+  color: #3D3A38;
+  line-height: 1.8;
+  padding: 16rpx;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 12rpx;
+}
+
+/* ==================== 操作按钮 ==================== */
+
+.action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 24rpx;
+  padding: 24rpx 32rpx;
+  background-color: #FFFFFF;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.btn-secondary {
+  flex: 1;
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 30rpx;
+  color: #FF8066;
+  background-color: #FFFFFF;
+  border: 2rpx solid #FF8066;
+  border-radius: 44rpx;
+}
+
+.btn-secondary::after {
+  border: none;
+}
+
+.btn-cancel {
+  flex: 1;
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 30rpx;
+  color: #9E9B98;
+  background-color: #F5F5F5;
+  border-radius: 44rpx;
+}
+
+.btn-cancel::after {
+  border: none;
+}

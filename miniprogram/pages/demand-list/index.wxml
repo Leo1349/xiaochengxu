@@ -1,0 +1,90 @@
+<!--pages/demand-list/index.wxml-->
+<view class="container">
+  <!-- Tab切换 -->
+  <view class="tabs">
+    <view 
+      class="tab-item {{currentTab === item.id ? 'active' : ''}}" 
+      wx:for="{{tabs}}" 
+      wx:key="id" 
+      data-tab="{{item.id}}" 
+      bindtap="switchTab"
+    >
+      <text>{{item.name}}</text>
+    </view>
+  </view>
+
+  <!-- 预约列表 -->
+  <view class="demand-list">
+    <view class="demand-card" wx:for="{{demandList}}" wx:key="_id">
+      <view class="card-header">
+        <view class="service-type">{{item.serviceType}}</view>
+        <view class="status status-{{item.status}}">{{item.statusText}}</view>
+      </view>
+      
+      <view class="card-body" bindtap="viewDemandDetail" data-id="{{item._id}}">
+        <!-- 服务内容 -->
+        <view class="info-row">
+          <text class="label">服务内容</text>
+          <text class="value content-preview">{{item.content}}</text>
+        </view>
+        
+        <!-- 服务地址 -->
+        <view class="info-row" wx:if="{{item.address}}">
+          <text class="label">服务地址</text>
+          <text class="value">{{item.address}}</text>
+        </view>
+        
+        <!-- 预约时间 -->
+        <view class="info-row" wx:if="{{item.selectedTime}}">
+          <text class="label">预约时间</text>
+          <text class="value">{{item.selectedTime}}</text>
+        </view>
+        
+        <!-- 图片预览 -->
+        <view class="media-preview" wx:if="{{item.mediaList && item.mediaList.length > 0}}">
+          <image 
+            class="preview-img" 
+            wx:for="{{item.mediaList}}" 
+            wx:for-item="media" 
+            wx:key="fileID" 
+            src="{{media.fileID}}" 
+            mode="aspectFill"
+          ></image>
+        </view>
+      </view>
+      
+      <!-- 管理员回复 -->
+      <view class="reply-section" wx:if="{{item.adminReply}}">
+        <view class="reply-label">
+          <text class="reply-icon">💬</text>
+          <text>平台回复</text>
+        </view>
+        <view class="reply-content">{{item.adminReply}}</view>
+      </view>
+      
+      <view class="card-footer">
+        <text class="create-time">提交时间：{{item.createTimeText}}</text>
+        <view class="actions" wx:if="{{item.status === 'pending'}}">
+          <button class="btn-cancel" data-id="{{item._id}}" catchtap="cancelDemand">取消预约</button>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{demandList.length === 0 && !loading}}">
+      <image class="empty-icon" src="/images/icons/empty.png" mode="aspectFit"></image>
+      <text class="empty-text">暂无预约记录</text>
+      <navigator url="/pages/publish/index" class="btn-publish">去发布需求</navigator>
+    </view>
+
+    <!-- 加载状态 -->
+    <view class="loading-more" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+    
+    <!-- 没有更多 -->
+    <view class="no-more" wx:if="{{!hasMore && demandList.length > 0}}">
+      <text>— 没有更多了 —</text>
+    </view>
+  </view>
+</view>

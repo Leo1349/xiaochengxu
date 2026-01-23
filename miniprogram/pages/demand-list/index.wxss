@@ -1,0 +1,259 @@
+/* pages/demand-list/index.wxss */
+/* 我的预约列表页面样式 - 柔和精致风格 */
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF9F5 40%, #FFE8E4 100%);
+  padding-bottom: 40rpx;
+}
+
+/* ==================== Tab 切换 ==================== */
+
+.tabs {
+  display: flex;
+  background-color: #FFFFFF;
+  padding: 16rpx 24rpx;
+  border-bottom: 1rpx solid #F0EDEA;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.tab-item {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16rpx 0;
+  font-size: 26rpx;
+  color: #7A7673;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.tab-item.active {
+  color: #FF8066;
+  font-weight: 600;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40rpx;
+  height: 4rpx;
+  background: linear-gradient(135deg, #FF8066 0%, #FFAB91 100%);
+  border-radius: 2rpx;
+}
+
+/* ==================== 预约列表 ==================== */
+
+.demand-list {
+  padding: 24rpx;
+}
+
+.demand-card {
+  background-color: #FFFFFF;
+  border-radius: 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 8rpx 32rpx rgba(61, 58, 56, 0.06);
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 28rpx;
+  border-bottom: 1rpx solid #F0EDEA;
+}
+
+.service-type {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #3D3A38;
+}
+
+.status {
+  font-size: 24rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  font-weight: 500;
+}
+
+.status-pending {
+  background-color: #FFF3E0;
+  color: #FF9800;
+}
+
+.status-matched {
+  background-color: #E3F2FD;
+  color: #2196F3;
+}
+
+.status-completed {
+  background-color: #E8F5E9;
+  color: #4CAF50;
+}
+
+.status-cancelled {
+  background-color: #F5F5F5;
+  color: #9E9E9E;
+}
+
+.card-body {
+  padding: 24rpx 28rpx;
+}
+
+.info-row {
+  display: flex;
+  margin-bottom: 16rpx;
+}
+
+.info-row:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  font-size: 26rpx;
+  color: #9E9B98;
+  width: 140rpx;
+  flex-shrink: 0;
+}
+
+.value {
+  font-size: 26rpx;
+  color: #3D3A38;
+  flex: 1;
+}
+
+.content-preview {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 图片预览 */
+.media-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-top: 16rpx;
+}
+
+.preview-img {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  object-fit: cover;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 28rpx;
+  background-color: #FAFAFA;
+}
+
+.create-time {
+  font-size: 24rpx;
+  color: #9E9B98;
+}
+
+.actions {
+  display: flex;
+  gap: 16rpx;
+}
+
+.btn-cancel {
+  font-size: 24rpx;
+  color: #9E9B98;
+  background: transparent;
+  border: 1rpx solid #E0E0E0;
+  border-radius: 32rpx;
+  padding: 8rpx 24rpx;
+  line-height: 1.5;
+}
+
+.btn-cancel::after {
+  border: none;
+}
+
+/* ==================== 回复区域 ==================== */
+
+.reply-section {
+  margin: 0 28rpx 16rpx;
+  padding: 20rpx;
+  background: linear-gradient(135deg, #E3F2FD 0%, #E8EAF6 100%);
+  border-radius: 16rpx;
+  border-left: 6rpx solid #2196F3;
+}
+
+.reply-label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+  font-size: 24rpx;
+  color: #1976D2;
+  font-weight: 600;
+}
+
+.reply-icon {
+  margin-right: 8rpx;
+}
+
+.reply-content {
+  font-size: 26rpx;
+  color: #3D3A38;
+  line-height: 1.6;
+}
+
+/* ==================== 空状态 ==================== */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 0;
+}
+
+.empty-icon {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 32rpx;
+  opacity: 0.6;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #9E9B98;
+  margin-bottom: 32rpx;
+}
+
+.btn-publish {
+  font-size: 28rpx;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #FF8066 0%, #FFAB91 100%);
+  border-radius: 40rpx;
+  padding: 16rpx 48rpx;
+  box-shadow: 0 8rpx 24rpx rgba(255, 128, 102, 0.3);
+}
+
+/* ==================== 加载状态 ==================== */
+
+.loading-more,
+.no-more {
+  text-align: center;
+  padding: 32rpx 0;
+}
+
+.loading-more text,
+.no-more text {
+  font-size: 24rpx;
+  color: #9E9B98;
+}

@@ -15,11 +15,13 @@ Page({
 
         // 服务地址
         address: '',
+        addressInputMode: false, // false: 选择模式, true: 输入模式
 
         // 服务时间
         timeArray: [[], []],
         timeIndex: [0, 0],
         selectedTime: '',
+        timeInputMode: false, // false: 选择模式, true: 输入模式
 
         // 其他表单数据
         formData: {
@@ -126,7 +128,6 @@ Page({
             },
             fail: (err) => {
                 console.error('选择地址失败', err)
-                // 权限被拒绝或取消，提供备选输入方案或mock
                 if (err.errMsg.indexOf('auth') > -1) {
                     wx.showToast({
                         title: '请授权位置信息',
@@ -134,6 +135,35 @@ Page({
                     })
                 }
             }
+        })
+    },
+
+    // 切换地址输入模式
+    toggleAddressMode: function () {
+        this.setData({
+            addressInputMode: !this.data.addressInputMode
+        })
+    },
+
+    // 手动输入地址
+    onAddressInput: function (e) {
+        this.setData({
+            address: e.detail.value,
+            ['formData.address_detail']: e.detail.value
+        })
+    },
+
+    // 切换时间输入模式
+    toggleTimeMode: function () {
+        this.setData({
+            timeInputMode: !this.data.timeInputMode
+        })
+    },
+
+    // 手动输入时间
+    onTimeInput: function (e) {
+        this.setData({
+            selectedTime: e.detail.value
         })
     },
 
@@ -154,8 +184,53 @@ Page({
         // 暂时简化处理
     },
 
+    // 上传单个文件到云存储
+    uploadFileToCloud: function (filePath) {
+        return new Promise((resolve, reject) => {
+            // 生成唯一文件名
+            const timestamp = Date.now()
+            const random = Math.random().toString(36).substr(2, 8)
+            const ext = filePath.split('.').pop() || 'jpg'
+            const cloudPath = `demands/${timestamp}_${random}.${ext}`
+
+            wx.cloud.uploadFile({
+                cloudPath: cloudPath,
+                filePath: filePath,
+                success: (res) => {
+                    resolve(res.fileID)
+                },
+                fail: (err) => {
+                    console.error('上传文件失败', err)
+                    reject(err)
+                }
+            })
+        })
+    },
+
+    // 批量上传文件
+    uploadAllFiles: async function (mediaList) {
+        if (!mediaList || mediaList.length === 0) {
+            return []
+        }
+
+        const uploadedList = []
+        for (const item of mediaList) {
+            try {
+                const fileID = await this.uploadFileToCloud(item.url)
+                uploadedList.push({
+                    fileID: fileID,
+                    type: item.type
+                })
+            } catch (err) {
+                console.error('上传失败，跳过该文件', err)
+                // 继续上传其他文件
+            }
+        }
+        return uploadedList
+    },
+
     // 提交表单
-    submitForm: function (e) {
+    submitForm: async function (e) {
         const values = e.detail.value
 
         // 校验必填项
@@ -168,22 +243,32 @@ Page({
             return
         }
 
-        // 提交到 demands 集合
         wx.showLoading({ title: '提交中...' })
 
-        const db = wx.cloud.database()
-        db.collection('demands').add({
-            data: {
-                ...this.data.formData,
-                serviceType: this.data.serviceOptions[this.data.serviceIndex],
-                content: this.data.content,
-                mediaList: this.data.mediaList,
-                address: this.data.address,
-                selectedTime: this.data.selectedTime,
-                createTime: db.serverDate(),
-                status: 'pending' // 待处理
+        try {
+            // NOTE: 先上传图片/视频到云存储，获取云文件ID后再保存到数据库
+            let uploadedMedia = []
+            if (this.data.mediaList.length > 0) {
+                wx.showLoading({ title: '上传图片中...' })
+                uploadedMedia = await this.uploadAllFiles(this.data.mediaList)
             }
-        }).then(res => {
+
+            // 提交到 demands 集合
+            wx.showLoading({ title: '保存中...' })
+            const db = wx.cloud.database()
+            await db.collection('demands').add({
+                data: {
+                    ...this.data.formData,
+                    serviceType: this.data.serviceOptions[this.data.serviceIndex],
+                    content: this.data.content,
+                    mediaList: uploadedMedia, // 使用云存储文件ID
+                    address: this.data.address,
+                    selectedTime: this.data.selectedTime,
+                    createTime: db.serverDate(),
+                    status: 'pending' // 待处理
+                }
+            })
+
             wx.hideLoading()
             wx.showToast({
                 title: '预约申请已提交',
@@ -205,11 +290,11 @@ Page({
                 })
                 // 可选跳转到订单列表或需求列表
             }, 2000)
-        }).catch(err => {
+        } catch (err) {
             wx.hideLoading()
             console.error('提交失败', err)
             wx.showToast({ title: '提交失败，请重试', icon: 'none' })
-        })
+        }
     },
 
     showToast(msg) {
