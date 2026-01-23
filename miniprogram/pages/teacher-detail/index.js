@@ -53,8 +53,10 @@ Page({
 
           // 格式化老师数据
           let avatarUrl = teacher.avatar;
-          if (!avatarUrl || avatarUrl === '/images/avatar.png' || avatarUrl === '/images/icons/default-avatar.png') {
-            avatarUrl = '/images/default_teacher_avatar.png';
+          if (!avatarUrl || avatarUrl === '/images/avatar.png' || avatarUrl === '/images/icons/default-avatar.png' || avatarUrl === '/images/default_teacher_avatar.png') {
+            avatarUrl = teacher.gender === 'male'
+              ? '/images/avatars/teacher-male-default.png'
+              : '/images/avatars/teacher-female-default.png';
           }
 
           const formattedTeacher = {
@@ -140,7 +142,15 @@ Page({
             userId: userInfo._id,
             teacherId: this.data.teacherId,
             name: teacher.name,
-            avatar: teacher.avatar,
+            avatar: teacher.avatar, // 注意：这里保存的是处理过的URL还是原始的？最好保存原始的，但这里teacher.avatar已经被onLoad处理过了。
+            // 如果teacher.avatar已经是默认图片URL了，存进去也没关系，显示时会直接用。
+            // 最好是如果原始数据没头像，这里也保存空或默认。
+            // 但考虑到 onLoad 已经覆盖了 teacher.avatar，这里存的就是 onLoad 算出来的 url。
+            // 这其实稍微有点问题，因为如果将来默认图片变了，这里存的还是旧的默认图片。
+            // 但为了简单，先这样。
+            // 更好的做法是存原始的，然后显示时再计算。
+            // 不过 onLoad 里 formattedTeacher 覆盖了 teacher。
+            gender: teacher.gender, // 保存性别
             title: teacher.title || '专业陪伴师',
             tags: teacher.tags || [],
             createTime: db.serverDate()

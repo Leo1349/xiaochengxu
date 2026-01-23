@@ -102,7 +102,7 @@ Page({
           const formattedTeachers = recommendTeachers.map(item => {
             // 根据性别选择默认头像
             let avatarUrl = item.avatar;
-            if (!avatarUrl || avatarUrl === '/images/avatar.png' || avatarUrl === '/images/icons/default-avatar.png') {
+            if (!avatarUrl || avatarUrl === '/images/avatar.png' || avatarUrl === '/images/icons/default-avatar.png' || avatarUrl === '/images/default_teacher_avatar.png') {
               // 根据性别使用不同的默认头像
               avatarUrl = item.gender === 'male'
                 ? '/images/avatars/teacher-male-default.png'

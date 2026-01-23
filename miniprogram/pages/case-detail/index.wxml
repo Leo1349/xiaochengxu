@@ -95,10 +95,6 @@
         <text class="action-icon">{{isFavorite ? '★' : '☆'}}</text>
         <text>收藏</text>
       </view>
-      <button class="action-item share" open-type="share">
-        <text class="action-icon">↗</text>
-        <text>分享</text>
-      </button>
     </view>
     <button class="book-btn" bindtap="bookTeacher">预约该陪伴师</button>
   </view>

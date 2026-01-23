@@ -68,27 +68,37 @@ Page({
   loadCaseList: function () {
     this.setData({ loading: true })
 
-    const db = wx.cloud.database()
-    let query = {}
-    if (this.data.currentCategory !== 'all') {
-      query.category = this.data.currentCategory
-    }
+    wx.cloud.callFunction({
+      name: 'getCaseList',
+      data: {
+        category: this.data.currentCategory,
+        page: this.data.page,
+        pageSize: this.data.pageSize
+      }
+    }).then(res => {
+      if (res.result.success) {
+        const { list, hasMore } = res.result.data
 
-    db.collection('case').where(query)
-      .orderBy('createTime', 'desc')
-      .get()
-      .then(res => {
+        let newCaseList = list
+        if (this.data.page > 1) {
+          newCaseList = this.data.caseList.concat(list)
+        }
+
         this.setData({
-          caseList: res.data,
+          caseList: newCaseList,
           loading: false,
-          hasMore: false
+          hasMore: hasMore
         })
-      })
-      .catch(err => {
-        console.error('加载案例失败', err)
+      } else {
+        console.error('加载案例失败', res.result.error)
         this.setData({ loading: false })
-        wx.showToast({ title: '加载案例失败', icon: 'none' })
-      })
+        wx.showToast({ title: '加载失败', icon: 'none' })
+      }
+    }).catch(err => {
+      console.error('调用云函数失败', err)
+      this.setData({ loading: false })
+      wx.showToast({ title: '网络错误', icon: 'none' })
+    })
   },
 
   // 加载更多案例

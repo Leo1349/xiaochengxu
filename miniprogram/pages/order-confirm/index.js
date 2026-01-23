@@ -110,10 +110,18 @@ Page({
           const { teacher, services } = res.result.data
 
           // 设置老师信息
+          let avatarUrl = teacher.avatar;
+          if (!avatarUrl || avatarUrl === '/images/avatar.png' || avatarUrl === '/images/icons/default-avatar.png' || avatarUrl === '/images/default_teacher_avatar.png') {
+            avatarUrl = teacher.gender === 'male'
+              ? '/images/avatars/teacher-male-default.png'
+              : '/images/avatars/teacher-female-default.png';
+          }
+
           const teacherInfo = {
             id: teacher._id,
             name: teacher.name,
-            avatar: teacher.avatar || '/images/avatar.png',
+            avatar: avatarUrl,
+            gender: teacher.gender,
             title: teacher.title || '专业陪伴师',
             rating: teacher.rating || 5.0
           }
@@ -333,6 +341,7 @@ Page({
       teacherId: this.data.teacherId,
       teacherName: this.data.teacher ? this.data.teacher.name : '',
       teacherAvatar: this.data.teacher ? this.data.teacher.avatar : '',
+      teacherGender: this.data.teacher ? this.data.teacher.gender : '', // Add gender
       serviceId: this.data.selectedService.id,
       serviceName: this.data.selectedService.name,
       childId: this.data.selectedChild.id,

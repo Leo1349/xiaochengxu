@@ -300,7 +300,8 @@
 .menu-icon {
   width: 72rpx;
   height: 72rpx;
-  margin-right: 24rpx;
+  margin-left: 8rpx;
+  margin-right: 32rpx;
   border-radius: 50%;
   overflow: hidden;
 }
@@ -309,6 +310,16 @@
 .menu-icon-orders {
   width: 88rpx;
   height: 88rpx;
+  margin-left: 0;
+  margin-right: 24rpx;
+}
+
+/* 我的收藏图标单独调整 */
+.menu-icon-favorites {
+  width: 69rpx;
+  height: 69rpx;
+  margin-left: 9.5rpx;
+  margin-right: 33.5rpx;
 }
 
 .menu-name {

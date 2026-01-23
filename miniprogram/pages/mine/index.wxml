@@ -48,7 +48,7 @@
       <view class="group-title">{{item.title}}</view>
       <view class="menu-list">
         <view class="menu-item" wx:for="{{item.items}}" wx:for-item="menu" wx:key="id" data-url="{{menu.url}}" bindtap="goToPage">
-          <image class="menu-icon {{menu.id === 'orders' ? 'menu-icon-orders' : ''}}" src="{{menu.icon}}" mode="aspectFit"></image>
+          <image class="menu-icon menu-icon-{{menu.id}}" src="{{menu.icon}}" mode="aspectFit"></image>
           <text class="menu-name">{{menu.name}}</text>
           <text class="arrow-icon">›</text>
         </view>

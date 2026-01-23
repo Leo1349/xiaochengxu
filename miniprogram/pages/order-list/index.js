@@ -101,30 +101,43 @@ Page({
           const { list, hasMore } = res.result.data
 
           // 格式化订单数据
-          const formattedList = list.map(item => ({
-            id: item.orderNo, // 显示用订单号
-            _id: item._id, // 数据库ID
-            status: item.status,
-            statusText: this.getStatusText(item.status),
-            teacher: {
-              id: item.teacherId,
-              name: item.teacherName,
-              avatar: item.teacherAvatar || '/images/avatar.png'
-            },
-            child: {
-              name: item.childName,
-              // age: 8 // 暂时没有年龄数据
-            },
-            service: {
-              name: item.serviceName,
-              price: item.finalPrice // 显示最终价格
-            },
-            serviceDate: item.serviceDate,
-            serviceTime: item.serviceTime,
-            duration: item.serviceDuration,
-            totalPrice: item.finalPrice,
-            createTime: this.formatTime(new Date(item.createTime))
-          }))
+          const formattedList = list.map(item => {
+            let avatarUrl = item.teacherAvatar;
+            if (!avatarUrl || avatarUrl === '/images/avatar.png' || avatarUrl === '/images/icons/default-avatar.png' || avatarUrl === '/images/default_teacher_avatar.png') {
+              if (item.teacherGender) {
+                avatarUrl = item.teacherGender === 'male'
+                  ? '/images/avatars/teacher-male-default.png'
+                  : '/images/avatars/teacher-female-default.png';
+              } else {
+                avatarUrl = '/images/default_teacher_avatar.png';
+              }
+            }
+
+            return {
+              id: item.orderNo, // 显示用订单号
+              _id: item._id, // 数据库ID
+              status: item.status,
+              statusText: this.getStatusText(item.status),
+              teacher: {
+                id: item.teacherId,
+                name: item.teacherName,
+                avatar: avatarUrl
+              },
+              child: {
+                name: item.childName,
+                // age: 8 // 暂时没有年龄数据
+              },
+              service: {
+                name: item.serviceName,
+                price: item.finalPrice // 显示最终价格
+              },
+              serviceDate: item.serviceDate,
+              serviceTime: item.serviceTime,
+              duration: item.serviceDuration,
+              totalPrice: item.finalPrice,
+              createTime: this.formatTime(new Date(item.createTime))
+            }
+          })
 
           this.setData({
             orderList: this.data.page === 1 ? formattedList : this.data.orderList.concat(formattedList),

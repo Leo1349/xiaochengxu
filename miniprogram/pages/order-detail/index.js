@@ -76,6 +76,17 @@ Page({
       }
 
       // 格式化订单数据
+      let avatarUrl = orderData.teacherAvatar;
+      if (!avatarUrl || avatarUrl === '/images/avatar.png' || avatarUrl === '/images/icons/default-avatar.png' || avatarUrl === '/images/default_teacher_avatar.png') {
+        if (orderData.teacherGender) {
+          avatarUrl = orderData.teacherGender === 'male'
+            ? '/images/avatars/teacher-male-default.png'
+            : '/images/avatars/teacher-female-default.png';
+        } else {
+          avatarUrl = '/images/default_teacher_avatar.png';
+        }
+      }
+
       const order = {
         id: orderData._id,
         orderNo: orderData.orderNo,
@@ -84,7 +95,7 @@ Page({
         teacher: {
           id: orderData.teacherId,
           name: orderData.teacherName,
-          avatar: orderData.teacherAvatar || '/images/avatar.png',
+          avatar: avatarUrl,
           title: '专业陪伴师'
         },
         child: {

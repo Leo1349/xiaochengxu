@@ -6,11 +6,12 @@ const db = cloud.database()
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   const openid = wxContext.OPENID
-  
+
   const {
     teacherId,
     teacherName,
     teacherAvatar,
+    teacherGender, // Add gender
     serviceId,
     serviceName,
     childId,
@@ -30,16 +31,17 @@ exports.main = async (event, context) => {
     try { await db.createCollection('orders') } catch (e) { }
 
     const ordersCollection = db.collection('orders')
-    
+
     // 生成订单号
     const orderNo = 'ORD' + Date.now() + Math.floor(Math.random() * 1000)
-    
+
     const orderData = {
       _openid: openid,
       orderNo: orderNo,
       teacherId,
       teacherName,
       teacherAvatar,
+      teacherGender, // Save gender
       serviceId,
       serviceName,
       childId,

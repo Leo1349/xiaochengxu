@@ -33,16 +33,26 @@ Page({
   loadCaseDetail: function (id) {
     this.setData({ loading: true })
 
-    const db = wx.cloud.database()
-    db.collection('case').doc(id).get().then(res => {
-      this.setData({
-        caseInfo: res.data,
-        loading: false
-      })
+    wx.cloud.callFunction({
+      name: 'getCaseDetail',
+      data: {
+        id: id
+      }
+    }).then(res => {
+      if (res.result.success) {
+        this.setData({
+          caseInfo: res.result.data,
+          loading: false
+        })
+      } else {
+        console.error('获取案例详情失败', res.result.error)
+        this.setData({ loading: false })
+        wx.showToast({ title: '加载失败', icon: 'none' })
+      }
     }).catch(err => {
-      console.error('获取案例详情失败', err)
+      console.error('调用云函数失败', err)
       this.setData({ loading: false })
-      wx.showToast({ title: '加载失败', icon: 'none' })
+      wx.showToast({ title: '网络错误', icon: 'none' })
     })
   },
 
@@ -195,11 +205,4 @@ Page({
   },
 
   // 分享
-  onShareAppMessage: function () {
-    return {
-      title: this.data.caseInfo ? this.data.caseInfo.title : '智伴优程成功案例',
-      path: '/pages/case-detail/index?id=' + this.data.caseId,
-      imageUrl: this.data.caseInfo ? this.data.caseInfo.cover : ''
-    }
-  }
 })

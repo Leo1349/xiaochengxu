@@ -202,18 +202,27 @@ Page({
       { tags: db.RegExp({ regexp: keyword, options: 'i' }) },
       { title: db.RegExp({ regexp: keyword, options: 'i' }) }
     ])).get().then(res => {
-      const results = res.data.map(item => ({
-        id: item._id,
-        name: item.name,
-        avatar: item.avatar || '/images/default_teacher_avatar.png',
-        title: item.title,
-        rating: item.rating || 5.0,
-        orders: item.orderCount || 0,
-        price: item.price,
-        priceUnit: item.priceUnit || '小时',
-        tags: item.tags || [],
-        distance: '未知'
-      }))
+      const results = res.data.map(item => {
+        let avatarUrl = item.avatar;
+        if (!avatarUrl || avatarUrl === '/images/avatar.png' || avatarUrl === '/images/icons/default-avatar.png' || avatarUrl === '/images/default_teacher_avatar.png') {
+          avatarUrl = item.gender === 'male'
+            ? '/images/avatars/teacher-male-default.png'
+            : '/images/avatars/teacher-female-default.png';
+        }
+
+        return {
+          id: item._id,
+          name: item.name,
+          avatar: avatarUrl,
+          title: item.title,
+          rating: item.rating || 5.0,
+          orders: item.orderCount || 0,
+          price: item.price,
+          priceUnit: item.priceUnit || '小时',
+          tags: item.tags || [],
+          distance: '未知'
+        }
+      })
 
       this.setData({
         resultList: results,
