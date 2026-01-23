@@ -29,7 +29,8 @@ exports.main = async (event, context) => {
         // 获取临时链接
         if (fileIds.length > 0) {
             const tempUrlResult = await cloud.getTempFileURL({
-                fileList: fileIds
+                fileList: fileIds,
+                maxAge: 60 * 60 * 24 // 1天有效期
             })
 
             const urlMap = {}

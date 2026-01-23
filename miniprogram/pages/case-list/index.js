@@ -76,8 +76,14 @@ Page({
         pageSize: this.data.pageSize
       }
     }).then(res => {
+      console.log('云函数返回结果:', JSON.stringify(res.result, null, 2))
       if (res.result.success) {
         const { list, hasMore } = res.result.data
+        console.log('案例列表数据:', JSON.stringify(list, null, 2))
+        // 检查第一条数据的封面
+        if (list && list.length > 0) {
+          console.log('第一条案例封面 URL:', list[0].cover)
+        }
 
         let newCaseList = list
         if (this.data.page > 1) {

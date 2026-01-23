@@ -233,10 +233,48 @@ async function handleGetTeachers(data) {
             .get()
     ])
 
+    let teacherList = listRes.data
+
+    // 收集所有需要转换的 cloud:// 头像链接
+    const fileIdsToRefresh = teacherList
+        .map(item => item.avatar)
+        .filter(avatar => avatar && avatar.startsWith('cloud://'))
+
+    // 去重并批量获取临时链接
+    const uniqueFileIds = [...new Set(fileIdsToRefresh)]
+    if (uniqueFileIds.length > 0) {
+        try {
+            const refreshRes = await cloud.getTempFileURL({
+                fileList: uniqueFileIds
+            })
+
+            if (refreshRes.fileList) {
+                // 构建 fileId -> 新 URL 映射
+                const urlMap = new Map()
+                refreshRes.fileList.forEach(file => {
+                    if (file.tempFileURL && file.status === 0) {
+                        urlMap.set(file.fileID, file.tempFileURL)
+                    }
+                })
+
+                // 更新老师列表中的头像链接
+                teacherList = teacherList.map(item => {
+                    if (item.avatar && item.avatar.startsWith('cloud://') && urlMap.has(item.avatar)) {
+                        return { ...item, avatar: urlMap.get(item.avatar) }
+                    }
+                    return item
+                })
+            }
+        } catch (err) {
+            console.warn('刷新老师头像链接失败:', err.message)
+            // 刷新失败不影响返回原数据
+        }
+    }
+
     return {
         success: true,
         data: {
-            list: listRes.data,
+            list: teacherList,
             total: countRes.total,
             page,
             pageSize
@@ -568,10 +606,74 @@ async function handleGetCases(data) {
                 .get()
         ])
 
+        let caseList = listRes.data
+
+        // 收集所有需要转换的 cloud:// 图片链接
+        const fileIdsToRefresh = []
+        caseList.forEach(item => {
+            // 检查封面
+            if (item.cover && item.cover.startsWith('cloud://')) {
+                fileIdsToRefresh.push(item.cover)
+            }
+            // 检查相册图片
+            if (item.images && Array.isArray(item.images)) {
+                item.images.forEach(img => {
+                    if (img && img.startsWith('cloud://')) {
+                        fileIdsToRefresh.push(img)
+                    }
+                })
+            }
+        })
+
+        // 去重并批量获取临时链接
+        const uniqueFileIds = [...new Set(fileIdsToRefresh)]
+        if (uniqueFileIds.length > 0) {
+            try {
+                const refreshRes = await cloud.getTempFileURL({
+                    fileList: uniqueFileIds
+                })
+
+                if (refreshRes.fileList) {
+                    // 构建 fileId -> 新 URL 映射
+                    const urlMap = new Map()
+                    refreshRes.fileList.forEach(file => {
+                        if (file.tempFileURL && file.status === 0) {
+                            urlMap.set(file.fileID, file.tempFileURL)
+                        }
+                    })
+
+                    // 更新案例列表中的图片链接
+                    caseList = caseList.map(item => {
+                        const newItem = { ...item }
+
+                        // 替换封面
+                        if (newItem.cover && newItem.cover.startsWith('cloud://') && urlMap.has(newItem.cover)) {
+                            newItem.cover = urlMap.get(newItem.cover)
+                        }
+
+                        // 替换相册图片
+                        if (newItem.images && Array.isArray(newItem.images)) {
+                            newItem.images = newItem.images.map(img => {
+                                if (img && img.startsWith('cloud://') && urlMap.has(img)) {
+                                    return urlMap.get(img)
+                                }
+                                return img
+                            })
+                        }
+
+                        return newItem
+                    })
+                }
+            } catch (err) {
+                console.warn('刷新云存储链接失败:', err.message)
+                // 刷新失败不影响返回原数据
+            }
+        }
+
         return {
             success: true,
             data: {
-                list: listRes.data,
+                list: caseList,
                 total: countRes.total,
                 page,
                 pageSize

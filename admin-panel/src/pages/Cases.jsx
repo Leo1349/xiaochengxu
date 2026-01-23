@@ -206,10 +206,33 @@ const Cases = () => {
             setSubmitting(true)
 
             // 准备提交的数据
+            // NOTE: 优先存储 fileId (cloud:// 格式)，这样云函数可以动态生成临时链接，避免链接过期
+            const getCoverValue = () => {
+                const cover = coverList[0]
+                if (!cover) return ''
+                // 新上传的图片从 response 中获取 fileId
+                if (cover.response?.fileId) return cover.response.fileId
+                // 已有的图片，如果 url 是 cloud:// 格式则直接使用，否则保持原样
+                if (cover.url?.startsWith('cloud://')) return cover.url
+                // 兼容旧数据：如果只有 https 链接，暂时保留
+                return cover.url || ''
+            }
+
+            const getImagesValue = () => {
+                return fileList.map(f => {
+                    // 新上传的图片从 response 中获取 fileId
+                    if (f.response?.fileId) return f.response.fileId
+                    // 已有的图片，如果 url 是 cloud:// 格式则直接使用
+                    if (f.url?.startsWith('cloud://')) return f.url
+                    // 兼容旧数据
+                    return f.url || ''
+                }).filter(url => url)
+            }
+
             const submitData = {
                 ...values,
-                cover: coverList[0]?.url || (coverList[0]?.response ? coverList[0].response.url : ''),
-                images: fileList.map(f => f.url || (f.response ? f.response.url : '')).filter(url => url)
+                cover: getCoverValue(),
+                images: getImagesValue()
             }
 
             // 补充关联信息

@@ -316,10 +316,10 @@
 
 /* 我的收藏图标单独调整 */
 .menu-icon-favorites {
-  width: 69rpx;
-  height: 69rpx;
-  margin-left: 9.5rpx;
-  margin-right: 33.5rpx;
+  width: 77rpx;
+  height: 77rpx;
+  margin-left: 7rpx;
+  margin-right: 31rpx;
 }
 
 .menu-name {
