@@ -15,7 +15,7 @@
 
   <!-- 案例列表 -->
   <view class="case-list">
-    <view class="case-card" wx:for="{{caseList}}" wx:key="id" data-id="{{item.id}}" bindtap="viewCaseDetail">
+    <view class="case-card" wx:for="{{caseList}}" wx:key="_id" data-id="{{item._id}}" bindtap="viewCaseDetail">
       <image class="case-cover" src="{{item.cover}}" mode="aspectFill"></image>
       <view class="case-content">
         <text class="case-title">{{item.title}}</text>
@@ -25,17 +25,6 @@
           <view class="teacher-info" data-teacherid="{{item.teacher.id}}" catchtap="viewTeacherDetail">
             <image class="teacher-avatar" src="{{item.teacher.avatar}}" mode="aspectFill"></image>
             <text class="teacher-name">{{item.teacher.name}}</text>
-          </view>
-          
-          <view class="case-stats">
-            <view class="stat-item">
-              <text class="stat-icon">浏览</text>
-              <text class="stat-value">{{item.viewCount}}</text>
-            </view>
-            <view class="stat-item">
-              <text class="stat-icon">点赞</text>
-              <text class="stat-value">{{item.likeCount}}</text>
-            </view>
           </view>
         </view>
       </view>

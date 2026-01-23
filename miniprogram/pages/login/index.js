@@ -168,30 +168,16 @@ Page({
 
     this.setData({ loading: true })
 
-    // 模拟登录
+    this.setData({ loading: true })
+
+    // 暂未对接短信验证码服务
     setTimeout(() => {
-      const userInfo = {
-        id: 1,
-        phone: phone,
-        nickName: '智伴用户',
-        avatarUrl: '/images/avatar.png',
-        currentRole: 'parent'
-      }
-
-      wx.setStorageSync('token', 'mock_token_' + Date.now())
-      wx.setStorageSync('userInfo', userInfo)
-
       this.setData({ loading: false })
-
       wx.showToast({
-        title: '登录成功',
-        icon: 'success'
+        title: '演示环境，请使用微信一键登录',
+        icon: 'none'
       })
-
-      setTimeout(() => {
-        wx.navigateBack()
-      }, 1500)
-    }, 1000)
+    }, 500)
   },
 
   // 微信一键登录

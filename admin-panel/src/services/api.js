@@ -95,6 +95,12 @@ export const api = {
     getFeedbacks: (params) => callCloudFunction('getFeedbacks', params),
     updateFeedbackStatus: (_id, status) => callCloudFunction('updateFeedbackStatus', { _id, status }),
 
+    // 案例管理
+    getCases: (params) => callCloudFunction('getCases', params),
+    addCase: (data) => callCloudFunction('addCase', data),
+    updateCase: (data) => callCloudFunction('updateCase', data),
+    deleteCase: (_id) => callCloudFunction('deleteCase', { _id }),
+
     // 图片上传
     uploadImage: async (file) => {
         const formData = new FormData()
@@ -251,6 +257,10 @@ function getMockData(type, data) {
         case 'deleteBanner':
         case 'updateOrderStatus':
         case 'updateFeedbackStatus':
+        // 案例管理
+        case 'addCase':
+        case 'updateCase':
+        case 'deleteCase':
             return { success: true }
 
         default:

@@ -86,73 +86,35 @@ Page({
   loadMessages: function () {
     this.setData({ loading: true })
 
-    // 模拟数据
-    const mockMessages = [
-      {
-        id: 1,
-        type: 'system',
-        title: '系统通知',
-        content: '欢迎使用智伴优程平台，祝您使用愉快！',
-        time: '2026-01-01 10:00',
-        isRead: false,
-        icon: '/images/message/msg-system.png'
+    wx.cloud.callFunction({
+      name: 'getMessageList',
+      data: {
+        page: this.data.page,
+        pageSize: this.data.pageSize,
+        type: this.data.currentTab
       },
-      {
-        id: 2,
-        type: 'order',
-        title: '订单提醒',
-        content: '您的订单已被陪伴师接单，请注意查看详情',
-        time: '2026-01-01 09:30',
-        isRead: false,
-        orderId: '20260101001',
-        icon: '/images/message/msg-order.png'
-      },
-      {
-        id: 3,
-        type: 'chat',
-        title: '张老师',
-        content: '您好，我已经确认了服务时间，明天下午3点开始',
-        time: '2026-01-01 09:00',
-        isRead: true,
-        avatar: '/images/avatar.png',
-        teacherId: 1
-      },
-      {
-        id: 4,
-        type: 'system',
-        title: '活动通知',
-        content: '新用户专享：首单立减50元，快来体验吧！',
-        time: '2025-12-31 18:00',
-        isRead: true,
-        icon: '/images/message/msg-activity.png'
-      },
-      {
-        id: 5,
-        type: 'order',
-        title: '服务完成',
-        content: '您的订单服务已完成，请对陪伴师进行评价',
-        time: '2025-12-30 17:00',
-        isRead: true,
-        orderId: '20251230001',
-        icon: '/images/message/msg-service.png'
-      }
-    ]
+      success: res => {
+        if (res.result.success) {
+          const { list, unreadCount, hasMore } = res.result.data
 
-    setTimeout(() => {
-      // 计算未读数
-      const unreadCount = {
-        all: mockMessages.filter(m => !m.isRead).length,
-        system: mockMessages.filter(m => m.type === 'system' && !m.isRead).length,
-        order: mockMessages.filter(m => m.type === 'order' && !m.isRead).length,
-        chat: mockMessages.filter(m => m.type === 'chat' && !m.isRead).length
+          this.setData({
+            messageList: this.data.page === 1 ? list : this.data.messageList.concat(list),
+            unreadCount: unreadCount,
+            loading: false,
+            hasMore: hasMore
+          })
+        } else {
+          console.error('加载消息失败', res.result.error)
+          this.setData({ loading: false })
+          wx.showToast({ title: '加载消息失败', icon: 'none' })
+        }
+      },
+      fail: err => {
+        console.error('调用云函数失败', err)
+        this.setData({ loading: false })
+        wx.showToast({ title: '网络错误', icon: 'none' })
       }
-
-      this.setData({
-        messageList: mockMessages,
-        unreadCount: unreadCount,
-        loading: false
-      })
-    }, 500)
+    })
   },
 
   // 加载更多消息
@@ -221,47 +183,38 @@ Page({
 
   // 标记消息为已读
   markAsRead: function (messageId) {
-    const messageList = this.data.messageList.map(m => {
-      if (m.id === messageId) {
-        m.isRead = true
+    wx.cloud.callFunction({
+      name: 'markMessageRead',
+      data: { messageId: messageId },
+      success: res => {
+        if (res.result.success) {
+          // 更新本地状态
+          const messageList = this.data.messageList.map(m => {
+            if (m.id === messageId) m.isRead = true
+            return m
+          })
+          this.setData({ messageList })
+          // 重新加载以更新未读数
+          this.loadMessages()
+        }
       }
-      return m
-    })
-
-    // 重新计算未读数
-    const unreadCount = {
-      all: messageList.filter(m => !m.isRead).length,
-      system: messageList.filter(m => m.type === 'system' && !m.isRead).length,
-      order: messageList.filter(m => m.type === 'order' && !m.isRead).length,
-      chat: messageList.filter(m => m.type === 'chat' && !m.isRead).length
-    }
-
-    this.setData({
-      messageList: messageList,
-      unreadCount: unreadCount
     })
   },
 
   // 全部标记为已读
   markAllAsRead: function () {
-    const messageList = this.data.messageList.map(m => {
-      m.isRead = true
-      return m
-    })
-
-    this.setData({
-      messageList: messageList,
-      unreadCount: {
-        all: 0,
-        system: 0,
-        order: 0,
-        chat: 0
+    wx.cloud.callFunction({
+      name: 'markMessageRead',
+      data: { markAll: true, type: this.data.currentTab },
+      success: res => {
+        if (res.result.success) {
+          wx.showToast({ title: '已全部已读', icon: 'success' })
+          this.loadMessages()
+        }
+      },
+      fail: err => {
+        wx.showToast({ title: '操作失败', icon: 'none' })
       }
-    })
-
-    wx.showToast({
-      title: '已全部标记为已读',
-      icon: 'success'
     })
   },
 
@@ -270,19 +223,8 @@ Page({
     const id = e.currentTarget.dataset.id
     wx.showModal({
       title: '提示',
-      content: '确定删除这条消息吗？',
-      success: (res) => {
-        if (res.confirm) {
-          const messageList = this.data.messageList.filter(m => m.id !== id)
-          this.setData({
-            messageList: messageList
-          })
-          wx.showToast({
-            title: '删除成功',
-            icon: 'success'
-          })
-        }
-      }
+      content: '暂不支持删除消息',
+      showCancel: false
     })
   }
 })

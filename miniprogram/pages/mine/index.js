@@ -16,7 +16,7 @@ Page({
         items: [
           { id: 'orders', icon: '/images/mine_v3/order_all.png', name: '我的订单', url: '/pages/order-list/index' },
           { id: 'children', icon: '/images/mine_v3/menu_child.png', name: '孩子信息', url: '/pages/child-info/index' },
-          { id: 'cases', icon: '/images/mine_v3/menu_case.png', name: '成功案例', url: '/pages/case-list/index' }
+          { id: 'favorites', icon: '/images/mine_v3/menu_favorite.png', name: '我的收藏', url: '/pages/favorite/index' }
         ]
       },
       {

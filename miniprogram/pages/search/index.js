@@ -189,60 +189,42 @@ Page({
     this.setData({
       loading: true,
       showResult: true,
-      pageNum: 1
+      pageNum: 1,
+      resultList: []
     })
 
-    // 模拟搜索结果
-    setTimeout(() => {
-      const results = this.getMockResults(keyword)
+    const db = wx.cloud.database()
+    const _ = db.command
+
+    // 构建查询条件
+    db.collection('teachers').where(_.or([
+      { name: db.RegExp({ regexp: keyword, options: 'i' }) },
+      { tags: db.RegExp({ regexp: keyword, options: 'i' }) },
+      { title: db.RegExp({ regexp: keyword, options: 'i' }) }
+    ])).get().then(res => {
+      const results = res.data.map(item => ({
+        id: item._id,
+        name: item.name,
+        avatar: item.avatar || '/images/default_teacher_avatar.png',
+        title: item.title,
+        rating: item.rating || 5.0,
+        orders: item.orderCount || 0,
+        price: item.price,
+        priceUnit: item.priceUnit || '小时',
+        tags: item.tags || [],
+        distance: '未知'
+      }))
+
       this.setData({
         resultList: results,
         loading: false,
-        hasMore: results.length >= 10
+        hasMore: false
       })
-    }, 500)
-  },
-
-  // 获取模拟结果
-  getMockResults: function (keyword) {
-    return [
-      {
-        id: '1',
-        name: '王老师',
-        avatar: '/images/avatars/teacher-female-default.png',
-        title: '资深' + keyword + '老师',
-        rating: 4.9,
-        orders: 128,
-        price: 100,
-        priceUnit: '小时',
-        tags: ['耐心', '经验丰富', '好评如潮'],
-        distance: '2.5km'
-      },
-      {
-        id: '2',
-        name: '李老师',
-        avatar: '/images/avatars/teacher-female-default.png',
-        title: '专业' + keyword + '辅导',
-        rating: 4.8,
-        orders: 95,
-        price: 120,
-        priceUnit: '小时',
-        tags: ['认真负责', '方法独特'],
-        distance: '3.2km'
-      },
-      {
-        id: '3',
-        name: '张老师',
-        avatar: '/images/avatars/teacher-male-default.png',
-        title: keyword + '启蒙专家',
-        rating: 4.7,
-        orders: 76,
-        price: 80,
-        priceUnit: '小时',
-        tags: ['亲和力强', '善于引导'],
-        distance: '4.0km'
-      }
-    ]
+    }).catch(err => {
+      console.error('搜索失败', err)
+      this.setData({ loading: false })
+      wx.showToast({ title: '搜索失败', icon: 'none' })
+    })
   },
 
   // 加载更多

@@ -42,6 +42,11 @@ const menuItems = [
         label: '用户管理'
     },
     {
+        key: '/cases',
+        icon: <PictureOutlined />, // 暂用 PictureOutlined，或引入 ReadOutlined
+        label: '成功案例'
+    },
+    {
         key: '/feedbacks',
         icon: <MessageOutlined />,
         label: '反馈管理'

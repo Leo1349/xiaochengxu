@@ -130,58 +130,15 @@ Page({
           })
         } else {
           console.error('获取首页数据失败', res.result.error)
-          this.useMockData() // 降级使用模拟数据
+          wx.showToast({ title: '加载数据失败', icon: 'none' })
+          this.setData({ loading: false })
         }
       },
       fail: err => {
         console.error('调用云函数失败', err)
-        this.useMockData() // 降级使用模拟数据
+        wx.showToast({ title: '网络错误', icon: 'none' })
+        this.setData({ loading: false })
       }
-    })
-  },
-
-  // 降级使用模拟数据
-  useMockData: function () {
-    const mockTeachers = [
-      {
-        id: 1,
-        name: '张老师',
-        avatar: '/images/avatars/teacher-male-default.png',
-        title: '专业陪伴师',
-        rating: 4.9,
-        orderCount: 128,
-        tags: ['学科辅导', '耐心细致'],
-        price: 150,
-        introduction: '5年教育经验，擅长小学全科辅导'
-      },
-      {
-        id: 2,
-        name: '李老师',
-        avatar: '/images/avatars/teacher-female-default.png',
-        title: '金牌陪伴师',
-        rating: 5.0,
-        orderCount: 256,
-        tags: ['兴趣培养', '习惯养成'],
-        price: 200,
-        introduction: '专注儿童习惯养成，帮助孩子建立良好学习习惯'
-      },
-      {
-        id: 3,
-        name: '王老师',
-        avatar: '/images/avatars/teacher-female-default.png',
-        title: '高级陪伴师',
-        rating: 4.8,
-        orderCount: 89,
-        tags: ['心理疏导', '亲子沟通'],
-        price: 180,
-        priceUnit: '小时',
-        introduction: '心理学专业背景，善于与孩子沟通交流'
-      }
-    ]
-
-    this.setData({
-      teacherList: mockTeachers,
-      loading: false
     })
   },
 

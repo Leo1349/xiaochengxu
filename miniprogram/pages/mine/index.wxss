@@ -298,11 +298,17 @@
 }
 
 .menu-icon {
-  width: 88rpx;
-  height: 88rpx;
+  width: 72rpx;
+  height: 72rpx;
   margin-right: 24rpx;
   border-radius: 50%;
   overflow: hidden;
+}
+
+/* 我的订单图标稍微大一点 */
+.menu-icon-orders {
+  width: 88rpx;
+  height: 88rpx;
 }
 
 .menu-name {

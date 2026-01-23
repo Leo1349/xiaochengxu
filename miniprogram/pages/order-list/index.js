@@ -13,40 +13,40 @@ Page({
       { id: 'completed', name: '已完成' },
       { id: 'cancelled', name: '已取消' }
     ],
-    
+
     // 当前选中的tab
     currentTab: 'all',
-    
+
     // 订单列表
     orderList: [],
-    
+
     // 当前用户角色
     currentRole: 'parent', // parent: 家长, teacher: 陪伴师
-    
+
     // 分页
     page: 1,
     pageSize: 10,
     hasMore: true,
-    
+
     loading: false
   },
 
-  onLoad: function(options) {
+  onLoad: function (options) {
     if (options.status) {
       this.setData({
         currentTab: options.status
       })
     }
-    
+
     this.checkRole()
     this.loadOrderList()
   },
 
-  onShow: function() {
+  onShow: function () {
     this.checkRole()
   },
 
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
     this.setData({
       page: 1,
       hasMore: true,
@@ -56,14 +56,14 @@ Page({
     wx.stopPullDownRefresh()
   },
 
-  onReachBottom: function() {
+  onReachBottom: function () {
     if (this.data.hasMore && !this.data.loading) {
       this.loadMoreOrders()
     }
   },
 
   // 检查当前角色
-  checkRole: function() {
+  checkRole: function () {
     const userInfo = wx.getStorageSync('userInfo')
     if (userInfo) {
       this.setData({
@@ -73,7 +73,7 @@ Page({
   },
 
   // 切换Tab
-  switchTab: function(e) {
+  switchTab: function (e) {
     const tab = e.currentTarget.dataset.tab
     this.setData({
       currentTab: tab,
@@ -85,9 +85,9 @@ Page({
   },
 
   // 加载订单列表
-  loadOrderList: function() {
+  loadOrderList: function () {
     this.setData({ loading: true })
-    
+
     wx.cloud.callFunction({
       name: 'getOrderList',
       data: {
@@ -99,7 +99,7 @@ Page({
       success: res => {
         if (res.result.success) {
           const { list, hasMore } = res.result.data
-          
+
           // 格式化订单数据
           const formattedList = list.map(item => ({
             id: item.orderNo, // 显示用订单号
@@ -133,18 +133,20 @@ Page({
           })
         } else {
           console.error('获取订单列表失败', res.result.error)
-          this.useMockData()
+          wx.showToast({ title: '加载订单失败', icon: 'none' })
+          this.setData({ loading: false })
         }
       },
       fail: err => {
         console.error('调用云函数失败', err)
-        this.useMockData()
+        wx.showToast({ title: '网络错误', icon: 'none' })
+        this.setData({ loading: false })
       }
     })
   },
 
   // 格式化时间
-  formatTime: function(date) {
+  formatTime: function (date) {
     const year = date.getFullYear()
     const month = (date.getMonth() + 1).toString().padStart(2, '0')
     const day = date.getDate().toString().padStart(2, '0')
@@ -154,7 +156,7 @@ Page({
   },
 
   // 获取状态文本
-  getStatusText: function(status) {
+  getStatusText: function (status) {
     const map = {
       'pending': '待确认',
       'confirmed': '待服务',
@@ -165,121 +167,10 @@ Page({
     return map[status] || '未知状态'
   },
 
-  // 降级使用模拟数据
-  useMockData: function() {
-    // 模拟数据
-    const mockOrders = [
-      {
-        id: 'ORDER20260101001',
-        status: 'pending',
-        statusText: '待确认',
-        teacher: {
-          id: 1,
-          name: '张老师',
-          avatar: '/images/avatar.png'
-        },
-        child: {
-          name: '小明',
-          age: 8
-        },
-        service: {
-          name: '学科辅导',
-          price: 150
-        },
-        serviceDate: '2026-01-05',
-        serviceTime: '14:00',
-        duration: 2,
-        totalPrice: 300,
-        createTime: '2026-01-01 10:00'
-      },
-      {
-        id: 'ORDER20251230001',
-        status: 'confirmed',
-        statusText: '待服务',
-        teacher: {
-          id: 2,
-          name: '李老师',
-          avatar: '/images/avatar.png'
-        },
-        child: {
-          name: '小红',
-          age: 10
-        },
-        service: {
-          name: '作业陪伴',
-          price: 100
-        },
-        serviceDate: '2026-01-03',
-        serviceTime: '15:00',
-        duration: 3,
-        totalPrice: 300,
-        createTime: '2025-12-30 14:00'
-      },
-      {
-        id: 'ORDER20251228001',
-        status: 'completed',
-        statusText: '已完成',
-        teacher: {
-          id: 1,
-          name: '张老师',
-          avatar: '/images/avatar.png'
-        },
-        child: {
-          name: '小明',
-          age: 8
-        },
-        service: {
-          name: '学科辅导',
-          price: 150
-        },
-        serviceDate: '2025-12-28',
-        serviceTime: '14:00',
-        duration: 2,
-        totalPrice: 300,
-        createTime: '2025-12-25 09:00',
-        hasReviewed: false
-      },
-      {
-        id: 'ORDER20251225001',
-        status: 'cancelled',
-        statusText: '已取消',
-        teacher: {
-          id: 3,
-          name: '王老师',
-          avatar: '/images/avatar.png'
-        },
-        child: {
-          name: '小明',
-          age: 8
-        },
-        service: {
-          name: '兴趣培养',
-          price: 120
-        },
-        serviceDate: '2025-12-26',
-        serviceTime: '10:00',
-        duration: 2,
-        totalPrice: 240,
-        createTime: '2025-12-24 16:00',
-        cancelReason: '临时有事'
-      }
-    ]
-    
-    // 根据tab筛选
-    let filteredOrders = mockOrders
-    if (this.data.currentTab !== 'all') {
-      filteredOrders = mockOrders.filter(o => o.status === this.data.currentTab)
-    }
-    
-    this.setData({
-      orderList: filteredOrders,
-      loading: false,
-      hasMore: false
-    })
-  },
+
 
   // 加载更多订单
-  loadMoreOrders: function() {
+  loadMoreOrders: function () {
     this.setData({
       page: this.data.page + 1
     })
@@ -290,7 +181,7 @@ Page({
   },
 
   // 查看订单详情
-  viewOrderDetail: function(e) {
+  viewOrderDetail: function (e) {
     const id = e.currentTarget.dataset.id
     wx.navigateTo({
       url: '/pages/order-detail/index?id=' + id
@@ -298,7 +189,7 @@ Page({
   },
 
   // 取消订单
-  cancelOrder: function(e) {
+  cancelOrder: function (e) {
     const id = e.currentTarget.dataset.id
     wx.showModal({
       title: '提示',
@@ -313,9 +204,9 @@ Page({
             }
             return o
           })
-          
+
           this.setData({ orderList })
-          
+
           wx.showToast({
             title: '订单已取消',
             icon: 'success'
@@ -326,7 +217,7 @@ Page({
   },
 
   // 确认订单（陪伴师）
-  confirmOrder: function(e) {
+  confirmOrder: function (e) {
     const id = e.currentTarget.dataset.id
     wx.showModal({
       title: '提示',
@@ -340,9 +231,9 @@ Page({
             }
             return o
           })
-          
+
           this.setData({ orderList })
-          
+
           wx.showToast({
             title: '已确认订单',
             icon: 'success'
@@ -353,7 +244,7 @@ Page({
   },
 
   // 开始服务
-  startService: function(e) {
+  startService: function (e) {
     const id = e.currentTarget.dataset.id
     const orderList = this.data.orderList.map(o => {
       if (o.id === id) {
@@ -362,9 +253,9 @@ Page({
       }
       return o
     })
-    
+
     this.setData({ orderList })
-    
+
     wx.showToast({
       title: '服务已开始',
       icon: 'success'
@@ -372,7 +263,7 @@ Page({
   },
 
   // 完成服务
-  completeService: function(e) {
+  completeService: function (e) {
     const id = e.currentTarget.dataset.id
     wx.showModal({
       title: '提示',
@@ -387,9 +278,9 @@ Page({
             }
             return o
           })
-          
+
           this.setData({ orderList })
-          
+
           wx.showToast({
             title: '服务已完成',
             icon: 'success'
@@ -400,7 +291,7 @@ Page({
   },
 
   // 去评价
-  goToReview: function(e) {
+  goToReview: function (e) {
     const id = e.currentTarget.dataset.id
     wx.navigateTo({
       url: '/pages/order-detail/index?id=' + id + '&action=review'
@@ -408,7 +299,7 @@ Page({
   },
 
   // 再次预约
-  reBook: function(e) {
+  reBook: function (e) {
     const orderId = e.currentTarget.dataset.id
     const order = this.data.orderList.find(o => o.id === orderId)
     if (!order || !order.teacher || !order.teacher.id) return
@@ -418,7 +309,7 @@ Page({
   },
 
   // 联系陪伴师/家长
-  contactUser: function(e) {
+  contactUser: function (e) {
     const id = e.currentTarget.dataset.id
     wx.navigateTo({
       url: '/pages/chat/index?orderId=' + id

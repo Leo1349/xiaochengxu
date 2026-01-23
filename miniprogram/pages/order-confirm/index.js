@@ -149,28 +149,33 @@ Page({
 
   // 加载孩子列表
   loadChildList: function () {
-    // 模拟数据
-    const mockChildren = [
-      { id: 1, name: '小明', age: 8, grade: '小学二年级', gender: '男' },
-      { id: 2, name: '小红', age: 10, grade: '小学四年级', gender: '女' }
-    ]
-
-    this.setData({
-      childList: mockChildren,
-      selectedChild: mockChildren.length > 0 ? mockChildren[0] : null
+    wx.cloud.callFunction({
+      name: 'manageChild',
+      data: { action: 'list' },
+      success: res => {
+        if (res.result.success) {
+          const list = res.result.data.list
+          this.setData({
+            childList: list,
+            selectedChild: (list && list.length > 0) ? list[0] : null
+          })
+        } else {
+          console.error('获取孩子列表失败', res.result.error)
+          wx.showToast({ title: '获取孩子列表失败', icon: 'none' })
+        }
+      },
+      fail: err => {
+        console.error('调用云函数失败', err)
+        wx.showToast({ title: '网络错误', icon: 'none' })
+      }
     })
   },
 
   // 加载优惠券列表
   loadCouponList: function () {
-    // 模拟数据
-    const mockCoupons = [
-      { id: 1, name: '新人优惠券', amount: 50, minAmount: 200, expireDate: '2026-01-31' },
-      { id: 2, name: '满减优惠券', amount: 30, minAmount: 150, expireDate: '2026-02-28' }
-    ]
-
+    // 暂无优惠券功能，置为空
     this.setData({
-      couponList: mockCoupons
+      couponList: []
     })
   },
 

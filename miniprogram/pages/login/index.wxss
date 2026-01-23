@@ -186,13 +186,13 @@
   align-items: center;
   justify-content: center;
   height: 104rpx;
-  background: linear-gradient(135deg, #2E7D6B 0%, #4DB6A0 100%);
+  background: #07C160;
   color: #FFFFFF;
   font-size: 34rpx;
   font-weight: 700;
   border-radius: 52rpx;
   margin-bottom: 28rpx;
-  box-shadow: 0 12rpx 32rpx rgba(46, 125, 107, 0.3);
+  box-shadow: 0 12rpx 32rpx rgba(7, 193, 96, 0.35);
   transition: all 0.2s ease;
 }
 
@@ -233,25 +233,34 @@
 
 .agreement-section {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   margin-top: 44rpx;
   padding: 0 20rpx;
+  background: transparent;
 }
 
 .agreement-check {
-  padding: 10rpx;
+  padding: 0;
+  margin-right: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
 }
 
 .check-icon {
-  width: 40rpx;
-  height: 40rpx;
+  width: 36rpx;
+  height: 36rpx;
 }
 
 .agreement-text {
   flex: 1;
   font-size: 24rpx;
   color: #7A7673;
-  line-height: 1.6;
+  line-height: 36rpx;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .agreement-text .link {

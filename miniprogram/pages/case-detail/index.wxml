@@ -9,10 +9,6 @@
     <text class="case-title">{{caseInfo.title}}</text>
     <view class="case-meta">
       <text class="create-time">{{caseInfo.createTime}}</text>
-      <view class="stats">
-        <text class="stat-item">阅读 {{caseInfo.viewCount}}</text>
-        <text class="stat-item">点赞 {{caseInfo.likeCount}}</text>
-      </view>
     </view>
   </view>
 
@@ -95,10 +91,6 @@
   <!-- 底部操作栏 -->
   <view class="bottom-bar">
     <view class="action-icons">
-      <view class="action-item {{isLiked ? 'active' : ''}}" bindtap="toggleLike">
-        <text class="action-icon">{{isLiked ? '♥' : '♡'}}</text>
-        <text>{{caseInfo.likeCount}}</text>
-      </view>
       <view class="action-item {{isFavorite ? 'active' : ''}}" bindtap="toggleFavorite">
         <text class="action-icon">{{isFavorite ? '★' : '☆'}}</text>
         <text>收藏</text>

@@ -128,6 +128,20 @@ exports.main = async (event, context) => {
                 result = await handleUpdateFeedbackStatus(data)
                 break
 
+            // ==================== 案例管理 ====================
+            case 'getCases':
+                result = await handleGetCases(data)
+                break
+            case 'addCase':
+                result = await handleAddCase(data)
+                break
+            case 'updateCase':
+                result = await handleUpdateCase(data)
+                break
+            case 'deleteCase':
+                result = await handleDeleteCase(data)
+                break
+
             default:
                 result = { success: false, error: '未知操作类型' }
         }
@@ -527,5 +541,190 @@ async function handleUpdateFeedbackStatus(data) {
             updateTime: db.serverDate()
         }
     })
+    return { success: true }
+}
+
+// ==================== 案例管理 ====================
+async function handleGetCases(data) {
+    const { page = 1, pageSize = 20, category, keyword } = data
+    const skip = (page - 1) * pageSize
+
+    let query = {}
+    if (category && category !== 'all') {
+        query.category = category
+    }
+    if (keyword) {
+        query.title = db.RegExp({ regexp: keyword, options: 'i' })
+    }
+
+    try {
+        const [countRes, listRes] = await Promise.all([
+            db.collection('case').where(query).count(),
+            db.collection('case')
+                .where(query)
+                .orderBy('createTime', 'desc')
+                .skip(skip)
+                .limit(pageSize)
+                .get()
+        ])
+
+        return {
+            success: true,
+            data: {
+                list: listRes.data,
+                total: countRes.total,
+                page,
+                pageSize
+            }
+        }
+    } catch (err) {
+        // 集合不存在时返回空数据，而不是报错
+        if (err.code === 502005 || (err.message && err.message.indexOf('not exist') > -1)) {
+            return {
+                success: true,
+                data: {
+                    list: [],
+                    total: 0,
+                    page,
+                    pageSize
+                }
+            }
+        }
+        throw err
+    }
+}
+
+async function handleAddCase(data) {
+    const {
+        title, category, categoryName, cover,
+        teacherId, teacherName, teacherAvatar, teacherTitle, // 老师信息
+        studentGrade, studentAge, studentGender, // 学生信息
+        serviceType, serviceDuration, serviceFrequency, // 服务信息
+        contentBackground, contentProblem, contentSolution, contentResult, // 详细内容
+        images
+    } = data
+
+    if (!title || !category || !cover) {
+        return { success: false, error: '标题、分类和封面不能为空' }
+    }
+
+    // 确保集合存在
+    try { await db.createCollection('case') } catch (e) { }
+
+    // 构造案例数据结构
+    const caseData = {
+        title,
+        category,
+        categoryName: categoryName || category, // 简单处理
+        cover,
+
+        teacher: {
+            id: teacherId,
+            name: teacherName || '',
+            avatar: teacherAvatar || '',
+            title: teacherTitle || ''
+        },
+
+        student: {
+            grade: studentGrade || '',
+            age: Number(studentAge) || 0,
+            gender: studentGender || '男'
+        },
+
+        serviceInfo: {
+            type: serviceType || '',
+            duration: serviceDuration || '',
+            frequency: serviceFrequency || ''
+        },
+
+        content: {
+            background: contentBackground || '',
+            problem: contentProblem || '',
+            solution: contentSolution || '',
+            result: contentResult || ''
+        },
+
+        images: images || [],
+
+        viewCount: 0,
+        likeCount: 0,
+        shareCount: 0,
+        createTime: db.serverDate(),
+        updateTime: db.serverDate()
+    }
+
+    const res = await db.collection('case').add({ data: caseData })
+    return { success: true, data: { _id: res._id } }
+}
+
+async function handleUpdateCase(data) {
+    const { _id, ...rawData } = data
+
+    if (!_id) {
+        return { success: false, error: 'ID不能为空' }
+    }
+
+    // 重组更新数据
+    const updateData = {}
+
+    if (rawData.title) updateData.title = rawData.title
+    if (rawData.category) updateData.category = rawData.category
+    if (rawData.categoryName) updateData.categoryName = rawData.categoryName
+    if (rawData.cover) updateData.cover = rawData.cover
+
+    // 老师信息更新
+    if (rawData.teacherId || rawData.teacherName) {
+        updateData.teacher = {
+            id: rawData.teacherId,
+            name: rawData.teacherName,
+            avatar: rawData.teacherAvatar,
+            title: rawData.teacherTitle
+        }
+    }
+
+    // 学生信息更新
+    if (rawData.studentGrade !== undefined) {
+        updateData.student = {
+            grade: rawData.studentGrade,
+            age: Number(rawData.studentAge),
+            gender: rawData.studentGender
+        }
+    }
+
+    // 服务信息更新
+    if (rawData.serviceType !== undefined) {
+        updateData.serviceInfo = {
+            type: rawData.serviceType,
+            duration: rawData.serviceDuration,
+            frequency: rawData.serviceFrequency
+        }
+    }
+
+    // 内容更新
+    if (rawData.contentBackground !== undefined) {
+        updateData.content = {
+            background: rawData.contentBackground,
+            problem: rawData.contentProblem,
+            solution: rawData.contentSolution,
+            result: rawData.contentResult
+        }
+    }
+
+    if (rawData.images) updateData.images = rawData.images
+
+    updateData.updateTime = db.serverDate()
+
+    await db.collection('case').doc(_id).update({ data: updateData })
+    return { success: true }
+}
+
+async function handleDeleteCase(data) {
+    const { _id } = data
+
+    if (!_id) {
+        return { success: false, error: 'ID不能为空' }
+    }
+
+    await db.collection('case').doc(_id).remove()
     return { success: true }
 }

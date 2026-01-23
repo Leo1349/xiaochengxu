@@ -168,27 +168,31 @@ Page({
             return
         }
 
-        // 模拟提交
-        wx.showLoading({
-            title: '提交中...',
-        })
+        // 提交到 demands 集合
+        wx.showLoading({ title: '提交中...' })
 
-        setTimeout(() => {
+        const db = wx.cloud.database()
+        db.collection('demands').add({
+            data: {
+                ...this.data.formData,
+                serviceType: this.data.serviceOptions[this.data.serviceIndex],
+                content: this.data.content,
+                mediaList: this.data.mediaList,
+                address: this.data.address,
+                selectedTime: this.data.selectedTime,
+                createTime: db.serverDate(),
+                status: 'pending' // 待处理
+            }
+        }).then(res => {
             wx.hideLoading()
-
-            // 成功提示
             wx.showToast({
                 title: '预约申请已提交',
                 icon: 'success',
                 duration: 2000
             })
 
-            // 延迟跳转或重置
             setTimeout(() => {
-                // 重置页面或跳转到订单详情
-                // wx.navigateTo({ url: '/pages/order-detail/index?id=mock_id' })
-
-                // 简单重置
+                // 重置页面
                 this.setData({
                     serviceIndex: -1,
                     content: '',
@@ -199,9 +203,13 @@ Page({
                         age: '', gender: '', hobby: '', content_detail: '', frequency: '', address_detail: '', requirements: ''
                     }
                 })
+                // 可选跳转到订单列表或需求列表
             }, 2000)
-
-        }, 1500)
+        }).catch(err => {
+            wx.hideLoading()
+            console.error('提交失败', err)
+            wx.showToast({ title: '提交失败，请重试', icon: 'none' })
+        })
     },
 
     showToast(msg) {

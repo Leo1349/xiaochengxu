@@ -1,0 +1,74 @@
+<!--pages/favorite/index.wxml-->
+<view class="container">
+  <!-- 分类Tab -->
+  <view class="favorite-tabs">
+    <view class="tab-item {{activeTab === 'teacher' ? 'active' : ''}}" data-tab="teacher" bindtap="switchTab">
+      <text>收藏老师</text>
+    </view>
+    <view class="tab-item {{activeTab === 'case' ? 'active' : ''}}" data-tab="case" bindtap="switchTab">
+      <text>收藏案例</text>
+    </view>
+  </view>
+
+  <!-- 收藏老师列表 -->
+  <view class="favorite-list" wx:if="{{activeTab === 'teacher'}}">
+    <block wx:if="{{teacherList.length > 0}}">
+      <view class="teacher-card" wx:for="{{teacherList}}" wx:key="_id" data-id="{{item.teacherId}}" bindtap="viewTeacherDetail">
+        <image class="teacher-avatar" src="{{item.avatar || '/images/avatar.png'}}" mode="aspectFill"></image>
+        <view class="teacher-info">
+          <text class="teacher-name">{{item.name}}</text>
+          <text class="teacher-title">{{item.title || '专业陪伴师'}}</text>
+          <view class="teacher-tags" wx:if="{{item.tags && item.tags.length > 0}}">
+            <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+          </view>
+        </view>
+        <view class="remove-btn" catchtap="removeFavoriteTeacher" data-id="{{item._id}}">
+          <text>取消</text>
+        </view>
+      </view>
+    </block>
+    
+    <!-- 老师空状态 -->
+    <view class="empty-state" wx:if="{{teacherList.length === 0 && !loading}}">
+      <image class="empty-icon" src="/images/icons/favorite.png" mode="aspectFit"></image>
+      <text class="empty-text">暂无收藏老师</text>
+      <text class="empty-desc">快去浏览优秀陪伴师吧~</text>
+      <button class="browse-btn" bindtap="goToHomePage">浏览老师</button>
+    </view>
+  </view>
+
+  <!-- 收藏案例列表 -->
+  <view class="favorite-list" wx:if="{{activeTab === 'case'}}">
+    <block wx:if="{{caseList.length > 0}}">
+      <view class="case-card" wx:for="{{caseList}}" wx:key="_id" data-id="{{item.caseId}}" bindtap="viewCaseDetail">
+        <image class="case-cover" src="{{item.cover}}" mode="aspectFill"></image>
+        <view class="case-content">
+          <text class="case-title">{{item.title}}</text>
+          <text class="case-summary">{{item.summary}}</text>
+          <view class="case-footer">
+            <view class="author-info">
+              <image class="author-avatar" src="{{item.teacherAvatar || '/images/avatar.png'}}" mode="aspectFill"></image>
+              <text class="author-name">{{item.teacherName}}</text>
+            </view>
+            <view class="remove-btn" catchtap="removeFavoriteCase" data-id="{{item._id}}">
+              <text>取消</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+    
+    <!-- 案例空状态 -->
+    <view class="empty-state" wx:if="{{caseList.length === 0 && !loading}}">
+      <image class="empty-icon" src="/images/icons/favorite.png" mode="aspectFit"></image>
+      <text class="empty-text">暂无收藏案例</text>
+      <text class="empty-desc">快去浏览成功案例吧~</text>
+      <button class="browse-btn" bindtap="goToCaseList">浏览案例</button>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-state" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>

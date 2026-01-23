@@ -112,54 +112,33 @@ Page({
   loadTeacherList: function () {
     this.setData({ loading: true })
 
-    const mockTeachers = [
-      {
-        id: 1,
-        name: '张老师',
-        avatar: '/images/avatars/teacher-male-default.png',
-        title: '高级陪伴师',
-        rating: 4.9,
-        orderCount: 128,
-        tags: ['学科辅导', '兴趣培养'],
-        price: 150,
-        introduction: '5年教育经验，擅长小学全科辅导'
-      },
-      {
-        id: 2,
-        name: '李老师',
-        avatar: '/images/avatars/teacher-female-default.png',
-        title: '资深陪伴师',
-        rating: 5.0,
-        orderCount: 256,
-        tags: ['习惯养成', '学科辅导'],
-        price: 200,
-        introduction: '专注儿童习惯养成，帮助孩子建立良好学习习惯'
-      },
-      {
-        id: 3,
-        name: '王老师',
-        avatar: '/images/avatars/teacher-female-default.png',
-        title: '心理陪伴师',
-        rating: 4.8,
-        orderCount: 89,
-        tags: ['心理疏导', '亲子沟通'],
-        price: 180,
-        introduction: '心理学专业背景，善于与孩子沟通交流'
-      }
-    ]
+    const db = wx.cloud.database()
+    db.collection('teachers').limit(20).get()
+      .then(res => {
+        const list = res.data.map(item => ({
+          id: item._id,
+          name: item.name,
+          avatar: item.avatar || '/images/default_teacher_avatar.png',
+          title: item.title,
+          rating: item.rating,
+          orderCount: item.orderCount,
+          tags: item.tags || [],
+          price: item.price,
+          introduction: item.introduction
+        }))
 
-    setTimeout(() => {
-      this.setData(
-        {
-          teacherList: mockTeachers,
+        this.setData({
+          teacherList: list,
           loading: false
-        },
-        () => {
+        }, () => {
           this.updateFilteredTeachers()
-        }
-      )
-      console.log('Teacher list loaded', mockTeachers)
-    }, 300)
+        })
+      })
+      .catch(err => {
+        console.error('加载老师列表失败', err)
+        this.setData({ loading: false })
+        wx.showToast({ title: '加载失败', icon: 'none' })
+      })
   },
 
   updateFilteredTeachers: function () {

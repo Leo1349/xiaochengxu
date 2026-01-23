@@ -9,6 +9,7 @@ import Teachers from './pages/Teachers'
 import Banners from './pages/Banners'
 import Orders from './pages/Orders'
 import Users from './pages/Users'
+import Cases from './pages/Cases'
 import Feedbacks from './pages/Feedbacks'
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
           <Route path="/banners" element={<Banners />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/cases" element={<Cases />} />
           <Route path="/feedbacks" element={<Feedbacks />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>

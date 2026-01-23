@@ -14,6 +14,7 @@
     "pages/teacher-resume/index",
     "pages/case-list/index",
     "pages/case-detail/index",
+    "pages/favorite/index",
     "pages/customer-service/index",
     "pages/feedback/index",
     "pages/settings/index",

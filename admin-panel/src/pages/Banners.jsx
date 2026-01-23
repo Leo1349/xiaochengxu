@@ -120,13 +120,14 @@ function Banners() {
     const handleSubmit = async () => {
         try {
             const values = await form.validateFields()
+            // 确保 order 是数字类型
+            values.order = Number(values.order)
 
             if (editingBanner) {
                 const res = await api.updateBanner({ _id: editingBanner._id, ...values })
                 if (res.success) {
-                    setBanners(banners.map(b =>
-                        b._id === editingBanner._id ? { ...b, ...values } : b
-                    ))
+                    // 更新成功后重新获取数据以确保显示正确
+                    await fetchBanners()
                     message.success('更新成功')
                 } else {
                     message.error(res.error || '更新失败')
@@ -135,12 +136,8 @@ function Banners() {
             } else {
                 const res = await api.addBanner(values)
                 if (res.success) {
-                    const newBanner = {
-                        _id: res.data._id || Date.now().toString(),
-                        ...values,
-                        createTime: new Date().toLocaleString()
-                    }
-                    setBanners([...banners, newBanner])
+                    // 添加成功后重新获取数据
+                    await fetchBanners()
                     message.success('添加成功')
                 } else {
                     message.error(res.error || '添加失败')

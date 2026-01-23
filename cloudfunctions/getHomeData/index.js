@@ -22,11 +22,39 @@ exports.main = async (event, context) => {
 
     const [bannerResult, teacherResult] = await Promise.all([bannerPromise, teacherPromise])
 
-    // 处理 Banner 数据：如果有 fileId，优先使用 fileId 作为 url (小程序支持 cloud://协议)
-    const banners = bannerResult.data.map(item => ({
-      ...item,
-      url: item.fileId || item.url
-    }))
+    // 处理 Banner 数据：如果有 fileId，需要获取临时 URL
+    let banners = bannerResult.data
+
+    // 收集所有需要获取临时 URL 的 fileId
+    const fileIds = banners
+      .filter(item => item.fileId && item.fileId.startsWith('cloud://'))
+      .map(item => item.fileId)
+
+    // 如果有 fileId，批量获取临时 URL
+    if (fileIds.length > 0) {
+      try {
+        const tempUrlResult = await cloud.getTempFileURL({
+          fileList: fileIds
+        })
+
+        // 创建 fileId 到 tempUrl 的映射
+        const urlMap = {}
+        tempUrlResult.fileList.forEach(item => {
+          if (item.status === 0 && item.tempFileURL) {
+            urlMap[item.fileID] = item.tempFileURL
+          }
+        })
+
+        // 更新 banner 的 url
+        banners = banners.map(item => ({
+          ...item,
+          url: item.fileId && urlMap[item.fileId] ? urlMap[item.fileId] : item.url
+        }))
+      } catch (urlErr) {
+        console.error('获取临时 URL 失败', urlErr)
+        // 如果获取失败，继续使用原有的 url
+      }
+    }
 
     return {
       success: true,
