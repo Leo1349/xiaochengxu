@@ -8,11 +8,7 @@ Page({
     isLoggedIn: false,
 
     // 轮播图
-    bannerList: [
-      { id: 1, image: '/images/banner1.jpg', url: '' },
-      { id: 2, image: '/images/banner2.jpg', url: '' },
-      { id: 3, image: '/images/banner3.jpg', url: '' }
-    ],
+    bannerList: [],
 
     // 功能入口
     menuList: [

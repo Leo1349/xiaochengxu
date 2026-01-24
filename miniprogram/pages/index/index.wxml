@@ -27,7 +27,7 @@
   <view class="menu-section">
     <view class="menu-grid">
       <view class="menu-item" wx:for="{{menuList}}" wx:key="id" data-url="{{item.url}}" bindtap="goToMenu">
-        <image class="menu-icon" src="{{item.icon}}" mode="aspectFit"></image>
+        <image class="menu-icon menu-icon-{{item.id}}" src="{{item.icon}}" mode="aspectFit"></image>
         <text class="menu-name">{{item.name}}</text>
       </view>
     </view>

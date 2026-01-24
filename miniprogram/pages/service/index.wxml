@@ -1,7 +1,7 @@
 <!--pages/service/index.wxml-->
 <view class="container">
   <!-- 顶部快捷入口（对应截图的 4 个 tab） -->
-  <view class="quick-tabs">
+  <view class="quick-tabs" wx:if="{{false}}">
     <view class="tab-item {{activeQuickTab === item.id ? 'active' : ''}}"
           wx:for="{{quickTabs}}"
           wx:key="id"

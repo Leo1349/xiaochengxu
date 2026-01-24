@@ -25,7 +25,8 @@
     "pages/admin/order-list/index",
     "pages/admin/order-detail/index",
     "pages/demand-list/index",
-    "pages/demand-detail/index"
+    "pages/demand-detail/index",
+    "pages/agreement/index"
   ],
   "usingComponents": {
     "rate": "/components/rate/index",

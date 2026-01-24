@@ -36,6 +36,7 @@
   height: 36rpx;
   margin-right: 16rpx;
   opacity: 0.5;
+  mix-blend-mode: multiply; /* 消除白底 */
 }
 
 .search-placeholder {
@@ -83,6 +84,7 @@
   width: 36rpx;
   height: 36rpx;
   margin-right: 16rpx;
+  mix-blend-mode: multiply; /* 消除白底 */
 }
 
 .notice-content {
@@ -172,6 +174,12 @@
   height: 88rpx;
   margin-bottom: 14rpx;
   transition: transform 0.25s ease;
+  mix-blend-mode: multiply; /* 消除白底并柔和颜色 */
+}
+
+/* 孩子信息图标(id=3)和成功案例图标(id=4)调淡 */
+.menu-icon-3, .menu-icon-4 {
+  opacity: 0.6;
 }
 
 .menu-item:active .menu-icon {

@@ -304,6 +304,8 @@
   margin-right: 32rpx;
   border-radius: 50%;
   overflow: hidden;
+  mix-blend-mode: multiply; /* 消除白底并柔和颜色 */
+  opacity: 0.6; /* 统一降低不透明度，使颜色更浅 */
 }
 
 /* 我的订单图标稍微大一点 */
@@ -320,6 +322,12 @@
   height: 77rpx;
   margin-left: 7rpx;
   margin-right: 31rpx;
+  opacity: 0.5; /* 颜色较深，额外降低不透明度 */
+}
+
+/* 意见反馈图标单独调整 */
+.menu-icon-feedback {
+  opacity: 0.5; /* 颜色较深，额外降低不透明度 */
 }
 
 .menu-name {

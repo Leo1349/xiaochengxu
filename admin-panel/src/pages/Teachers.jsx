@@ -5,7 +5,7 @@ import {
 } from 'antd'
 import {
     PlusOutlined, EditOutlined, DeleteOutlined,
-    UserOutlined, LoadingOutlined
+    UserOutlined, LoadingOutlined, MinusCircleOutlined
 } from '@ant-design/icons'
 import { api } from '../services/api'
 
@@ -385,6 +385,55 @@ function Teachers() {
                     <Form.Item name="introduction" label="个人介绍">
                         <TextArea rows={3} placeholder="请介绍老师的教学特点、服务理念等" />
                     </Form.Item>
+
+                    {/* 服务项目配置 */}
+                    <div style={{ marginBottom: 16, marginTop: 24, fontWeight: 'bold', borderBottom: '1px solid #eee', paddingBottom: 8 }}>
+                        服务项目配置
+                    </div>
+
+                    <Form.List name="services">
+                        {(fields, { add, remove }) => (
+                            <>
+                                {fields.map(({ key, name, ...restField }) => (
+                                    <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                                        <Form.Item
+                                            {...restField}
+                                            name={[name, 'name']}
+                                            rules={[{ required: true, message: '请输入服务名称' }]}
+                                        >
+                                            <Input placeholder="服务名称（如：作业辅导）" />
+                                        </Form.Item>
+                                        <Form.Item
+                                            {...restField}
+                                            name={[name, 'price']}
+                                            rules={[{ required: true, message: '请输入价格' }]}
+                                        >
+                                            <InputNumber placeholder="价格" />
+                                        </Form.Item>
+                                        <Form.Item
+                                            {...restField}
+                                            name={[name, 'unit']}
+                                            initialValue="小时"
+                                        >
+                                            <Select style={{ width: 80 }}>
+                                                <Option value="小时">/小时</Option>
+                                                <Option value="天">/天</Option>
+                                                <Option value="次">/次</Option>
+                                                <Option value="周">/周</Option>
+                                                <Option value="月">/月</Option>
+                                            </Select>
+                                        </Form.Item>
+                                        <MinusCircleOutlined onClick={() => remove(name)} style={{ color: 'red' }} />
+                                    </Space>
+                                ))}
+                                <Form.Item>
+                                    <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                        添加服务项目
+                                    </Button>
+                                </Form.Item>
+                            </>
+                        )}
+                    </Form.List>
 
                     {/* 详细信息 */}
                     <div style={{ marginBottom: 16, marginTop: 24, fontWeight: 'bold', borderBottom: '1px solid #eee', paddingBottom: 8 }}>

@@ -262,7 +262,7 @@ Page({
                 wx.showToast({ title: '删除成功', icon: 'success' })
                 this.loadChildList()
               } else {
-                wx.showToast({ title: '删除失败', icon: 'none' })
+                wx.showToast({ title: res.result.error || '删除失败', icon: 'none' })
               }
             },
             fail: err => {

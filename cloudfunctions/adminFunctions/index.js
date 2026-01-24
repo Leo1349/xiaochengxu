@@ -368,6 +368,7 @@ async function handleAddTeacher(data) {
         experience: experience || '',
         serviceTime: serviceTime || '',
         serviceArea: serviceArea || '',
+        services: data.services || [], // 保存服务项目
         photos: photos || [],  // 保存相册图片
         isRecommended: isRecommended || false,
         createTime: db.serverDate(),

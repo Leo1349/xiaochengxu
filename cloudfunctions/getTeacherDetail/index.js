@@ -105,12 +105,8 @@ exports.main = async (event, context) => {
       }
     ]
 
-    // 模拟获取服务列表（后续可从 services 集合获取）
-    const services = [
-      { id: 1, name: '学科辅导', price: teacherData.price, unit: teacherData.priceUnit, description: '小学全科、初中数学英语辅导' },
-      { id: 2, name: '作业陪伴', price: Math.floor(teacherData.price * 0.8), unit: teacherData.priceUnit, description: '陪伴孩子完成作业，培养良好学习习惯' },
-      { id: 3, name: '兴趣培养', price: Math.floor(teacherData.price * 0.9), unit: teacherData.priceUnit, description: '绘画、书法等兴趣爱好培养' }
-    ]
+    // 获取服务列表（使用数据库中配置的服务）
+    const services = teacherData.services || []
 
     return {
       success: true,

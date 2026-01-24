@@ -8,7 +8,7 @@
 
   <!-- 孩子列表 -->
   <view class="child-list">
-    <view class="child-card" wx:for="{{childList}}" wx:key="id">
+    <view class="child-card" wx:for="{{childList}}" wx:key="_id">
       <view class="child-header">
         <view class="child-avatar">
           <text class="avatar-text">{{item.name[0]}}</text>
@@ -21,8 +21,8 @@
           <text class="child-age">{{item.age}}岁 | {{item.grade}}</text>
         </view>
         <view class="child-actions">
-          <text class="action-text edit" data-id="{{item.id}}" bindtap="showEditModal">编辑</text>
-          <text class="action-text delete" data-id="{{item.id}}" bindtap="deleteChild">删除</text>
+          <text class="action-text edit" data-id="{{item._id}}" bindtap="showEditModal">编辑</text>
+          <text class="action-text delete" data-id="{{item._id}}" bindtap="deleteChild">删除</text>
         </view>
       </view>
       

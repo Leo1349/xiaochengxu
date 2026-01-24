@@ -107,6 +107,7 @@
   height: 48rpx;
   margin-right: 24rpx;
   opacity: 0.5;
+  mix-blend-mode: multiply; /* 消除白底 */
 }
 
 .input {
@@ -227,6 +228,7 @@
   width: 48rpx;
   height: 48rpx;
   margin-right: 16rpx;
+  mix-blend-mode: multiply; /* 消除白底 */
 }
 
 /* ==================== 用户协议 ==================== */

@@ -56,50 +56,48 @@ Page({
 
     // 加载收藏老师
     loadFavoriteTeachers: function (userId) {
-        const db = wx.cloud.database()
-
-        db.collection('favorite_teachers')
-            .where({ userId: userId })
-            .orderBy('createTime', 'desc')
-            .get()
-            .then(res => {
-                this.setData({
-                    teacherList: res.data || [],
-                    loading: false
-                })
-            })
-            .catch(err => {
-                console.error('加载收藏老师失败', err)
-                // 如果集合不存在，显示空列表而不是报错
-                this.setData({
-                    loading: false,
-                    teacherList: []
-                })
-            })
+        wx.cloud.callFunction({
+            name: 'getFavorites',
+            data: { userId: userId, type: 'teacher' },
+            success: res => {
+                if (res.result.success) {
+                    this.setData({
+                        teacherList: res.result.data || [],
+                        loading: false
+                    })
+                } else {
+                    console.error('加载收藏老师失败', res.result.error)
+                    this.setData({ loading: false })
+                }
+            },
+            fail: err => {
+                console.error('调用云函数失败', err)
+                this.setData({ loading: false })
+            }
+        })
     },
 
     // 加载收藏案例
     loadFavoriteCases: function (userId) {
-        const db = wx.cloud.database()
-
-        db.collection('favorite_cases')
-            .where({ userId: userId })
-            .orderBy('createTime', 'desc')
-            .get()
-            .then(res => {
-                this.setData({
-                    caseList: res.data || [],
-                    loading: false
-                })
-            })
-            .catch(err => {
-                console.error('加载收藏案例失败', err)
-                // 如果集合不存在，显示空列表而不是报错
-                this.setData({
-                    loading: false,
-                    caseList: []
-                })
-            })
+        wx.cloud.callFunction({
+            name: 'getFavorites',
+            data: { userId: userId, type: 'case' },
+            success: res => {
+                if (res.result.success) {
+                    this.setData({
+                        caseList: res.result.data || [],
+                        loading: false
+                    })
+                } else {
+                    console.error('加载收藏案例失败', res.result.error)
+                    this.setData({ loading: false })
+                }
+            },
+            fail: err => {
+                console.error('调用云函数失败', err)
+                this.setData({ loading: false })
+            }
+        })
     },
 
     // 查看老师详情

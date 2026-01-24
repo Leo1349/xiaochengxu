@@ -23,7 +23,7 @@
 
 
   <!-- 快捷入口 -->
-  <view class="quick-entry" wx:if="{{isLoggedIn}}">
+  <view class="quick-entry" wx:if="{{false}}">
     <view class="quick-item" data-url="/pages/order-list/index?status=pending" bindtap="goToPage">
       <image class="quick-icon" src="/images/mine_v3/order_pending.png" mode="aspectFit"></image>
       <text class="quick-text">待服务</text>
