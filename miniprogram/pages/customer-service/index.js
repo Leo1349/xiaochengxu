@@ -116,9 +116,10 @@ Page({
   },
 
   // 在线客服
-  openCustomerService: function () {
-    // 微信小程序客服功能
-    // 需要在小程序后台配置客服
+  handleOnlineService: function () {
+    wx.navigateTo({
+      url: '/pages/chat/index?userId=service&userName=智伴优程客服&userAvatar=/images/icons/service-headset.png'
+    })
   },
 
   // 跳转到反馈页面

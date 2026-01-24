@@ -1,0 +1,11 @@
+{
+    "name": "manage-service-types",
+    "version": "1.0.0",
+    "description": "Manage Service Types",
+    "main": "index.js",
+    "dependencies": {
+        "wx-server-sdk": "~2.6.3"
+    },
+    "author": "Antigravity",
+    "license": "ISC"
+}

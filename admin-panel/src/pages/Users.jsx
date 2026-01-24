@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import {
-    Table, Tag, Input, Select, Avatar, Modal, Descriptions, Button
+    Table, Tag, Input, Select, Avatar, Modal, Descriptions, Button, message
 } from 'antd'
 import { UserOutlined, SearchOutlined, EyeOutlined } from '@ant-design/icons'
 import { api } from '../services/api'
@@ -46,6 +46,7 @@ const mockUsers = [
 
 function Users() {
     const [users, setUsers] = useState([])
+    const [total, setTotal] = useState(0)
     const [loading, setLoading] = useState(false)
     const [detailVisible, setDetailVisible] = useState(false)
     const [currentUser, setCurrentUser] = useState(null)
@@ -53,17 +54,39 @@ function Users() {
         role: 'all',
         keyword: ''
     })
+    const [pagination, setPagination] = useState({
+        current: 1,
+        pageSize: 10
+    })
 
     useEffect(() => {
         fetchUsers()
-    }, [])
+    }, [pagination.current, pagination.pageSize, filters])
 
     const fetchUsers = async () => {
         setLoading(true)
-        setTimeout(() => {
-            setUsers(mockUsers)
-            setLoading(false)
-        }, 500)
+        try {
+            // 调用云函数
+            const res = await api.getUserList({
+                page: pagination.current,
+                pageSize: pagination.pageSize,
+                keyword: filters.keyword,
+                role: filters.role
+            })
+
+            if (res.success) {
+                setUsers(res.data.list)
+                setTotal(res.data.total)
+            } else {
+                message.error(res.error || '获取用户列表失败')
+                // Fallback for demo if needed
+                // setUsers(mockUsers) 
+            }
+        } catch (error) {
+            console.error('Fetch users failed', error)
+            message.error('网络请求失败')
+        }
+        setLoading(false)
     }
 
     const handleViewDetail = (record) => {
@@ -71,16 +94,9 @@ function Users() {
         setDetailVisible(true)
     }
 
-    const filteredUsers = users.filter(user => {
-        if (filters.role !== 'all' && user.currentRole !== filters.role) {
-            return false
-        }
-        if (filters.keyword && !user.nickName.includes(filters.keyword) &&
-            !user._openid.includes(filters.keyword)) {
-            return false
-        }
-        return true
-    })
+    const handleTableChange = (page) => {
+        setPagination(page)
+    }
 
     const columns = [
         {
@@ -119,19 +135,16 @@ function Users() {
             )
         },
         {
-            title: '订单数',
-            dataIndex: 'orderCount',
-            width: 80
+            title: '孩子数',
+            key: 'childrenCount',
+            width: 80,
+            render: (_, record) => record.children ? record.children.length : 0
         },
         {
             title: '注册时间',
             dataIndex: 'createTime',
-            width: 180
-        },
-        {
-            title: '最后登录',
-            dataIndex: 'lastLoginTime',
-            width: 180
+            width: 180,
+            render: (time) => time ? new Date(time).toLocaleString() : '-'
         },
         {
             title: '操作',
@@ -146,6 +159,19 @@ function Users() {
                 </Button>
             )
         }
+    ]
+
+    // 孩子列表列定义
+    const childColumns = [
+        { title: '姓名', dataIndex: 'name', key: 'name', width: 80, fixed: 'left' },
+        { title: '性别', dataIndex: 'gender', key: 'gender', width: 60 },
+        { title: '年级', dataIndex: 'grade', key: 'grade', width: 100 },
+        { title: '年龄', dataIndex: 'age', key: 'age', width: 60 },
+        { title: '学校', dataIndex: 'school', key: 'school', width: 150 },
+        { title: '性格', dataIndex: 'personality', key: 'personality', width: 200 },
+        { title: '兴趣', dataIndex: 'interests', key: 'interests', width: 200 },
+        { title: '弱项', dataIndex: 'weakSubjects', key: 'weakSubjects', width: 200 },
+        { title: '备注', dataIndex: 'remark', key: 'remark', width: 200 },
     ]
 
     return (
@@ -163,7 +189,10 @@ function Users() {
             <div style={{ marginBottom: 16, display: 'flex', gap: 16 }}>
                 <Select
                     value={filters.role}
-                    onChange={(v) => setFilters({ ...filters, role: v })}
+                    onChange={(v) => {
+                        setFilters({ ...filters, role: v })
+                        setPagination({ ...pagination, current: 1 })
+                    }}
                     style={{ width: 120 }}
                 >
                     <Option value="all">全部角色</Option>
@@ -176,17 +205,24 @@ function Users() {
                     prefix={<SearchOutlined />}
                     value={filters.keyword}
                     onChange={(e) => setFilters({ ...filters, keyword: e.target.value })}
+                    onPressEnter={() => setPagination({ ...pagination, current: 1 })}
                     style={{ width: 250 }}
                     allowClear
                 />
+                <Button type="primary" onClick={() => setPagination({ ...pagination, current: 1 })}>搜索</Button>
             </div>
 
             <Table
                 columns={columns}
-                dataSource={filteredUsers}
+                dataSource={users}
                 rowKey="_id"
                 loading={loading}
-                pagination={{ pageSize: 10, showTotal: (total) => `共 ${total} 条` }}
+                pagination={{
+                    ...pagination,
+                    total: total,
+                    showTotal: (total) => `共 ${total} 条`
+                }}
+                onChange={handleTableChange}
             />
 
             {/* 用户详情弹窗 */}
@@ -195,7 +231,7 @@ function Users() {
                 open={detailVisible}
                 onCancel={() => setDetailVisible(false)}
                 footer={null}
-                width={500}
+                width={1000}
             >
                 {currentUser && (
                     <div style={{ textAlign: 'center', marginBottom: 24 }}>
@@ -207,23 +243,36 @@ function Users() {
                     </div>
                 )}
                 {currentUser && (
-                    <Descriptions bordered column={1}>
-                        <Descriptions.Item label="OpenID">
-                            {currentUser._openid}
-                        </Descriptions.Item>
-                        <Descriptions.Item label="手机号">
-                            {currentUser.phone || '未绑定'}
-                        </Descriptions.Item>
-                        <Descriptions.Item label="订单数量">
-                            {currentUser.orderCount}
-                        </Descriptions.Item>
-                        <Descriptions.Item label="注册时间">
-                            {currentUser.createTime}
-                        </Descriptions.Item>
-                        <Descriptions.Item label="最后登录">
-                            {currentUser.lastLoginTime}
-                        </Descriptions.Item>
-                    </Descriptions>
+                    <>
+                        <Descriptions title="基本信息" bordered column={2} style={{ marginBottom: 24 }}>
+                            <Descriptions.Item label="OpenID" span={2}>
+                                {currentUser._openid}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="手机号">
+                                {currentUser.phone || '未绑定'}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="订单数量">
+                                {currentUser.orderCount || 0}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="注册时间">
+                                {currentUser.createTime ? new Date(currentUser.createTime).toLocaleString() : '-'}
+                            </Descriptions.Item>
+                        </Descriptions>
+
+                        <div className="section-title" style={{ fontWeight: 'bold', marginBottom: 16 }}>
+                            孩子档案 ({currentUser.children ? currentUser.children.length : 0})
+                        </div>
+
+                        <Table
+                            columns={childColumns}
+                            dataSource={currentUser.children || []}
+                            rowKey="_id"
+                            pagination={false}
+                            size="middle"
+                            bordered
+                            scroll={{ x: 'max-content' }}
+                        />
+                    </>
                 )}
             </Modal>
         </div>

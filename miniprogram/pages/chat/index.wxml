@@ -26,9 +26,14 @@
       <view class="time-tip" wx:if="{{index === 0 || item.showTime}}">
         <text>{{item.time}}</text>
       </view>
+
+      <!-- 系统消息/事件 -->
+      <view class="time-tip" wx:if="{{item.type === 'event'}}">
+        <text style="background:none; color:#999;">{{item.content}}</text>
+      </view>
       
       <!-- 消息内容 -->
-      <view class="message-content">
+      <view class="message-content" wx:if="{{item.type !== 'event'}}">
         <!-- 对方头像 -->
         <image class="avatar" 
                wx:if="{{!item.isMine}}" 

@@ -35,6 +35,8 @@ exports.main = async (event, context) => {
                     grade: childData.grade || '',
                     school: childData.school || '',
                     interests: childData.interests || [],
+                    weakSubjects: childData.weakSubjects || '', // 假设是字符串，如果是数组请根据前端传值调整
+                    personality: childData.personality || '',
                     remark: childData.remark || '',
                     createTime: db.serverDate(),
                     updateTime: db.serverDate()
@@ -67,6 +69,8 @@ exports.main = async (event, context) => {
                 if (childData.grade) updateData.grade = childData.grade
                 if (childData.school) updateData.school = childData.school
                 if (childData.interests) updateData.interests = childData.interests
+                if (childData.weakSubjects) updateData.weakSubjects = childData.weakSubjects
+                if (childData.personality) updateData.personality = childData.personality
                 if (childData.remark !== undefined) updateData.remark = childData.remark
 
                 await childrenCollection.doc(childId).update({ data: updateData })

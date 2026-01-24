@@ -48,7 +48,7 @@
             <text class="teacher-name">{{item.name}}</text>
             <text class="teacher-title">{{item.title}}</text>
           </view>
-          <view class="teacher-meta">
+          <view class="teacher-meta" style="display: none;">
             <text class="rating">{{item.rating}}</text>
             <text class="meta-split">·</text>
             <text class="orders">已服务{{item.orderCount}}次</text>

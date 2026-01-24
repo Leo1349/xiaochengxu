@@ -78,7 +78,7 @@ Page({
       })
     }
 
-    this.loadTeacherList()
+    this.loadServiceTypes()
   },
 
   onShow: function () {
@@ -89,6 +89,45 @@ Page({
         selected: 1
       })
     }
+  },
+
+  // 加载服务类目
+  loadServiceTypes: function () {
+    wx.cloud.callFunction({
+      name: 'manageServiceTypes',
+      data: { action: 'list' },
+      success: res => {
+        if (res.result.success && res.result.data.list.length > 0) {
+          const cloudTypes = res.result.data.list.map(item => ({
+            id: item._id, // Map _id to id for compatibility
+            name: item.name,
+            icon: item.icon,
+            description: item.description,
+            subTypes: item.subTypes || []
+          }))
+
+          // If currentTypeId is default (1) and cloudTypes has data, set to first id
+          let { currentTypeId } = this.data
+          if (currentTypeId === 1 && cloudTypes.length > 0) {
+            currentTypeId = cloudTypes[0].id
+          }
+
+          this.setData({
+            serviceTypes: cloudTypes,
+            currentTypeId: currentTypeId
+          }, () => {
+            this.loadTeacherList()
+          })
+        } else {
+          // Fallback or empty
+          this.loadTeacherList()
+        }
+      },
+      fail: err => {
+        console.error('Fetch service types failed', err)
+        this.loadTeacherList()
+      }
+    })
   },
 
   // 顶部快捷入口
@@ -152,11 +191,20 @@ Page({
 
   updateFilteredTeachers: function () {
     const currentTypeId = this.data.currentTypeId
-    const type = this.data.serviceTypes.find((t) => t.id === currentTypeId)
-    const typeName = type ? type.name : ''
+    // Loose equality check for string/number ID compatibility
+    const type = this.data.serviceTypes.find((t) => t.id == currentTypeId)
+
+    if (!type) {
+      this.setData({ filteredTeacherList: this.data.teacherList })
+      return
+    }
+
+    const typeName = type.name
+    const subTypes = type.subTypes || []
+
     const list = (this.data.teacherList || []).filter((t) => {
-      if (!typeName) return true
-      return (t.tags || []).some((tag) => tag === typeName)
+      // 逻辑：老师的标签中包含“当前分类名称” 或者 “当前分类下的任意子类目”
+      return (t.tags || []).some((tag) => tag === typeName || subTypes.includes(tag))
     })
     this.setData({ filteredTeacherList: list })
   },

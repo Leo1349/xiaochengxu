@@ -13,6 +13,7 @@ import Cases from './pages/Cases'
 import Feedbacks from './pages/Feedbacks'
 import Demands from './pages/Demands'
 import CustomerService from './pages/CustomerService'
+import ServiceTypes from './pages/ServiceTypes'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -63,6 +64,8 @@ function App() {
           <Route path="/cases" element={<Cases />} />
           <Route path="/feedbacks" element={<Feedbacks />} />
           <Route path="/demands" element={<Demands />} />
+          <Route path="/demands" element={<Demands />} />
+          <Route path="/service-types" element={<ServiceTypes />} />
           <Route path="/customer-service" element={<CustomerService />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>

@@ -1,0 +1,11 @@
+{
+    "name": "reply-message",
+    "version": "1.0.0",
+    "description": "Auto reply cloud function",
+    "main": "index.js",
+    "dependencies": {
+        "wx-server-sdk": "~2.6.3"
+    },
+    "author": "Antigravity",
+    "license": "ISC"
+}

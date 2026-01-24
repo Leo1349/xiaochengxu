@@ -139,10 +139,25 @@ app.post('/api/cloud', async (req, res) => {
         return res.status(400).json({ success: false, error: '缺少 type 参数' })
     }
 
-    console.log(`📡 调用云函数: adminFunctions, type=${type}`)
+    console.log(`📡 调用云函数: ${type}`)
+
+    // 新增云函数映射表
+    // 将特定的 type 路由到独立的云函数，并解包 data
+    const FUNCTION_MAP = {
+        'getUserList': 'getUserList',
+        'manageServiceTypes': 'manageServiceTypes'
+    }
 
     try {
-        const result = await invokeCloudFunction('adminFunctions', { type, data })
+        let functionName = 'adminFunctions'
+        let payload = { type, data }
+
+        if (FUNCTION_MAP[type]) {
+            functionName = FUNCTION_MAP[type]
+            payload = data // 新函数直接接收 data 作为 event
+        }
+
+        const result = await invokeCloudFunction(functionName, payload)
         res.json(result)
     } catch (error) {
         console.error('云函数调用失败:', error.message)

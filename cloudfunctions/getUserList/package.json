@@ -1,0 +1,11 @@
+{
+    "name": "get-user-list",
+    "version": "1.0.0",
+    "description": "Get User List with Children",
+    "main": "index.js",
+    "dependencies": {
+        "wx-server-sdk": "~2.6.3"
+    },
+    "author": "Antigravity",
+    "license": "ISC"
+}

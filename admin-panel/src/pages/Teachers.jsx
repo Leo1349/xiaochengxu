@@ -374,7 +374,12 @@ function Teachers() {
                     </Form.Item>
 
                     <Form.Item name="tags" label="标签">
-                        <Select mode="tags" placeholder="输入后按回车添加标签（如：学科辅导、耐心细致）" />
+                        <Select
+                            mode="tags"
+                            placeholder="输入后按回车添加标签（如：学科辅导、耐心细致）"
+                            options={Array.from(new Set(teachers.flatMap(t => t.tags || []))).map(tag => ({ label: tag, value: tag }))}
+                            filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+                        />
                     </Form.Item>
 
                     <Form.Item name="introduction" label="个人介绍">

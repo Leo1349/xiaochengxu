@@ -60,6 +60,11 @@ const menuItems = [
         key: '/customer-service',
         icon: <TeamOutlined />,
         label: '客服管理'
+    },
+    {
+        key: '/service-types',
+        icon: <PictureOutlined />,
+        label: '服务类目'
     }
 ]
 

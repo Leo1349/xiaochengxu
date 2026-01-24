@@ -89,7 +89,8 @@ export const api = {
     updateOrderStatus: (_id, status) => callCloudFunction('updateOrderStatus', { _id, status }),
 
     // 用户管理
-    getUsers: (params) => callCloudFunction('getUsers', params),
+    getUsers: (params) => callCloudFunction('getUsers', params), // TODO: Remove this legacy endpoint if not used
+    getUserList: (params) => callCloudFunction('getUserList', params),
 
     // 反馈管理
     getFeedbacks: (params) => callCloudFunction('getFeedbacks', params),
@@ -113,6 +114,9 @@ export const api = {
     addFaq: (data) => callCloudFunction('addFaq', data),
     updateFaq: (data) => callCloudFunction('updateFaq', data),
     deleteFaq: (_id) => callCloudFunction('deleteFaq', { _id }),
+
+    // 服务类目管理
+    manageServiceTypes: (data) => callCloudFunction('manageServiceTypes', data),
 
     // 图片上传
     uploadImage: async (file) => {

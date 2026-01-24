@@ -18,8 +18,8 @@
         </view>
       </view>
       
-      <view class="service-actions">
-        <button class="service-btn primary" open-type="contact">
+      <!-- <view class="service-actions">
+        <button class="service-btn primary" bindtap="handleOnlineService">
           <image class="btn-icon" src="/images/icons/service-online.png" mode="aspectFit"></image>
           <text>在线客服</text>
         </button>
@@ -27,7 +27,7 @@
           <image class="btn-icon" src="/images/icons/service-phone.png" mode="aspectFit"></image>
           <text>电话咨询</text>
         </button>
-      </view>
+      </view> -->
     </view>
   </view>
 
