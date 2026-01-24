@@ -1,5 +1,12 @@
 <!--pages/customer-service/index.wxml-->
-<view class="container">
+<!-- 加载中 -->
+<view class="loading-container" wx:if="{{loading}}">
+  <view class="loading-spinner"></view>
+  <text class="loading-text">加载中...</text>
+</view>
+
+<!-- 主内容 -->
+<view class="container" wx:if="{{!loading}}">
   <!-- 客服入口 -->
   <view class="service-section">
     <view class="service-card">

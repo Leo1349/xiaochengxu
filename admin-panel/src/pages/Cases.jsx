@@ -118,11 +118,40 @@ const Cases = () => {
         setEditingId(record._id)
         setModalTitle('编辑案例')
 
+        // NOTE: 调试日志 - 检查老师 ID 格式
+        console.log('编辑案例 - 原始数据:', {
+            teacherObj: record.teacher,
+            teacherId: record.teacher?.id,
+            teacherName: record.teacher?.name,
+            teachersInList: teachers.map(t => ({ _id: t._id, name: t.name }))
+        })
+
+        // 尝试匹配老师 ID - 优先使用 teacher.id，如果不匹配则尝试通过名称查找
+        let matchedTeacherId = record.teacher?.id
+        const teacherInList = teachers.find(t => t._id === matchedTeacherId)
+
+        console.log('ID 匹配结果:', {
+            originalId: matchedTeacherId,
+            foundByIdMatch: teacherInList ? teacherInList.name : '未找到',
+            allIds: teachers.map(t => t._id)
+        })
+
+        if (!teacherInList && record.teacher?.name) {
+            // 如果 ID 不匹配，尝试通过名称查找
+            const teacherByName = teachers.find(t => t.name === record.teacher.name)
+            if (teacherByName) {
+                matchedTeacherId = teacherByName._id
+                console.log('通过名称匹配到老师:', teacherByName.name, teacherByName._id)
+            } else {
+                console.warn('无法通过名称匹配老师:', record.teacher.name)
+            }
+        }
+
         // 填充表单
         form.setFieldsValue({
             title: record.title,
             category: record.category,
-            teacherId: record.teacher?.id, // 关联老师ID
+            teacherId: matchedTeacherId, // 关联老师ID
 
             studentGrade: record.student?.grade,
             studentAge: record.student?.age,
@@ -139,23 +168,28 @@ const Cases = () => {
         })
 
         // 初始化上传列表
+        // NOTE: 使用 coverFileId（原始 cloud:// 格式）用于保存，cover（临时链接）用于显示
         if (record.cover) {
             setCoverList([{
                 uid: '-1',
                 status: 'done',
-                url: record.cover,
-                name: 'cover.png'
+                url: record.cover,  // 显示用（临时链接）
+                name: 'cover.png',
+                response: { fileId: record.coverFileId || record.cover }  // 保存用（原始 fileId）
             }])
         } else {
             setCoverList([])
         }
 
+        // NOTE: 使用 imageFileIds（原始 cloud:// 格式）用于保存，images（临时链接）用于显示
         if (record.images && record.images.length > 0) {
+            const fileIds = record.imageFileIds || record.images
             setFileList(record.images.map((url, index) => ({
                 uid: `-${index + 2}`,
                 status: 'done',
-                url: url,
-                name: `image-${index}.png`
+                url: url,  // 显示用（临时链接）
+                name: `image-${index}.png`,
+                response: { fileId: fileIds[index] || url }  // 保存用（原始 fileId）
             })))
         } else {
             setFileList([])
@@ -235,24 +269,36 @@ const Cases = () => {
                 images: getImagesValue()
             }
 
+            // NOTE: 移除表单中的 teacherId，统一使用 teacher 对象
+            delete submitData.teacherId
+
             // 补充关联信息
             const selectedCategory = CATEGORIES.find(c => c.value === values.category)
             submitData.categoryName = selectedCategory ? selectedCategory.label : values.category
 
             const selectedTeacher = teachers.find(t => t._id === values.teacherId)
             if (selectedTeacher) {
-                submitData.teacherName = selectedTeacher.name
-                submitData.teacherAvatar = selectedTeacher.avatar
-                submitData.teacherTitle = selectedTeacher.title
+                // NOTE: 保存完整的 teacher 对象，确保 id 字段用于小程序端跳转
+                // 使用 avatarFileId（云存储永久ID）而不是临时链接
+                submitData.teacher = {
+                    id: selectedTeacher._id,
+                    name: selectedTeacher.name,
+                    avatar: selectedTeacher.avatarFileId || selectedTeacher.avatar
+                }
             } else if (editingId) {
-                // 编辑模式下，保留原有的老师信息
+                // 编辑模式下，如果未选择老师，保留原有的老师信息
                 const originalRecord = data.find(d => d._id === editingId)
-                if (originalRecord && originalRecord.teacher && originalRecord.teacher.id === values.teacherId) {
-                    submitData.teacherName = originalRecord.teacher.name
-                    submitData.teacherAvatar = originalRecord.teacher.avatar
-                    submitData.teacherTitle = originalRecord.teacher.title
+                if (originalRecord && originalRecord.teacher) {
+                    submitData.teacher = originalRecord.teacher
                 }
             }
+
+            // NOTE: 调试日志 - 确认提交的数据
+            console.log('提交案例数据:', {
+                teacherId: values.teacherId,
+                selectedTeacher: selectedTeacher ? { _id: selectedTeacher._id, name: selectedTeacher.name } : null,
+                submitTeacher: submitData.teacher
+            })
 
             let res
             if (editingId) {

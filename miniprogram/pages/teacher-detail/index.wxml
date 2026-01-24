@@ -6,11 +6,6 @@
     <view class="teacher-info">
       <view class="name-row">
         <text class="teacher-name">{{teacher.name}}</text>
-        <text class="teacher-title">{{teacher.title}}</text>
-      </view>
-      <view class="rating-row">
-        <text class="rating">{{teacher.rating}}分</text>
-        <text class="order-count">已服务{{teacher.orderCount}}次</text>
       </view>
       <view class="tags">
         <text class="tag" wx:for="{{teacher.tags}}" wx:key="*this">{{item}}</text>
@@ -25,7 +20,6 @@
   <view class="tabs">
     <view class="tab-item {{currentTab === 'info' ? 'active' : ''}}" data-tab="info" bindtap="switchTab">简介</view>
     <view class="tab-item {{currentTab === 'service' ? 'active' : ''}}" data-tab="service" bindtap="switchTab">服务</view>
-    <view class="tab-item {{currentTab === 'review' ? 'active' : ''}}" data-tab="review" bindtap="switchTab">评价</view>
     <view class="tab-item {{currentTab === 'case' ? 'active' : ''}}" data-tab="case" bindtap="switchTab">案例</view>
   </view>
 
@@ -82,42 +76,10 @@
       </view>
     </view>
 
-    <!-- 评价 -->
-    <view class="review-section" wx:if="{{currentTab === 'review'}}">
-      <view class="review-summary">
-        <text class="summary-rating">{{teacher.rating}}</text>
-        <text class="summary-text">综合评分</text>
-        <text class="summary-count">共{{reviews.length}}条评价</text>
-      </view>
-      
-      <view class="review-list">
-        <view class="review-item" wx:for="{{reviews}}" wx:key="id">
-          <view class="review-header">
-            <image class="review-avatar" src="{{item.userAvatar}}" mode="aspectFill"></image>
-            <view class="review-info">
-              <text class="review-name">{{item.userName}}</text>
-              <view class="review-meta">
-                <text class="review-service">{{item.serviceName}}</text>
-                <text class="review-time">{{item.time}}</text>
-              </view>
-            </view>
-            <view class="review-rating">
-              <text class="star" wx:for="{{item.rating}}" wx:for-item="star" wx:key="*this">★</text>
-            </view>
-          </view>
-          <text class="review-content">{{item.content}}</text>
-        </view>
-      </view>
-      
-      <view class="empty-review" wx:if="{{reviews.length === 0}}">
-        <text>暂无评价</text>
-      </view>
-    </view>
-
     <!-- 案例 -->
     <view class="case-section" wx:if="{{currentTab === 'case'}}">
       <view class="case-list">
-        <view class="case-card" wx:for="{{cases}}" wx:key="id" data-id="{{item.id}}" bindtap="viewCaseDetail">
+        <view class="case-card" wx:for="{{cases}}" wx:key="_id" data-id="{{item._id}}" bindtap="viewCaseDetail">
           <image class="case-cover" src="{{item.cover}}" mode="aspectFill"></image>
           <view class="case-info">
             <text class="case-title">{{item.title}}</text>

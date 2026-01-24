@@ -109,6 +109,12 @@
         <input class="input" placeholder="请输入孩子年龄" name="age" type="number"></input>
       </view>
       
+      <!-- 年级 -->
+      <view class="form-row">
+        <view class="label">年级：</view>
+        <input class="input" placeholder="请输入孩子年级" name="grade"></input>
+      </view>
+      
       <!-- 性别 -->
       <view class="form-row">
         <view class="label">性别：</view>
@@ -118,9 +124,9 @@
         </radio-group>
       </view>
 
-      <!-- 性格爱好 -->
+      <!-- 性格爱好（选填） -->
       <view class="form-row">
-        <view class="label">性格爱好：</view>
+        <view class="label">性格爱好（选填）：</view>
         <input class="input" placeholder="简述性格与爱好" name="hobby"></input>
       </view>
 

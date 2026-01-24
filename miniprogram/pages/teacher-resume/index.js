@@ -360,62 +360,128 @@ Page({
     })
   },
 
+  // 上传单个图片到云存储
+  uploadImage: function (tempFilePath, cloudPath) {
+    return new Promise((resolve, reject) => {
+      // 如果已经是 cloud:// 格式，直接返回
+      if (tempFilePath.startsWith('cloud://')) {
+        resolve(tempFilePath)
+        return
+      }
+
+      wx.cloud.uploadFile({
+        cloudPath: cloudPath,
+        filePath: tempFilePath,
+        success: res => resolve(res.fileID),
+        fail: err => reject(err)
+      })
+    })
+  },
+
+  // 批量上传图片
+  uploadAllImages: async function () {
+    const timestamp = Date.now()
+    const uploads = []
+
+    // 上传头像
+    if (this.data.basicInfo.avatar && !this.data.basicInfo.avatar.startsWith('cloud://')) {
+      uploads.push(
+        this.uploadImage(this.data.basicInfo.avatar, `teacher-avatars/${timestamp}_avatar.jpg`)
+          .then(fileId => { this.data.basicInfo.avatar = fileId })
+      )
+    }
+
+    // 上传证书图片
+    for (let i = 0; i < this.data.certificates.length; i++) {
+      const cert = this.data.certificates[i]
+      if (cert.image && !cert.image.startsWith('cloud://')) {
+        uploads.push(
+          this.uploadImage(cert.image, `teacher-certificates/${timestamp}_cert_${i}.jpg`)
+            .then(fileId => { this.data.certificates[i].image = fileId })
+        )
+      }
+    }
+
+    // 上传相册图片
+    for (let i = 0; i < this.data.photos.length; i++) {
+      const photo = this.data.photos[i]
+      if (photo && !photo.startsWith('cloud://')) {
+        uploads.push(
+          this.uploadImage(photo, `teacher-photos/${timestamp}_photo_${i}.jpg`)
+            .then(fileId => { this.data.photos[i] = fileId })
+        )
+      }
+    }
+
+    await Promise.all(uploads)
+  },
+
   // 保存简历
-  // 保存简历
-  saveResume: function () {
+  saveResume: async function () {
     if (!this.validateForm()) return
 
     this.setData({ saving: true })
 
-    const db = wx.cloud.database()
-    const data = {
-      name: this.data.basicInfo.name,
-      avatar: this.data.basicInfo.avatar,
-      gender: this.data.basicInfo.gender,
-      introduction: this.data.basicInfo.introduction,
-      birthDate: this.data.basicInfo.birthDate,
-      phone: this.data.basicInfo.phone,
-      idCard: this.data.basicInfo.idCard,
-      education: this.data.basicInfo.education,
-      major: this.data.basicInfo.major,
+    try {
+      // 先上传所有图片到云存储
+      wx.showLoading({ title: '上传图片中...' })
+      await this.uploadAllImages()
+      wx.hideLoading()
 
-      serviceTypes: this.data.serviceInfo.serviceTypes,
-      serviceAreas: this.data.serviceInfo.serviceAreas,
-      serviceTime: this.data.serviceInfo.serviceTime,
-      price: Number(this.data.serviceInfo.pricePerHour),
-      priceUnit: '小时',
+      wx.showLoading({ title: '保存中...' })
 
-      certificates: this.data.certificates,
-      workExperience: this.data.workExperience,
-      photos: this.data.photos,
+      const db = wx.cloud.database()
+      const data = {
+        name: this.data.basicInfo.name,
+        avatar: this.data.basicInfo.avatar,
+        gender: this.data.basicInfo.gender,
+        introduction: this.data.basicInfo.introduction,
+        birthDate: this.data.basicInfo.birthDate,
+        phone: this.data.basicInfo.phone,
+        idCard: this.data.basicInfo.idCard,
+        education: this.data.basicInfo.education,
+        major: this.data.basicInfo.major,
 
-      status: 'pending',
-      updateTime: db.serverDate()
-    }
+        serviceTypes: this.data.serviceInfo.serviceTypes,
+        serviceAreas: this.data.serviceInfo.serviceAreas,
+        serviceTime: this.data.serviceInfo.serviceTime,
+        price: Number(this.data.serviceInfo.pricePerHour),
+        priceUnit: '小时',
 
-    db.collection('teachers').where({
-      _openid: '{openid}'
-    }).get().then(res => {
+        certificates: this.data.certificates,
+        workExperience: this.data.workExperience,
+        photos: this.data.photos,
+
+        status: 'pending',
+        updateTime: db.serverDate()
+      }
+
+      const res = await db.collection('teachers').where({
+        _openid: '{openid}'
+      }).get()
+
       if (res.data.length > 0) {
         const id = res.data[0]._id
-        return db.collection('teachers').doc(id).update({ data: data })
+        await db.collection('teachers').doc(id).update({ data: data })
       } else {
-        return db.collection('teachers').add({
+        await db.collection('teachers').add({
           data: { ...data, createTime: db.serverDate(), orderCount: 0, rating: 5.0 }
         })
       }
-    }).then(() => {
+
+      wx.hideLoading()
       this.setData({
         saving: false,
         status: 'pending',
         statusText: '审核中'
       })
       wx.showToast({ title: '提交成功，等待审核', icon: 'success' })
-    }).catch(err => {
+    } catch (err) {
       console.error('保存失败', err)
+      wx.hideLoading()
       this.setData({ saving: false })
-      wx.showToast({ title: '提交失败', icon: 'none' })
-    })
+      wx.showToast({ title: '提交失败: ' + (err.errMsg || '未知错误'), icon: 'none' })
+    }
   },
 
   // 验证表单

@@ -10,7 +10,29 @@ exports.main = async (event, context) => {
         const result = await db.collection('case').doc(id).get()
         let data = result.data
 
-        // 收集 fileId
+        // 如果案例中的老师头像为空、不存在、或者是已过期的临时链接，尝试从 teachers 集合获取
+        if (data.teacher && data.teacher.id) {
+            // 检测是否需要重新获取头像：
+            // 1. 头像为空
+            // 2. 头像是旧的临时链接（包含 tcb.qcloud.la 但不是 cloud:// 格式）
+            const avatar = data.teacher.avatar || ''
+            const isExpiredTempUrl = avatar.includes('tcb.qcloud.la') && !avatar.startsWith('cloud://')
+            const needFetchAvatar = !avatar || isExpiredTempUrl
+
+            if (needFetchAvatar) {
+                try {
+                    const teacherRes = await db.collection('teachers').doc(data.teacher.id).get()
+                    if (teacherRes.data && teacherRes.data.avatar) {
+                        data.teacher.avatar = teacherRes.data.avatar
+                        console.log('从 teachers 集合获取头像:', data.teacher.avatar)
+                    }
+                } catch (e) {
+                    console.warn('获取老师信息失败:', e.message)
+                }
+            }
+        }
+
+        // 收集 fileId（封面、图片、老师头像）
         let fileIds = []
         if (data.cover && data.cover.startsWith('cloud://')) {
             fileIds.push(data.cover)
@@ -21,6 +43,10 @@ exports.main = async (event, context) => {
                     fileIds.push(img)
                 }
             })
+        }
+        // 老师头像
+        if (data.teacher && data.teacher.avatar && data.teacher.avatar.startsWith('cloud://')) {
+            fileIds.push(data.teacher.avatar)
         }
 
         // 去重
@@ -40,10 +66,11 @@ exports.main = async (event, context) => {
                 }
             })
 
-            // 替换
+            // 替换封面
             if (data.cover && data.cover.startsWith('cloud://') && urlMap[data.cover]) {
                 data.cover = urlMap[data.cover]
             }
+            // 替换图片
             if (data.images && Array.isArray(data.images)) {
                 data.images = data.images.map(img => {
                     if (img && img.startsWith('cloud://') && urlMap[img]) {
@@ -51,6 +78,10 @@ exports.main = async (event, context) => {
                     }
                     return img
                 })
+            }
+            // 替换老师头像
+            if (data.teacher && data.teacher.avatar && urlMap[data.teacher.avatar]) {
+                data.teacher.avatar = urlMap[data.teacher.avatar]
             }
         }
 
@@ -63,7 +94,7 @@ exports.main = async (event, context) => {
         console.error('获取案例详情失败', err)
         return {
             success: false,
-            error: err
+            error: err.message || err
         }
     }
 }

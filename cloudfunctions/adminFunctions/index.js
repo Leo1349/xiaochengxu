@@ -266,10 +266,22 @@ async function handleGetTeachers(data) {
 
     let teacherList = listRes.data
 
-    // 收集所有需要转换的 cloud:// 头像链接
-    const fileIdsToRefresh = teacherList
-        .map(item => item.avatar)
-        .filter(avatar => avatar && avatar.startsWith('cloud://'))
+    // 收集所有需要转换的 cloud:// 图片链接（头像 + 相册）
+    const fileIdsToRefresh = []
+    teacherList.forEach(item => {
+        // 头像
+        if (item.avatar && item.avatar.startsWith('cloud://')) {
+            fileIdsToRefresh.push(item.avatar)
+        }
+        // 相册图片
+        if (item.photos && Array.isArray(item.photos)) {
+            item.photos.forEach(photo => {
+                if (photo && photo.startsWith('cloud://')) {
+                    fileIdsToRefresh.push(photo)
+                }
+            })
+        }
+    })
 
     // 去重并批量获取临时链接
     const uniqueFileIds = [...new Set(fileIdsToRefresh)]
@@ -288,16 +300,34 @@ async function handleGetTeachers(data) {
                     }
                 })
 
-                // 更新老师列表中的头像链接
+                // 更新老师列表中的头像和相册链接
                 teacherList = teacherList.map(item => {
-                    if (item.avatar && item.avatar.startsWith('cloud://') && urlMap.has(item.avatar)) {
-                        return { ...item, avatar: urlMap.get(item.avatar) }
+                    const newItem = { ...item }
+
+                    // 保存原始 fileId，用于后台编辑时保存
+                    if (newItem.avatar && newItem.avatar.startsWith('cloud://')) {
+                        newItem.avatarFileId = newItem.avatar  // 保留原始 fileId
+                        if (urlMap.has(newItem.avatar)) {
+                            newItem.avatar = urlMap.get(newItem.avatar)  // 替换为临时链接
+                        }
                     }
-                    return item
+
+                    // 替换相册图片，同时保留原始 fileId
+                    if (newItem.photos && Array.isArray(newItem.photos)) {
+                        newItem.photoFileIds = [...newItem.photos]  // 保留原始 fileId 列表
+                        newItem.photos = newItem.photos.map(photo => {
+                            if (photo && photo.startsWith('cloud://') && urlMap.has(photo)) {
+                                return urlMap.get(photo)
+                            }
+                            return photo
+                        })
+                    }
+
+                    return newItem
                 })
             }
         } catch (err) {
-            console.warn('刷新老师头像链接失败:', err.message)
+            console.warn('刷新老师图片链接失败:', err.message)
             // 刷新失败不影响返回原数据
         }
     }
@@ -316,7 +346,8 @@ async function handleGetTeachers(data) {
 async function handleAddTeacher(data) {
     const {
         name, gender, avatar, title, price, tags, introduction,
-        education, experience, serviceTime, serviceArea, isRecommended
+        education, experience, serviceTime, serviceArea, isRecommended,
+        photos  // 相册图片
     } = data
 
     if (!name) {
@@ -337,7 +368,7 @@ async function handleAddTeacher(data) {
         experience: experience || '',
         serviceTime: serviceTime || '',
         serviceArea: serviceArea || '',
-        photos: [],
+        photos: photos || [],  // 保存相册图片
         isRecommended: isRecommended || false,
         createTime: db.serverDate(),
         updateTime: db.serverDate()
@@ -677,13 +708,17 @@ async function handleGetCases(data) {
                     caseList = caseList.map(item => {
                         const newItem = { ...item }
 
-                        // 替换封面
-                        if (newItem.cover && newItem.cover.startsWith('cloud://') && urlMap.has(newItem.cover)) {
-                            newItem.cover = urlMap.get(newItem.cover)
+                        // 保存原始封面 fileId，用于后台编辑时保存
+                        if (newItem.cover && newItem.cover.startsWith('cloud://')) {
+                            newItem.coverFileId = newItem.cover  // 保留原始 fileId
+                            if (urlMap.has(newItem.cover)) {
+                                newItem.cover = urlMap.get(newItem.cover)  // 替换为临时链接
+                            }
                         }
 
-                        // 替换相册图片
+                        // 替换相册图片，同时保留原始 fileId
                         if (newItem.images && Array.isArray(newItem.images)) {
+                            newItem.imageFileIds = [...newItem.images]  // 保留原始 fileId 列表
                             newItem.images = newItem.images.map(img => {
                                 if (img && img.startsWith('cloud://') && urlMap.has(img)) {
                                     return urlMap.get(img)
@@ -730,7 +765,7 @@ async function handleGetCases(data) {
 async function handleAddCase(data) {
     const {
         title, category, categoryName, cover,
-        teacherId, teacherName, teacherAvatar, teacherTitle, // 老师信息
+        teacherId, teacherName, teacherAvatar, teacher, // 支持新旧两种格式
         studentGrade, studentAge, studentGender, // 学生信息
         serviceType, serviceDuration, serviceFrequency, // 服务信息
         contentBackground, contentProblem, contentSolution, contentResult, // 详细内容
@@ -745,18 +780,23 @@ async function handleAddCase(data) {
     try { await db.createCollection('case') } catch (e) { }
 
     // 构造案例数据结构
+    // NOTE: 优先使用新格式的 teacher 对象，否则使用旧的扁平字段
+    const teacherData = teacher ? {
+        id: teacher.id,
+        name: teacher.name || '',
+        avatar: teacher.avatar || ''
+    } : {
+        id: teacherId,
+        name: teacherName || '',
+        avatar: teacherAvatar || ''
+    }
+
     const caseData = {
         title,
         category,
-        categoryName: categoryName || category, // 简单处理
+        categoryName: categoryName || category,
         cover,
-
-        teacher: {
-            id: teacherId,
-            name: teacherName || '',
-            avatar: teacherAvatar || '',
-            title: teacherTitle || ''
-        },
+        teacher: teacherData,
 
         student: {
             grade: studentGrade || '',
@@ -805,13 +845,20 @@ async function handleUpdateCase(data) {
     if (rawData.categoryName) updateData.categoryName = rawData.categoryName
     if (rawData.cover) updateData.cover = rawData.cover
 
-    // 老师信息更新
-    if (rawData.teacherId || rawData.teacherName) {
+    // 老师信息更新 - 支持新旧两种格式
+    if (rawData.teacher) {
+        // 新格式：直接传递 teacher 对象
+        updateData.teacher = {
+            id: rawData.teacher.id,
+            name: rawData.teacher.name,
+            avatar: rawData.teacher.avatar
+        }
+    } else if (rawData.teacherId || rawData.teacherName) {
+        // 旧格式：使用扁平字段
         updateData.teacher = {
             id: rawData.teacherId,
             name: rawData.teacherName,
-            avatar: rawData.teacherAvatar,
-            title: rawData.teacherTitle
+            avatar: rawData.teacherAvatar
         }
     }
 

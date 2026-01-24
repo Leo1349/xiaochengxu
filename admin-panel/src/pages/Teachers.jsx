@@ -20,6 +20,8 @@ function Teachers() {
     const [form] = Form.useForm()
     const [uploading, setUploading] = useState(false)
     const [avatarUrl, setAvatarUrl] = useState('')
+    const [photoList, setPhotoList] = useState([])  // 相册图片列表
+    const [photoUploading, setPhotoUploading] = useState(false)  // 相册上传状态
 
     useEffect(() => {
         fetchTeachers()
@@ -42,9 +44,11 @@ function Teachers() {
         try {
             const res = await api.uploadImage(file)
             if (res.success) {
-                const url = res.data.url
+                const url = res.data.url       // 临时链接用于显示
+                const fileId = res.data.fileId // 云存储永久ID用于保存
                 setAvatarUrl(url)
-                form.setFieldsValue({ avatar: url })
+                // NOTE: 保存 fileId 到表单，这样云函数可以重新获取临时链接
+                form.setFieldsValue({ avatar: fileId })
                 onSuccess(res)
                 message.success('头像上传成功')
             } else {
@@ -59,10 +63,49 @@ function Teachers() {
         }
     }
 
+    // 相册图片上传处理
+    const handlePhotoUpload = async (options) => {
+        const { file, onSuccess, onError } = options
+        setPhotoUploading(true)
+
+        try {
+            const res = await api.uploadImage(file)
+            if (res.success) {
+                const url = res.data.url
+                const fileId = res.data.fileId  // 云存储永久ID
+                const newPhoto = {
+                    uid: Date.now().toString(),
+                    name: file.name,
+                    status: 'done',
+                    url: url,  // 用于显示
+                    fileId: fileId  // 用于保存到数据库
+                }
+                setPhotoList(prev => [...prev, newPhoto])
+                onSuccess(res)
+                message.success('图片上传成功')
+            } else {
+                onError(new Error(res.error))
+                message.error(res.error || '上传失败')
+            }
+        } catch (error) {
+            onError(error)
+            message.error('上传失败')
+        } finally {
+            setPhotoUploading(false)
+        }
+    }
+
+    // 移除相册图片
+    const handlePhotoRemove = (file) => {
+        setPhotoList(prev => prev.filter(item => item.uid !== file.uid))
+        return true
+    }
+
     const handleAdd = () => {
         setEditingTeacher(null)
         form.resetFields()
         setAvatarUrl('')
+        setPhotoList([])
         setModalVisible(true)
     }
 
@@ -70,9 +113,24 @@ function Teachers() {
         setEditingTeacher(record)
         form.setFieldsValue({
             ...record,
-            tags: record.tags || []
+            tags: record.tags || [],
+            // NOTE: 使用原始的 fileId（cloud:// 格式）保存到表单
+            avatar: record.avatarFileId || record.avatar
         })
-        setAvatarUrl(record.avatar || '')
+        setAvatarUrl(record.avatar || '')  // 显示用临时链接
+
+        // 加载已有相册图片
+        // NOTE: 使用 photoFileIds（原始 cloud:// 格式）用于保存，photos（临时链接）用于显示
+        const fileIds = record.photoFileIds || record.photos || []
+        const displayUrls = record.photos || []
+        const existingPhotos = displayUrls.map((photoUrl, index) => ({
+            uid: `existing-${index}`,
+            name: `photo-${index}`,
+            status: 'done',
+            url: photoUrl,  // 显示用（临时链接）
+            fileId: fileIds[index] || photoUrl  // 保存用（原始 fileId）
+        }))
+        setPhotoList(existingPhotos)
         setModalVisible(true)
     }
 
@@ -89,6 +147,9 @@ function Teachers() {
     const handleSubmit = async () => {
         try {
             const values = await form.validateFields()
+            // NOTE: 保存 fileId（云存储永久ID）而不是临时 URL
+            // 如果有 fileId 则使用，否则使用 url（兼容旧数据）
+            values.photos = photoList.map(item => item.fileId || item.url)
 
             if (editingTeacher) {
                 const res = await api.updateTeacher({ _id: editingTeacher._id, ...values })
@@ -149,11 +210,7 @@ function Teachers() {
             dataIndex: 'name',
             width: 100
         },
-        {
-            title: '头衔',
-            dataIndex: 'title',
-            width: 120
-        },
+
         {
             title: '标签',
             dataIndex: 'tags',
@@ -306,9 +363,6 @@ function Teachers() {
                             </Select>
                         </Form.Item>
 
-                        <Form.Item name="title" label="头衔" style={{ width: 200 }}>
-                            <Input placeholder="如：专业陪伴师" />
-                        </Form.Item>
                     </Space>
 
                     <Form.Item
@@ -346,6 +400,31 @@ function Teachers() {
 
                     <Form.Item name="serviceArea" label="服务区域">
                         <Input placeholder="如：北京市海淀区、朝阳区" />
+                    </Form.Item>
+
+                    {/* 相册上传 */}
+                    <div style={{ marginBottom: 16, marginTop: 24, fontWeight: 'bold', borderBottom: '1px solid #eee', paddingBottom: 8 }}>
+                        相册管理
+                    </div>
+
+                    <Form.Item label="相册图片" extra="支持上传多张图片，用于展示老师的工作照、证书等">
+                        <Upload
+                            listType="picture-card"
+                            fileList={photoList}
+                            customRequest={handlePhotoUpload}
+                            onRemove={handlePhotoRemove}
+                            accept="image/*"
+                            multiple
+                        >
+                            {photoList.length >= 9 ? null : (
+                                <div>
+                                    {photoUploading ? <LoadingOutlined /> : <PlusOutlined />}
+                                    <div style={{ marginTop: 8 }}>
+                                        {photoUploading ? '上传中...' : '上传图片'}
+                                    </div>
+                                </div>
+                            )}
+                        </Upload>
                     </Form.Item>
 
                     <Form.Item name="isRecommended" label="首页推荐" valuePropName="checked">

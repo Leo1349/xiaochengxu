@@ -40,8 +40,19 @@ Page({
       }
     }).then(res => {
       if (res.result.success) {
+        let caseInfo = res.result.data
+
+        // 确保 teacher 对象存在
+        if (!caseInfo.teacher) {
+          caseInfo.teacher = { name: '未知老师', avatar: '' }
+        }
+
+        // 调试日志
+        console.log('案例详情 - teacher:', caseInfo.teacher)
+        console.log('案例详情 - avatar:', caseInfo.teacher.avatar)
+
         this.setData({
-          caseInfo: res.result.data,
+          caseInfo: caseInfo,
           loading: false
         })
       } else {
@@ -166,8 +177,13 @@ Page({
 
   // 查看陪伴师详情
   viewTeacherDetail: function () {
+    const teacher = this.data.caseInfo?.teacher
+    if (!teacher || !teacher.id) {
+      wx.showToast({ title: '暂无老师信息', icon: 'none' })
+      return
+    }
     wx.navigateTo({
-      url: '/pages/teacher-detail/index?id=' + this.data.caseInfo.teacher.id
+      url: '/pages/teacher-detail/index?id=' + teacher.id
     })
   },
 

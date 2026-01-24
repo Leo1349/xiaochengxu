@@ -108,12 +108,22 @@
 }
 
 .section-title {
-  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  font-size: 30rpx;
   font-weight: 600;
   color: #333333;
-  margin-bottom: 24rpx;
-  padding-left: 16rpx;
-  border-left: 6rpx solid #4A90E2;
+  margin-bottom: 16rpx;
+}
+
+.section-title::before {
+  content: '';
+  display: inline-block;
+  width: 6rpx;
+  height: 28rpx;
+  background-color: #4A90E2;
+  border-radius: 3rpx;
 }
 
 .info-grid {

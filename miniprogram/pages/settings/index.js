@@ -71,29 +71,72 @@ Page({
   },
 
   // 编辑头像
-  editAvatar: function () {
+  editAvatar: async function () {
     if (!this.data.isLoggedIn) {
       this.goToLogin()
       return
     }
 
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['compressed'],
-      sourceType: ['album', 'camera'],
-      success: (res) => {
-        const userInfo = this.data.userInfo
-        userInfo.avatarUrl = res.tempFilePaths[0]
-
-        this.setData({ userInfo })
-        wx.setStorageSync('userInfo', userInfo)
-
-        wx.showToast({
-          title: '头像已更新',
-          icon: 'success'
+    try {
+      const res = await new Promise((resolve, reject) => {
+        wx.chooseImage({
+          count: 1,
+          sizeType: ['compressed'],
+          sourceType: ['album', 'camera'],
+          success: resolve,
+          fail: reject
         })
+      })
+
+      const tempFilePath = res.tempFilePaths[0]
+
+      // 上传到云存储
+      wx.showLoading({ title: '上传中...' })
+      const timestamp = Date.now()
+      const uploadRes = await wx.cloud.uploadFile({
+        cloudPath: `user-avatars/${timestamp}_avatar.jpg`,
+        filePath: tempFilePath
+      })
+
+      const fileId = uploadRes.fileID
+
+      // 获取临时链接用于显示
+      const tempUrlRes = await wx.cloud.getTempFileURL({
+        fileList: [fileId]
+      })
+      const displayUrl = tempUrlRes.fileList[0]?.tempFileURL || tempFilePath
+
+      // 更新本地状态
+      const userInfo = { ...this.data.userInfo }
+      userInfo.avatarUrl = displayUrl
+      userInfo.avatarFileId = fileId  // 保存 fileId 用于后续同步
+
+      this.setData({ userInfo })
+      wx.setStorageSync('userInfo', userInfo)
+
+      // 同步到数据库
+      const db = wx.cloud.database()
+      await db.collection('users').where({
+        _openid: '{openid}'
+      }).update({
+        data: {
+          avatarUrl: fileId,  // 保存 fileId 到数据库
+          updateTime: db.serverDate()
+        }
+      })
+
+      wx.hideLoading()
+      wx.showToast({
+        title: '头像已更新',
+        icon: 'success'
+      })
+    } catch (err) {
+      console.error('更新头像失败', err)
+      wx.hideLoading()
+      if (err.errMsg !== 'chooseImage:fail cancel') {
+        wx.showToast({ title: '更新失败', icon: 'none' })
       }
-    })
+    }
   },
 
   // 编辑昵称

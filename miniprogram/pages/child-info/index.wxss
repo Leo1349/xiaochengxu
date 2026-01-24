@@ -99,18 +99,25 @@
 
 .child-actions {
   display: flex;
-  align-items: center;
-  gap: 16rpx;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12rpx;
 }
 
-.action-icon {
-  width: 40rpx;
-  height: 40rpx;
-  opacity: 0.5;
+.action-text {
+  font-size: 24rpx;
+  padding: 8rpx 20rpx;
+  border-radius: 8rpx;
 }
 
-.action-icon.delete {
-  opacity: 0.4;
+.action-text.edit {
+  color: #3D7EFF;
+  background-color: #E6F3FF;
+}
+
+.action-text.delete {
+  color: #FF4D4F;
+  background-color: #FFF1F0;
 }
 
 /* 孩子详情信息 */

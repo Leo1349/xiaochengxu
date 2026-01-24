@@ -14,10 +14,9 @@
 
   <!-- 陪伴师信息 -->
   <view class="teacher-section" bindtap="viewTeacherDetail">
-    <image class="teacher-avatar" src="{{caseInfo.teacher.avatar}}" mode="aspectFill"></image>
+    <image class="teacher-avatar" src="{{caseInfo.teacher.avatar || '/images/avatars/teacher-male-default.png'}}" mode="aspectFill"></image>
     <view class="teacher-info">
       <text class="teacher-name">{{caseInfo.teacher.name}}</text>
-      <text class="teacher-title">{{caseInfo.teacher.title}}</text>
     </view>
     <text class="arrow-icon">›</text>
   </view>
@@ -48,34 +47,22 @@
   <!-- 案例详情 -->
   <view class="content-section">
     <view class="content-block">
-      <view class="block-title">
-        <view class="title-icon"></view>
-        <text>背景介绍</text>
-      </view>
+      <view class="section-title">背景介绍</view>
       <text class="block-content">{{caseInfo.content.background}}</text>
     </view>
     
     <view class="content-block">
-      <view class="block-title">
-        <view class="title-icon"></view>
-        <text>问题分析</text>
-      </view>
+      <view class="section-title">问题分析</view>
       <text class="block-content">{{caseInfo.content.problem}}</text>
     </view>
     
     <view class="content-block">
-      <view class="block-title">
-        <view class="title-icon"></view>
-        <text>解决方案</text>
-      </view>
+      <view class="section-title">解决方案</view>
       <text class="block-content">{{caseInfo.content.solution}}</text>
     </view>
     
     <view class="content-block">
-      <view class="block-title">
-        <view class="title-icon"></view>
-        <text>成果展示</text>
-      </view>
+      <view class="section-title">成果展示</view>
       <text class="block-content">{{caseInfo.content.result}}</text>
     </view>
   </view>

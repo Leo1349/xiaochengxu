@@ -21,8 +21,8 @@
           <text class="child-age">{{item.age}}岁 | {{item.grade}}</text>
         </view>
         <view class="child-actions">
-          <image class="action-icon" src="/images/icons/copy.png" mode="aspectFit" data-id="{{item.id}}" bindtap="showEditModal"></image>
-          <image class="action-icon delete" src="/images/icons/close.png" mode="aspectFit" data-id="{{item.id}}" bindtap="deleteChild"></image>
+          <text class="action-text edit" data-id="{{item.id}}" bindtap="showEditModal">编辑</text>
+          <text class="action-text delete" data-id="{{item.id}}" bindtap="deleteChild">删除</text>
         </view>
       </view>
       
