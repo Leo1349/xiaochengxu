@@ -321,11 +321,10 @@ Page({
     })
   },
 
-  // 联系陪伴师/家长
+  // 联系客服
   contactUser: function (e) {
-    const id = e.currentTarget.dataset.id
     wx.navigateTo({
-      url: '/pages/chat/index?orderId=' + id
+      url: '/pages/customer-service/index'
     })
   }
 })

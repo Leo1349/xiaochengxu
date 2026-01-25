@@ -67,11 +67,11 @@
           <!-- 家长端操作 -->
           <block wx:if="{{currentRole === 'parent'}}">
             <button class="action-btn default" wx:if="{{item.status === 'pending'}}" data-id="{{item.id}}" catchtap="cancelOrder">取消订单</button>
-            <button class="action-btn primary" wx:if="{{item.status === 'pending'}}" data-id="{{item.id}}" catchtap="contactUser">联系老师</button>
+            <button class="action-btn primary" wx:if="{{item.status === 'pending'}}" data-id="{{item.id}}" catchtap="contactUser">联系客服</button>
             
-            <button class="action-btn primary" wx:if="{{item.status === 'confirmed'}}" data-id="{{item.id}}" catchtap="contactUser">联系老师</button>
+            <button class="action-btn primary" wx:if="{{item.status === 'confirmed'}}" data-id="{{item.id}}" catchtap="contactUser">联系客服</button>
             
-            <button class="action-btn primary" wx:if="{{item.status === 'ongoing'}}" data-id="{{item.id}}" catchtap="contactUser">联系老师</button>
+            <button class="action-btn primary" wx:if="{{item.status === 'ongoing'}}" data-id="{{item.id}}" catchtap="contactUser">联系客服</button>
             
             <button class="action-btn default" wx:if="{{item.status === 'completed' && !item.hasReviewed}}" data-id="{{item.id}}" catchtap="goToReview">去评价</button>
             <button class="action-btn primary" wx:if="{{item.status === 'completed'}}" data-id="{{item.id}}" catchtap="reBook">再次预约</button>

@@ -60,11 +60,17 @@ Page({
   loadOrderDetail: function (id) {
     this.setData({ loading: true })
 
-    // 从数据库获取订单详情
-    const db = wx.cloud.database()
-    db.collection('orders').doc(id).get().then(res => {
+    // 调用云函数获取订单详情
+    wx.cloud.callFunction({
+      name: 'getOrderDetail',
+      data: { orderId: id }
+    }).then(res => {
+      if (!res.result.success) {
+        // 拼接详细错误信息
+        throw new Error(res.result.error + (res.result.msg ? ': ' + res.result.msg : ''))
+      }
       console.log('获取订单详情:', res)
-      const orderData = res.data
+      const orderData = res.result.data
 
       // 映射订单状态文本
       const statusTextMap = {
@@ -140,7 +146,12 @@ Page({
     }).catch(err => {
       console.error('获取订单详情失败:', err)
       this.setData({ loading: false })
-      wx.showToast({ title: '获取订单失败', icon: 'none' })
+      // 显示详细错误信息，方便调试
+      wx.showModal({
+        title: '获取失败',
+        content: '错误信息: ' + (err.message || JSON.stringify(err)),
+        showCancel: false
+      })
     })
   },
 
