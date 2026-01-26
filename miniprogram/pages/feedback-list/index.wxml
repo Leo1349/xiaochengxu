@@ -1,0 +1,36 @@
+<!--pages/feedback-list/index.wxml-->
+<view class="container">
+  <view class="feedback-list" wx:if="{{feedbacks.length > 0}}">
+    <view class="feedback-item" wx:for="{{feedbacks}}" wx:key="_id">
+      <view class="header">
+        <text class="time">{{item.timeFormatted}}</text>
+        <view class="status {{item.status}}">{{statusMap[item.status] || '待处理'}}</view>
+      </view>
+      
+      <view class="content">
+        <view class="type-tag">{{typeMap[item.type] || '其他'}}</view>
+        <text class="text">{{item.content}}</text>
+      </view>
+
+      <view class="images" wx:if="{{item.images && item.images.length > 0}}">
+        <image 
+          wx:for="{{item.images}}" 
+          wx:for-item="img" 
+          wx:key="*this"
+          src="{{img}}" 
+          mode="aspectFill"
+          data-urls="{{item.images}}"
+          data-current="{{img}}"
+          bindtap="previewImage"
+        ></image>
+      </view>
+    </view>
+    <view class="loading" wx:if="{{loading}}">加载中...</view>
+    <view class="no-more" wx:if="{{!hasMore && !loading}}">没有更多了</view>
+  </view>
+
+  <view class="empty-state" wx:elif="{{!loading}}">
+    <image src="/images/empty/no_message.png" mode="aspectFit"></image>
+    <text>您还没有提交过反馈反馈哦</text>
+  </view>
+</view>

@@ -17,6 +17,7 @@
     "pages/favorite/index",
     "pages/customer-service/index",
     "pages/feedback/index",
+    "pages/feedback-list/index",
     "pages/settings/index",
     "pages/chat/index",
     "pages/search/index",

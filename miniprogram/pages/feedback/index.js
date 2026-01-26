@@ -183,17 +183,19 @@ Page({
 
       wx.showLoading({ title: '提交中...' })
 
-      const db = wx.cloud.database()
-      await db.collection('feedbacks').add({
+      const res = await wx.cloud.callFunction({
+        name: 'submitFeedback',
         data: {
           type: this.data.selectedType,
           content: this.data.content,
           contact: this.data.contact,
-          images: uploadedImages,
-          status: 'pending',
-          createTime: db.serverDate()
+          images: uploadedImages
         }
       })
+
+      if (!res.result.success) {
+        throw new Error(res.result.error || '提交失败')
+      }
 
       wx.hideLoading()
       this.setData({ submitting: false })
@@ -208,9 +210,13 @@ Page({
       })
     } catch (err) {
       console.error('提交失败', err)
-      wx.hideLoading()
-      this.setData({ submitting: false })
       wx.showToast({ title: '提交失败', icon: 'none' })
     }
+  },
+
+  goToHistory: function () {
+    wx.navigateTo({
+      url: '/pages/feedback-list/index'
+    })
   }
 })

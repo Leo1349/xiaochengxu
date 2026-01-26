@@ -608,24 +608,91 @@ async function handleGetFeedbacks(data) {
         query.status = status
     }
 
-    const [countRes, listRes] = await Promise.all([
-        db.collection('feedbacks').where(query).count(),
-        db.collection('feedbacks')
-            .where(query)
-            .orderBy('createTime', 'desc')
-            .skip(skip)
-            .limit(pageSize)
-            .get()
-    ])
+    try {
+        const [countRes, listRes] = await Promise.all([
+            db.collection('feedbacks').where(query).count(),
+            db.collection('feedbacks')
+                .where(query)
+                .orderBy('createTime', 'desc')
+                .skip(skip)
+                .limit(pageSize)
+                .get()
+        ])
 
-    return {
-        success: true,
-        data: {
-            list: listRes.data,
-            total: countRes.total,
-            page,
-            pageSize
+        let feedbackList = listRes.data
+
+        // 收集所有需要转换的 cloud:// 图片链接
+        const fileIdsToRefresh = []
+        feedbackList.forEach(item => {
+            if (item.images && Array.isArray(item.images)) {
+                item.images.forEach(img => {
+                    if (img && img.startsWith('cloud://')) {
+                        fileIdsToRefresh.push(img)
+                    }
+                })
+            }
+        })
+
+        // 去重并批量获取临时链接
+        const uniqueFileIds = [...new Set(fileIdsToRefresh)]
+        if (uniqueFileIds.length > 0) {
+            try {
+                const refreshRes = await cloud.getTempFileURL({
+                    fileList: uniqueFileIds
+                })
+
+                if (refreshRes.fileList) {
+                    // 构建 fileId -> 新 URL 映射
+                    const urlMap = new Map()
+                    refreshRes.fileList.forEach(file => {
+                        if (file.tempFileURL && file.status === 0) {
+                            urlMap.set(file.fileID, file.tempFileURL)
+                        }
+                    })
+
+                    // 更新反馈列表中的图片链接
+                    feedbackList = feedbackList.map(item => {
+                        const newItem = { ...item }
+                        if (newItem.images && Array.isArray(newItem.images)) {
+                            newItem.images = newItem.images.map(img => {
+                                if (img && img.startsWith('cloud://') && urlMap.has(img)) {
+                                    return urlMap.get(img)
+                                }
+                                return img
+                            })
+                        }
+                        return newItem
+                    })
+                }
+            } catch (err) {
+                console.warn('刷新反馈图片链接失败:', err.message)
+                // 刷新失败不影响返回原数据
+            }
         }
+
+        return {
+            success: true,
+            data: {
+                list: feedbackList,
+                total: countRes.total,
+                page,
+                pageSize
+            }
+        }
+    } catch (err) {
+        // 集合不存在时返回空数据
+        if (err.code === 502005 || (err.message && err.message.indexOf('not exist') > -1)) {
+            return {
+                success: true,
+                data: {
+                    list: [],
+                    total: 0,
+                    page,
+                    pageSize
+                }
+            }
+        }
+        throw err
     }
 }
 

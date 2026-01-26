@@ -1,5 +1,24 @@
 /* pages/feedback/index.wxss - 智伴优程反馈页柔和精致风格 */
 
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 10rpx 20rpx;
+}
+
+.history-link {
+  font-size: 28rpx;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.history-link .arrow {
+  margin-left: 6rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+
 .container {
   min-height: 100vh;
   background-color: #FFF9F5;

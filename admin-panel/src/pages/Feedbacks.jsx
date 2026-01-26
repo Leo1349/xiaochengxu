@@ -23,35 +23,7 @@ const typeMap = {
 }
 
 // 模拟数据
-const mockFeedbacks = [
-    {
-        _id: '1',
-        type: 'suggestion',
-        content: '希望能增加更多的筛选条件，比如按照老师的专业领域筛选。',
-        images: [],
-        contact: '13800138001',
-        status: 'pending',
-        createTime: '2026-01-20 10:30:00'
-    },
-    {
-        _id: '2',
-        type: 'bug',
-        content: '在订单详情页，点击联系老师按钮没有反应，希望能修复这个问题。',
-        images: [],
-        contact: '',
-        status: 'processing',
-        createTime: '2026-01-19 15:20:00'
-    },
-    {
-        _id: '3',
-        type: 'complaint',
-        content: '上次预约的老师迟到了半小时，希望能有更好的服务保障。',
-        images: [],
-        contact: '13900139002',
-        status: 'resolved',
-        createTime: '2026-01-18 09:00:00'
-    }
-]
+
 
 function Feedbacks() {
     const [feedbacks, setFeedbacks] = useState([])
@@ -62,14 +34,25 @@ function Feedbacks() {
 
     useEffect(() => {
         fetchFeedbacks()
-    }, [])
+    }, [statusFilter])
 
     const fetchFeedbacks = async () => {
         setLoading(true)
-        setTimeout(() => {
-            setFeedbacks(mockFeedbacks)
-            setLoading(false)
-        }, 500)
+        try {
+            const res = await api.getFeedbacks({
+                page: 1,
+                pageSize: 100, // 获取更多以展示
+                status: statusFilter
+            })
+            if (res.success) {
+                setFeedbacks(res.data.list)
+            } else {
+                message.error(res.error || '获取反馈列表失败')
+            }
+        } catch (err) {
+            message.error('网络错误，请稍后重试')
+        }
+        setLoading(false)
     }
 
     const handleViewDetail = (record) => {
@@ -77,23 +60,27 @@ function Feedbacks() {
         setDetailVisible(true)
     }
 
-    const handleStatusChange = (id, newStatus) => {
-        setFeedbacks(feedbacks.map(f =>
-            f._id === id ? { ...f, status: newStatus } : f
-        ))
-        message.success('状态更新成功')
+    const handleStatusChange = async (id, newStatus) => {
+        try {
+            const res = await api.updateFeedbackStatus(id, newStatus)
+            if (res.success) {
+                setFeedbacks(feedbacks.map(f =>
+                    f._id === id ? { ...f, status: newStatus } : f
+                ))
+                message.success('状态更新成功')
 
-        if (currentFeedback?._id === id) {
-            setCurrentFeedback({ ...currentFeedback, status: newStatus })
+                if (currentFeedback?._id === id) {
+                    setCurrentFeedback({ ...currentFeedback, status: newStatus })
+                }
+            } else {
+                message.error(res.error || '状态更新失败')
+            }
+        } catch (err) {
+            message.error('操作失败，请重试')
         }
     }
 
-    const filteredFeedbacks = feedbacks.filter(f => {
-        if (statusFilter !== 'all' && f.status !== statusFilter) {
-            return false
-        }
-        return true
-    })
+
 
     const columns = [
         {
@@ -170,7 +157,7 @@ function Feedbacks() {
 
             <Table
                 columns={columns}
-                dataSource={filteredFeedbacks}
+                dataSource={feedbacks}
                 rowKey="_id"
                 loading={loading}
                 pagination={{ pageSize: 10, showTotal: (total) => `共 ${total} 条` }}

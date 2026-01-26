@@ -1,5 +1,13 @@
 <!--pages/feedback/index.wxml-->
 <view class="container">
+  <!-- 顶部导航栏 -->
+  <view class="top-bar">
+    <view class="history-link" bindtap="goToHistory">
+      <text>我的反馈记录</text>
+      <text class="arrow">></text>
+    </view>
+  </view>
+
   <!-- 反馈类型 -->
   <view class="section">
     <view class="section-title">反馈类型</view>
