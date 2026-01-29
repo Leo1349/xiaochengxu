@@ -211,15 +211,30 @@ Page({
       content: '确定要取消该订单吗？',
       success: (res) => {
         if (res.confirm) {
-          const order = this.data.order
-          order.status = 'cancelled'
-          order.statusText = '已取消'
-
-          this.setData({ order })
-
-          wx.showToast({
-            title: '订单已取消',
-            icon: 'success'
+          wx.showLoading({ title: '处理中' })
+          wx.cloud.callFunction({
+            name: 'updateOrder',
+            data: {
+              orderId: this.data.order.id, // Detail page 'id' is mapped from _id in loadOrderDetail
+              status: 'cancelled'
+            },
+            success: (cloudRes) => {
+              wx.hideLoading()
+              if (cloudRes.result.success) {
+                const order = this.data.order
+                order.status = 'cancelled'
+                order.statusText = '已取消'
+                this.setData({ order })
+                wx.showToast({ title: '订单已取消', icon: 'success' })
+              } else {
+                wx.showToast({ title: cloudRes.result.error || '取消失败', icon: 'none' })
+              }
+            },
+            fail: (err) => {
+              wx.hideLoading()
+              console.error('取消订单失败', err)
+              wx.showToast({ title: '网络错误', icon: 'none' })
+            }
           })
         }
       }
@@ -233,16 +248,30 @@ Page({
       content: '确定接受该订单吗？',
       success: (res) => {
         if (res.confirm) {
-          const order = this.data.order
-          order.status = 'confirmed'
-          order.statusText = '待服务'
-          order.confirmTime = this.formatTime(new Date())
-
-          this.setData({ order })
-
-          wx.showToast({
-            title: '已确认订单',
-            icon: 'success'
+          wx.showLoading({ title: '处理中' })
+          wx.cloud.callFunction({
+            name: 'updateOrder',
+            data: {
+              orderId: this.data.order.id,
+              status: 'confirmed'
+            },
+            success: (cloudRes) => {
+              wx.hideLoading()
+              if (cloudRes.result.success) {
+                const order = this.data.order
+                order.status = 'confirmed'
+                order.statusText = '待服务'
+                order.confirmTime = this.formatTime(new Date())
+                this.setData({ order })
+                wx.showToast({ title: '已确认订单', icon: 'success' })
+              } else {
+                wx.showToast({ title: cloudRes.result.error || '操作失败', icon: 'none' })
+              }
+            },
+            fail: (err) => {
+              wx.hideLoading()
+              wx.showToast({ title: '网络错误', icon: 'none' })
+            }
           })
         }
       }
@@ -251,16 +280,30 @@ Page({
 
   // 开始服务
   startService: function () {
-    const order = this.data.order
-    order.status = 'ongoing'
-    order.statusText = '进行中'
-    order.startTime = this.formatTime(new Date())
-
-    this.setData({ order })
-
-    wx.showToast({
-      title: '服务已开始',
-      icon: 'success'
+    wx.showLoading({ title: '处理中' })
+    wx.cloud.callFunction({
+      name: 'updateOrder',
+      data: {
+        orderId: this.data.order.id,
+        status: 'ongoing'
+      },
+      success: (cloudRes) => {
+        wx.hideLoading()
+        if (cloudRes.result.success) {
+          const order = this.data.order
+          order.status = 'ongoing'
+          order.statusText = '进行中'
+          order.startTime = this.formatTime(new Date())
+          this.setData({ order })
+          wx.showToast({ title: '服务已开始', icon: 'success' })
+        } else {
+          wx.showToast({ title: cloudRes.result.error || '操作失败', icon: 'none' })
+        }
+      },
+      fail: (err) => {
+        wx.hideLoading()
+        wx.showToast({ title: '网络错误', icon: 'none' })
+      }
     })
   },
 
@@ -271,16 +314,30 @@ Page({
       content: '确定完成该服务吗？',
       success: (res) => {
         if (res.confirm) {
-          const order = this.data.order
-          order.status = 'completed'
-          order.statusText = '已完成'
-          order.endTime = this.formatTime(new Date())
-
-          this.setData({ order })
-
-          wx.showToast({
-            title: '服务已完成',
-            icon: 'success'
+          wx.showLoading({ title: '处理中' })
+          wx.cloud.callFunction({
+            name: 'updateOrder',
+            data: {
+              orderId: this.data.order.id,
+              status: 'completed'
+            },
+            success: (cloudRes) => {
+              wx.hideLoading()
+              if (cloudRes.result.success) {
+                const order = this.data.order
+                order.status = 'completed'
+                order.statusText = '已完成'
+                order.endTime = this.formatTime(new Date())
+                this.setData({ order })
+                wx.showToast({ title: '服务已完成', icon: 'success' })
+              } else {
+                wx.showToast({ title: cloudRes.result.error || '操作失败', icon: 'none' })
+              }
+            },
+            fail: (err) => {
+              wx.hideLoading()
+              wx.showToast({ title: '网络错误', icon: 'none' })
+            }
           })
         }
       }
@@ -345,23 +402,41 @@ Page({
       return
     }
 
-    // 模拟提交
-    const order = this.data.order
-    order.review = {
+    // 提交评价
+    wx.showLoading({ title: '提交中' })
+    const review = {
       rating: this.data.reviewData.rating,
       content: this.data.reviewData.content,
       tags: this.data.reviewData.tags,
-      time: this.formatTime(new Date())
+      time: new Date()
     }
 
-    this.setData({
-      order: order,
-      showReviewModal: false
-    })
+    wx.cloud.callFunction({
+      name: 'updateOrder',
+      data: {
+        orderId: this.data.order.id,
+        review: review
+      },
+      success: (res) => {
+        wx.hideLoading()
+        if (res.result.success) {
+          const order = this.data.order
+          order.review = review
+          order.review.time = this.formatTime(new Date())
 
-    wx.showToast({
-      title: '评价成功',
-      icon: 'success'
+          this.setData({
+            order: order,
+            showReviewModal: false
+          })
+          wx.showToast({ title: '评价成功', icon: 'success' })
+        } else {
+          wx.showToast({ title: res.result.error || '评价失败', icon: 'none' })
+        }
+      },
+      fail: (err) => {
+        wx.hideLoading()
+        wx.showToast({ title: '网络错误', icon: 'none' })
+      }
     })
   },
 

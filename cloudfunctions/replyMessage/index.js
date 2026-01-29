@@ -55,12 +55,40 @@ exports.main = async (event, context) => {
     let reply = defaultReply
 
     for (const item of knowledgeBase) {
-        // 检查是否包含任一关键词
+        // 检查是否 எப்போதும்包含任一关键词
         const matched = item.keywords.some(keyword => content.includes(keyword))
         if (matched) {
             reply = item.answer
             break
         }
+    }
+
+    try {
+        // 保存用户消息
+        await db.collection('messages').add({
+            data: {
+                _openid: cloud.getWXContext().OPENID, // Ensure openid is set
+                content: content,
+                type: 'chat',
+                senderId: 'me',
+                isRead: true, // Sent by self, read
+                createTime: db.serverDate()
+            }
+        })
+
+        // 保存回复消息
+        await db.collection('messages').add({
+            data: {
+                _openid: cloud.getWXContext().OPENID, // Save under user's openid
+                content: reply,
+                type: 'chat',
+                senderId: 'system', // or teacher? for now system
+                isRead: false,
+                createTime: db.serverDate()
+            }
+        })
+    } catch (e) {
+        console.error('保存消息失败', e)
     }
 
     return {

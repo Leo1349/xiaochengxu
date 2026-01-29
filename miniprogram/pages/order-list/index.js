@@ -209,20 +209,37 @@ Page({
       content: '确定要取消该订单吗？',
       success: (res) => {
         if (res.confirm) {
-          // 模拟取消
-          const orderList = this.data.orderList.map(o => {
-            if (o.id === id) {
-              o.status = 'cancelled'
-              o.statusText = '已取消'
+          const order = this.data.orderList.find(o => o.id === id)
+          if (!order) return
+
+          wx.showLoading({ title: '处理中' })
+          wx.cloud.callFunction({
+            name: 'updateOrder',
+            data: {
+              orderId: order._id,
+              status: 'cancelled'
+            },
+            success: (cloudRes) => {
+              wx.hideLoading()
+              if (cloudRes.result.success) {
+                const orderList = this.data.orderList.map(o => {
+                  if (o.id === id) {
+                    o.status = 'cancelled'
+                    o.statusText = '已取消'
+                  }
+                  return o
+                })
+                this.setData({ orderList })
+                wx.showToast({ title: '订单已取消', icon: 'success' })
+              } else {
+                wx.showToast({ title: cloudRes.result.error || '取消失败', icon: 'none' })
+              }
+            },
+            fail: (err) => {
+              wx.hideLoading()
+              console.error('取消订单失败', err)
+              wx.showToast({ title: '网络错误', icon: 'none' })
             }
-            return o
-          })
-
-          this.setData({ orderList })
-
-          wx.showToast({
-            title: '订单已取消',
-            icon: 'success'
           })
         }
       }
@@ -236,22 +253,39 @@ Page({
       title: '提示',
       content: '确定接受该订单吗？',
       success: (res) => {
-        if (res.confirm) {
-          const orderList = this.data.orderList.map(o => {
-            if (o.id === id) {
-              o.status = 'confirmed'
-              o.statusText = '待服务'
+        if (!res.confirm) return
+
+        const order = this.data.orderList.find(o => o.id === id)
+        if (!order) return
+
+        wx.showLoading({ title: '处理中' })
+        wx.cloud.callFunction({
+          name: 'updateOrder',
+          data: {
+            orderId: order._id,
+            status: 'confirmed'
+          },
+          success: (cloudRes) => {
+            wx.hideLoading()
+            if (cloudRes.result.success) {
+              const orderList = this.data.orderList.map(o => {
+                if (o.id === id) {
+                  o.status = 'confirmed'
+                  o.statusText = '待服务'
+                }
+                return o
+              })
+              this.setData({ orderList })
+              wx.showToast({ title: '已确认订单', icon: 'success' })
+            } else {
+              wx.showToast({ title: cloudRes.result.error || '操作失败', icon: 'none' })
             }
-            return o
-          })
-
-          this.setData({ orderList })
-
-          wx.showToast({
-            title: '已确认订单',
-            icon: 'success'
-          })
-        }
+          },
+          fail: () => {
+            wx.hideLoading()
+            wx.showToast({ title: '网络错误', icon: 'none' })
+          }
+        })
       }
     })
   },
@@ -259,19 +293,36 @@ Page({
   // 开始服务
   startService: function (e) {
     const id = e.currentTarget.dataset.id
-    const orderList = this.data.orderList.map(o => {
-      if (o.id === id) {
-        o.status = 'ongoing'
-        o.statusText = '进行中'
+    const order = this.data.orderList.find(o => o.id === id)
+    if (!order) return
+
+    wx.showLoading({ title: '处理中' })
+    wx.cloud.callFunction({
+      name: 'updateOrder',
+      data: {
+        orderId: order._id,
+        status: 'ongoing'
+      },
+      success: (cloudRes) => {
+        wx.hideLoading()
+        if (cloudRes.result.success) {
+          const orderList = this.data.orderList.map(o => {
+            if (o.id === id) {
+              o.status = 'ongoing'
+              o.statusText = '进行中'
+            }
+            return o
+          })
+          this.setData({ orderList })
+          wx.showToast({ title: '服务已开始', icon: 'success' })
+        } else {
+          wx.showToast({ title: cloudRes.result.error || '操作失败', icon: 'none' })
+        }
+      },
+      fail: (err) => {
+        wx.hideLoading()
+        wx.showToast({ title: '网络错误', icon: 'none' })
       }
-      return o
-    })
-
-    this.setData({ orderList })
-
-    wx.showToast({
-      title: '服务已开始',
-      icon: 'success'
     })
   },
 
@@ -282,23 +333,40 @@ Page({
       title: '提示',
       content: '确定完成该服务吗？',
       success: (res) => {
-        if (res.confirm) {
-          const orderList = this.data.orderList.map(o => {
-            if (o.id === id) {
-              o.status = 'completed'
-              o.statusText = '已完成'
-              o.hasReviewed = false
+        if (!res.confirm) return
+
+        const order = this.data.orderList.find(o => o.id === id)
+        if (!order) return
+
+        wx.showLoading({ title: '处理中' })
+        wx.cloud.callFunction({
+          name: 'updateOrder',
+          data: {
+            orderId: order._id,
+            status: 'completed'
+          },
+          success: (cloudRes) => {
+            wx.hideLoading()
+            if (cloudRes.result.success) {
+              const orderList = this.data.orderList.map(o => {
+                if (o.id === id) {
+                  o.status = 'completed'
+                  o.statusText = '已完成'
+                  o.hasReviewed = false
+                }
+                return o
+              })
+              this.setData({ orderList })
+              wx.showToast({ title: '服务已完成', icon: 'success' })
+            } else {
+              wx.showToast({ title: cloudRes.result.error || '操作失败', icon: 'none' })
             }
-            return o
-          })
-
-          this.setData({ orderList })
-
-          wx.showToast({
-            title: '服务已完成',
-            icon: 'success'
-          })
-        }
+          },
+          fail: () => {
+            wx.hideLoading()
+            wx.showToast({ title: '网络错误', icon: 'none' })
+          }
+        })
       }
     })
   },

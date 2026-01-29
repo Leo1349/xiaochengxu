@@ -75,48 +75,39 @@ Page({
 
   // 加载消息列表
   loadMessages: function () {
-    // 模拟加载历史消息
-    const messages = [
-      {
-        id: 'msg_0',
-        senderId: 'system',
-        content: '智伴优程为您服务',
-        type: 'event', // type event to show as center tip
-        time: '10:00',
-        isMine: false
+    wx.showLoading({ title: '加载中' })
+    wx.cloud.callFunction({
+      name: 'getMessageList',
+      data: {
+        type: 'chat',
+        page: 1,
+        pageSize: 20
       },
-      {
-        id: 'msg_1',
-        senderId: this.data.targetUserId,
-        content: '您好，请问有什么可以帮您的？',
-        type: 'text',
-        time: '10:00',
-        isMine: false
+      success: res => {
+        wx.hideLoading()
+        if (res.result.success) {
+          const list = res.result.data.list.reverse().map(item => ({
+            id: item._id,
+            senderId: item.senderId,
+            content: item.content,
+            type: 'text', // Backend doesn't store 'text'/'image' yet in replyMessage, but defaults to text content
+            time: this.formatTime(new Date(item.createTime)),
+            isMine: item.senderId === 'me'
+          }))
+
+          this.setData({
+            messageList: list
+          })
+          this.scrollToBottom()
+        } else {
+          wx.showToast({ title: '加载失败', icon: 'none' })
+        }
       },
-      {
-        id: 'msg_2',
-        senderId: 'me',
-        content: '您好，我想咨询一下陪伴服务',
-        type: 'text',
-        time: '10:01',
-        isMine: true
-      },
-      {
-        id: 'msg_3',
-        senderId: this.data.targetUserId,
-        content: '好的，我们提供多种陪伴服务，包括课后辅导、作业陪伴、兴趣培养等，您需要哪种类型的服务呢？',
-        type: 'text',
-        time: '10:02',
-        isMine: false
+      fail: err => {
+        wx.hideLoading()
+        console.error('加载历史消息失败', err)
       }
-    ]
-
-    this.setData({
-      messageList: messages
     })
-
-    // 滚动到底部
-    this.scrollToBottom()
   },
 
   // 加载更多消息

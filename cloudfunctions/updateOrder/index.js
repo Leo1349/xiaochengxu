@@ -11,7 +11,7 @@ exports.main = async (event, context) => {
     const wxContext = cloud.getWXContext()
     const openid = wxContext.OPENID
 
-    const { orderId, status, remark } = event
+    const { orderId, status, remark, review } = event
 
     // 参数校验
     if (!orderId) {
@@ -61,6 +61,11 @@ exports.main = async (event, context) => {
 
         if (remark) {
             updateData.lastRemark = remark
+        }
+
+        if (event.review) {
+            updateData.review = event.review
+            updateData.hasReviewed = true
         }
 
         // 执行更新
