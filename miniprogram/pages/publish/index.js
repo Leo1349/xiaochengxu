@@ -128,12 +128,25 @@ Page({
             },
             fail: (err) => {
                 console.error('选择地址失败', err)
-                if (err.errMsg.indexOf('auth') > -1) {
-                    wx.showToast({
-                        title: '请授权位置信息',
-                        icon: 'none'
+                const errMsg = (err && err.errMsg) || ''
+                if (errMsg.indexOf('auth') > -1 || errMsg.indexOf('permission') > -1) {
+                    wx.showModal({
+                        title: '需要位置权限',
+                        content: '请在设置中开启位置权限后再选择地址',
+                        confirmText: '去设置',
+                        success: (modalRes) => {
+                            if (modalRes.confirm) {
+                                wx.openSetting()
+                            }
+                        }
                     })
+                    return
                 }
+                if (errMsg.indexOf('cancel') > -1) return
+                wx.showToast({
+                    title: '选择地址失败',
+                    icon: 'none'
+                })
             }
         })
     },

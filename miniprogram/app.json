@@ -33,6 +33,14 @@
     "rate": "/components/rate/index",
     "privacy-popup": "/components/privacy-popup/index"
   },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于用户选择服务地址"
+    }
+  },
+  "requiredPrivateInfos": [
+    "chooseLocation"
+  ],
   "window": {
     "backgroundColor": "#F7F8FA",
     "backgroundTextStyle": "light",
