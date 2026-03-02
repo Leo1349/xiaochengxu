@@ -204,14 +204,14 @@ Page({
   // 取消订单
   cancelOrder: function (e) {
     const id = e.currentTarget.dataset.id
+    const order = this.data.orderList.find(o => o.id === id)
+    if (!order) return
+
     wx.showModal({
       title: '提示',
       content: '确定要取消该订单吗？',
       success: (res) => {
         if (res.confirm) {
-          const order = this.data.orderList.find(o => o.id === id)
-          if (!order) return
-
           wx.showLoading({ title: '处理中' })
           wx.cloud.callFunction({
             name: 'updateOrder',
@@ -249,43 +249,43 @@ Page({
   // 确认订单（陪伴师）
   confirmOrder: function (e) {
     const id = e.currentTarget.dataset.id
+    const order = this.data.orderList.find(o => o.id === id)
+    if (!order) return
+
     wx.showModal({
       title: '提示',
       content: '确定接受该订单吗？',
       success: (res) => {
-        if (!res.confirm) return
-
-        const order = this.data.orderList.find(o => o.id === id)
-        if (!order) return
-
-        wx.showLoading({ title: '处理中' })
-        wx.cloud.callFunction({
-          name: 'updateOrder',
-          data: {
-            orderId: order._id,
-            status: 'confirmed'
-          },
-          success: (cloudRes) => {
-            wx.hideLoading()
-            if (cloudRes.result.success) {
-              const orderList = this.data.orderList.map(o => {
-                if (o.id === id) {
-                  o.status = 'confirmed'
-                  o.statusText = '待服务'
-                }
-                return o
-              })
-              this.setData({ orderList })
-              wx.showToast({ title: '已确认订单', icon: 'success' })
-            } else {
-              wx.showToast({ title: cloudRes.result.error || '操作失败', icon: 'none' })
+        if (res.confirm) {
+          wx.showLoading({ title: '处理中' })
+          wx.cloud.callFunction({
+            name: 'updateOrder',
+            data: {
+              orderId: order._id,
+              status: 'confirmed'
+            },
+            success: (cloudRes) => {
+              wx.hideLoading()
+              if (cloudRes.result.success) {
+                const orderList = this.data.orderList.map(o => {
+                  if (o.id === id) {
+                    o.status = 'confirmed'
+                    o.statusText = '待服务'
+                  }
+                  return o
+                })
+                this.setData({ orderList })
+                wx.showToast({ title: '已确认订单', icon: 'success' })
+              } else {
+                wx.showToast({ title: cloudRes.result.error || '操作失败', icon: 'none' })
+              }
+            },
+            fail: () => {
+              wx.hideLoading()
+              wx.showToast({ title: '网络错误', icon: 'none' })
             }
-          },
-          fail: () => {
-            wx.hideLoading()
-            wx.showToast({ title: '网络错误', icon: 'none' })
-          }
-        })
+          })
+        }
       }
     })
   },
@@ -329,44 +329,44 @@ Page({
   // 完成服务
   completeService: function (e) {
     const id = e.currentTarget.dataset.id
+    const order = this.data.orderList.find(o => o.id === id)
+    if (!order) return
+
     wx.showModal({
       title: '提示',
       content: '确定完成该服务吗？',
       success: (res) => {
-        if (!res.confirm) return
-
-        const order = this.data.orderList.find(o => o.id === id)
-        if (!order) return
-
-        wx.showLoading({ title: '处理中' })
-        wx.cloud.callFunction({
-          name: 'updateOrder',
-          data: {
-            orderId: order._id,
-            status: 'completed'
-          },
-          success: (cloudRes) => {
-            wx.hideLoading()
-            if (cloudRes.result.success) {
-              const orderList = this.data.orderList.map(o => {
-                if (o.id === id) {
-                  o.status = 'completed'
-                  o.statusText = '已完成'
-                  o.hasReviewed = false
-                }
-                return o
-              })
-              this.setData({ orderList })
-              wx.showToast({ title: '服务已完成', icon: 'success' })
-            } else {
-              wx.showToast({ title: cloudRes.result.error || '操作失败', icon: 'none' })
+        if (res.confirm) {
+          wx.showLoading({ title: '处理中' })
+          wx.cloud.callFunction({
+            name: 'updateOrder',
+            data: {
+              orderId: order._id,
+              status: 'completed'
+            },
+            success: (cloudRes) => {
+              wx.hideLoading()
+              if (cloudRes.result.success) {
+                const orderList = this.data.orderList.map(o => {
+                  if (o.id === id) {
+                    o.status = 'completed'
+                    o.statusText = '已完成'
+                    o.hasReviewed = false
+                  }
+                  return o
+                })
+                this.setData({ orderList })
+                wx.showToast({ title: '服务已完成', icon: 'success' })
+              } else {
+                wx.showToast({ title: cloudRes.result.error || '操作失败', icon: 'none' })
+              }
+            },
+            fail: () => {
+              wx.hideLoading()
+              wx.showToast({ title: '网络错误', icon: 'none' })
             }
-          },
-          fail: () => {
-            wx.hideLoading()
-            wx.showToast({ title: '网络错误', icon: 'none' })
-          }
-        })
+          })
+        }
       }
     })
   },
